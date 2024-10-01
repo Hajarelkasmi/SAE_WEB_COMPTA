@@ -1,10 +1,7 @@
-drop table if exists Abonnement_Categorie;
-drop table if exists Abonnement_Page;
-drop table if exists Abonnement;
-drop table if exists Role_Categorie;
-drop table if exists Role_Page;
+drop table if exists Classe_Categorie;
+drop table if exists Classe_Page;
 drop table if exists Etudiant;
-drop table if exists Role;
+drop table if exists Classe;
 drop table if exists Lien;
 drop table if exists Article;
 drop table if exists Video;
@@ -13,8 +10,7 @@ drop table if exists Rubrique;
 drop table if exists Page;
 drop table if exists Categorie;
 
-
-create table Role(
+create table Classe(
     id INTEGER PRIMARY KEY AUTOINCREMENT not null ,
     nom varchar(255)
 );
@@ -24,14 +20,9 @@ create table Etudiant(
     nom varchar(255),
     prenom varchar(255),
     mail varchar(255),
-    role_id INTEGER,
-    FOREIGN KEY (role_id) REFERENCES role(id)
-);
-
-create table Abonnement(
-    etudiant_id INTEGER,
-    PRIMARY KEY (etudiant_id),
-    FOREIGN KEY (etudiant_id) REFERENCES etudiant(id)
+    classe_id INTEGER,
+    est_abonne boolean,
+    FOREIGN KEY (classe_id) REFERENCES Classe(id)
 );
 
 create table Categorie(
@@ -47,38 +38,23 @@ create table Page(
     categorie_id INTEGER,
     image varchar(255),
     est_publie boolean,
-    FOREIGN KEY (categorie_id) REFERENCES categorie(id)
-);
-
-create table Abonnement_Categorie(
-    abonnement_id INTEGER,
-    categorie_id INTEGER,
-    PRIMARY KEY (abonnement_id, categorie_id),
-    FOREIGN KEY (abonnement_id) REFERENCES abonnement(etudiant_id),
-    FOREIGN KEY (categorie_id) REFERENCES categorie(id)
-);
-
-create table Abonnement_Page(
-    abonnement_id INTEGER,
-    page_id INTEGER,
-    PRIMARY KEY (abonnement_id, page_id),
-    FOREIGN KEY (abonnement_id) REFERENCES abonnement(etudiant_id),
-    FOREIGN KEY (page_id) REFERENCES page(id)
+    FOREIGN KEY (categorie_id) REFERENCES Categorie(id)
 );
 
 create table Rubrique(
     id INTEGER PRIMARY KEY AUTOINCREMENT not null,
     nom varchar(255),
     description varchar(255),
+    position INTEGER,
     page_id INTEGER,
-    FOREIGN KEY (page_id) REFERENCES page(id)
+    FOREIGN KEY (page_id) REFERENCES Page(id)
 );
 
 create table Lien(
     id INTEGER PRIMARY KEY AUTOINCREMENT not null,
     lien varchar(255),
     rubrique_id INTEGER,
-    FOREIGN KEY (rubrique_id) REFERENCES rubrique(id)
+    FOREIGN KEY (rubrique_id) REFERENCES Rubrique(id)
 );
 
 create table Article(
@@ -86,14 +62,14 @@ create table Article(
     texte varchar(255),
     image varchar(255),
     rubrique_id INTEGER,
-    FOREIGN KEY (rubrique_id) REFERENCES rubrique(id)
+    FOREIGN KEY (rubrique_id) REFERENCES Rubrique(id)
 );
 
 create table Video(
     id INTEGER PRIMARY KEY AUTOINCREMENT not null,
     lien varchar(255),
     rubrique_id INTEGER,
-    FOREIGN KEY (rubrique_id) REFERENCES rubrique(id)
+    FOREIGN KEY (rubrique_id) REFERENCES Rubrique(id)
 );
 
 create table Exercice(
@@ -101,21 +77,21 @@ create table Exercice(
     lien_fichier varchar(255),
     texte varchar(255),
     rubrique_id INTEGER,
-    FOREIGN KEY (rubrique_id) REFERENCES rubrique(id)
+    FOREIGN KEY (rubrique_id) REFERENCES Rubrique(id)
 );
 
-create table Role_Categorie(
-    role_id INTEGER,
+create table Classe_Categorie(
+    classe_id INTEGER,
     categorie_id INTEGER,
-    PRIMARY KEY (role_id, categorie_id),
-    FOREIGN KEY (role_id) REFERENCES role(id),
+    PRIMARY KEY (classe_id, categorie_id),
+    FOREIGN KEY (classe_id) REFERENCES Classe(id),
     FOREIGN KEY (categorie_id) REFERENCES categorie(id)
 );
 
-create table Role_Page(
-    role_id INTEGER,
+create table Classe_Page(
+    classe_id INTEGER,
     page_id INTEGER,
-    PRIMARY KEY (role_id, page_id),
-    FOREIGN KEY (role_id) REFERENCES role(id),
+    PRIMARY KEY (classe_id, page_id),
+    FOREIGN KEY (classe_id) REFERENCES Classe(id),
     FOREIGN KEY (page_id) REFERENCES page(id)
 );
