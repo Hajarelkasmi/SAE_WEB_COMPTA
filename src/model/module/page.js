@@ -27,7 +27,7 @@ module.exports = (app) => {
     app.post('/api/pages', async (req, res) => {
         try {
             const page = await Page.create({
-                nom: req.body.name,
+                nom: req.body.nom,
                 description: req.body.description,
                 categorie_id: req.body.categorie_id,
                 image: req.body.image,
@@ -44,7 +44,7 @@ module.exports = (app) => {
             const page = await Page.findByPk(req.params.id);
             if (page) {
                 await page.update({
-                    nom: req.body.name,
+                    nom: req.body.nom,
                     description: req.body.description,
                     categorie_id: req.body.categorie_id,
                     image: req.body.image,

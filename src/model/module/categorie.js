@@ -27,7 +27,7 @@ module.exports = (app) => {
     app.post('/api/categories', async (req, res) => {
         try {
             const categorie = await Categorie.create({
-                nom: req.body.name,
+                nom: req.body.nom,
                 description: req.body.description,
                 est_public: req.body.est_public
             });
@@ -42,7 +42,7 @@ module.exports = (app) => {
             const categorie = await Categorie.findByPk(req.params.id);
             if (categorie) {
                 await categorie.update({
-                    nom: req.body.name,
+                    nom: req.body.nom,
                     description: req.body.description,
                     est_public: req.body.est_public
                 });
