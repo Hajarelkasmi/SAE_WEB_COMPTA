@@ -25,9 +25,8 @@ module.exports = (app) => {
   });
 
   app.post('/api/classes', async (req, res) => {
-    console.log(req.body);
     try {
-      const classe = await Classe.create({ nom: req.body.name });
+      const classe = await Classe.create({ nom: req.body.nom });
       res.json(classe);
     } catch (error) {
       res.status(500).json({ error: 'An error occurred while creating class' });
@@ -38,7 +37,7 @@ module.exports = (app) => {
         try {
         const classe = await Classe.findByPk(req.params.id);
         if (classe) {
-            await classe.update({ nom: req.body.name });
+            await classe.update({ nom: req.body.nom });
             res.json(classe);
         } else {
             res.status(404).json({ error: 'Class not found' });
