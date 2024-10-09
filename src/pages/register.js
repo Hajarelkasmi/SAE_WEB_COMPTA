@@ -4,7 +4,7 @@ function register() {
     return (
         <div>
             <img></img>
-            <div>
+            <div class="register-main-block">
                 <h1>Bienvenue !</h1>
                 <h2>Inscription</h2>
                 <p>Inscrivez-vous pour accéder à tous nos cours et à une multitude d'exercices</p>
