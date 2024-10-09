@@ -6,26 +6,14 @@ function Bandeau() {
     <header>
         <nav>
             <a href='/' id="logohome"><img src="logo_bitmoji.png" alt="logo" class='logo' /></a>
-            {/* <select id="menu" name="menu" size="1">
-                <option value="accueil">Accueil</option>
-                <option value="contact">Contact</option>
-                <option value="comptabilité">Comptabilité</option>
-                <option value="contrôle de gestion">Contrôle de gestion</option>
-                <option value="gestion financière">Gestion financière</option>
-                <option value="fiscalité financière">Fiscalité financière</option>
-                <option value="communication">Communication</option>
-                <option value="pédagogie">Pédagogie</option>
-                <option value="blog">Blog</option>
-            </select> */} {/* essais de menu déroulant */}
             <ul id="pages">
                 <ElemBandeau link="/" text="Accueil" />
-                <ElemBandeau link="/contact" text="Contact" />
-                <ElemBandeau link="/" text="Comptabilité" />
-                <ElemBandeau link="/" text="Contrôle de gestion" />
-                <ElemBandeau link="/" text="Gestion financière" />
+                <ElemBandeau link="/" text="Comptabilité" enfants={[{link:"/", text:"lien 1"}, {link:"/", text:"lien 2"}, {link:"/", text:"lien 3"}]} />
+                <ElemBandeau link="/" text="Contrôle de gestion" enfants={[{link:"/", text:"lien a"}, {link:"/", text:"lien b"}, {link:"/", text:"lien c"}]} />
+                <ElemBandeau link="/" text="Gestion financière" enfants={[{link:"/", text:"lien i"}, {link:"/", text:"lien ii"}, {link:"/", text:"lien iii"}]} />
                 <ElemBandeau link="/" text="Fiscalité financière" />
                 <ElemBandeau link="/" text="Communication" />
-                <ElemBandeau link="/" text="Pédagogie" />
+                <ElemBandeau link="/" text="Pédagogie" enfants={[{link:"/", text:"lien I"}, {link:"/", text:"lien II"}, {link:"/", text:"lien III"}]} />
                 <ElemBandeau link="/" text="Blog" />
             </ul>
             <ul id="reseaux">
