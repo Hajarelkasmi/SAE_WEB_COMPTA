@@ -53,7 +53,8 @@ const Etudiant = sequelize.define('Etudiant', {
         allowNull: false
     }
 }, {
-    tableName: 'Etudiant'
+    tableName: 'Etudiant',
+    timestamps: false
 });
 
 const Categorie = sequelize.define('Categorie', {
@@ -73,7 +74,10 @@ const Categorie = sequelize.define('Categorie', {
     est_public : {
         type: DataTypes.BOOLEAN,
         allowNull: false
-    }
+    },
+}, {
+    tableName: 'Categorie',
+    timestamps: false
 });
 
 const Page = sequelize.define('Page', {
@@ -107,7 +111,8 @@ const Page = sequelize.define('Page', {
         allowNull: false
     }
 }, {
-    tableName: 'Page'
+    tableName: 'Page',
+    timestamps: false
 });
 
 const Rubrique = sequelize.define('Rubrique', {
@@ -131,14 +136,11 @@ const Rubrique = sequelize.define('Rubrique', {
             model: 'Page',
             key: 'id'
         }
-    },
-    est_public : {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
     }
 },
 {
-    tableName: 'Rubrique'
+    tableName: 'Rubrique',
+    timestamps: false
 });
 
 const Lien = sequelize.define('Lien', {
@@ -160,7 +162,8 @@ const Lien = sequelize.define('Lien', {
         }
     }
 }, {
-    tableName: 'Lien'
+    tableName: 'Lien',
+    timestamps: false
 });
 
 const Article = sequelize.define('Article', {
@@ -186,7 +189,8 @@ const Article = sequelize.define('Article', {
         }
     }
 }, {
-    tableName: 'Article'
+    tableName: 'Article',
+    timestamps: false
 });
 
 const Video = sequelize.define('Video', {
@@ -208,7 +212,8 @@ const Video = sequelize.define('Video', {
         }
     }
 }, {
-    tableName: 'Video'
+    tableName: 'Video',
+    timestamps: false
 });
 
 const Exercice = sequelize.define('Exercice', {
@@ -234,7 +239,8 @@ const Exercice = sequelize.define('Exercice', {
         }
     }
 }, {
-    tableName: 'Exercice'
+    tableName: 'Exercice',
+    timestamps: false
 });
 
 const Classe_Categorie = sequelize.define('Classe_Categorie', {
@@ -255,7 +261,8 @@ const Classe_Categorie = sequelize.define('Classe_Categorie', {
         }
     }
 }, {
-    tableName: 'Classe_Categorie'
+    tableName: 'Classe_Categorie',
+    timestamps: false
 });
 
 const Classe_Page = sequelize.define('Classe_Page', {
@@ -276,7 +283,8 @@ const Classe_Page = sequelize.define('Classe_Page', {
         }
     }
 }, {
-    tableName: 'Classe_Page'
+    tableName: 'Classe_Page',
+    timestamps: false
 });
 
 sequelize.sync().then(() => {
