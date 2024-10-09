@@ -40,6 +40,10 @@ const Etudiant = sequelize.define('Etudiant', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    mot_de_passe : {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     classe_id : {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -49,6 +53,10 @@ const Etudiant = sequelize.define('Etudiant', {
         }
     },
     est_abonne : {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    est_admin : {
         type: DataTypes.BOOLEAN,
         allowNull: false
     }

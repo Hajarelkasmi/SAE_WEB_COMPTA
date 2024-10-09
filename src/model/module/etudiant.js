@@ -29,8 +29,10 @@ module.exports = (app) => {
             nom: req.body.nom, 
             prenom: req.body.prenom, 
             mail: req.body.mail,
+            mot_de_passe: req.body.mot_de_passe,
             classe_id: req.body.classe_id,
-            est_abonne: req.body.est_abonne
+            est_abonne: req.body.est_abonne,
+            est_admin: req.body.est_admin
         });
         res.json(etudiant);
         } catch (error) {
@@ -46,8 +48,10 @@ module.exports = (app) => {
             nom: req.body.nom,
             prenom: req.body.prenom,
             mail: req.body.mail,
+            mot_de_passe: req.body.mot_de_passe,
             classe_id: req.body.classe_id,
-            est_abonne: req.body.est_abonne
+            est_abonne: req.body.est_abonne,
+            est_admin: req.body.est_admin
             });
             res.json(etudiant);
         } else {
