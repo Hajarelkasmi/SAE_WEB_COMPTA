@@ -6,26 +6,26 @@ function App() {
   let elems = [
     {link: "/", text: "Accueil"},
     {link: "/", text: "Comptabilité", enfants: [
-      {link: "/", text: "lien 1"},
-      {link: "/", text: "lien 2"},
-      {link: "/", text: "lien 3"},
+      {link: "/", text: "Partie 1"},
+      {link: "/", text: "Partie 2"},
+      {link: "/", text: "Partie 3"},
     ]},
     {link: "/", text: "Contrôle de gestion", enfants: [
-      {link: "/", text: "lien a"},
-      {link: "/", text: "lien b"},
-      {link: "/", text: "lien c"},
+      {link: "/", text: "Partie A"},
+      {link: "/", text: "Partie B"},
+      {link: "/", text: "Partie C"},
     ]},
     {link: "/", text: "Gestion financière", enfants: [
-      {link: "/", text: "lien i"},
-      {link: "/", text: "lien ii"},
-      {link: "/", text: "lien iii"},
+      {link: "/", text: "Partie i"},
+      {link: "/", text: "Partie ii"},
+      {link: "/", text: "Partie iii"},
     ]},
     {link: "/", text: "Fiscalité financière"},
     {link: "/", text: "Communication"},
     {link: "/", text: "Pédagogie", enfants: [
-      {link: "/", text: "lien I"},
-      {link: "/", text: "lien II"},
-      {link: "/", text: "lien III"},
+      {link: "/", text: "Partie I"},
+      {link: "/", text: "Partie II"},
+      {link: "/", text: "Partie III"},
     ]},
     {link: "/", text: "Blog"},
   ];
