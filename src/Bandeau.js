@@ -1,19 +1,21 @@
 import './Bandeau.css';
 import ElemBandeau from './ElemBandeau';
+import ElemReseau from './ElemReseau';
 
-function Bandeau({elems}) {
+function Bandeau({elemsMenu, reseaux}) {
   return (
     <header>
         <nav>
             <a href='/' id="logohome"><img src="logo_bitmoji.png" alt="logo" class='logo' /></a>
             <ul id="pages">
-                {elems.map((elem, index) => (
+                {elemsMenu.map((elem, index) => (
                     <ElemBandeau key={index} link={elem.link} text={elem.text} enfants={elem.enfants} />
                 ))}
             </ul>
             <ul id="reseaux">
-              <li><a href='/'><img src="logo192.png" alt="logo" class='logo' /></a></li>
-              <li><a href='/'><img src="logo192.png" alt="logo" class='logo' /></a></li>
+              {reseaux.map((elem, index) => (
+                    <ElemReseau key={index} img={elem.img} link={elem.link} />
+                ))}
             </ul>
         </nav>
     </header>

@@ -3,7 +3,7 @@ import './App.css';
 import Bandeau from './Bandeau';
 
 function App() {
-  let elems = [
+  let elemsMenu = [
     {link: "/", text: "Accueil"},
     {link: "/", text: "Comptabilité", enfants: [
       {link: "/", text: "Partie 1"},
@@ -29,9 +29,13 @@ function App() {
     ]},
     {link: "/", text: "Blog"},
   ];
+  let reseaux = [
+    {img: "logo192.png", link: "/"},
+    {img: "logo192.png", link: "/"},
+  ];
   return (
     <div className="App">
-      <Bandeau elems={elems} />
+      <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </div>
