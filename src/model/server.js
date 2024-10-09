@@ -11,6 +11,7 @@ const configureCategorieRoutes = require('./module/categorie');
 const configurePageRoutes = require('./module/page');
 const configureVideoRoutes = require('./module/video');
 const configureExerciceRoutes = require('./module/exercice');
+const configureDemandeAbonnementRoutes = require('./module/demande_abonnement');
 
 
 const app = express();
@@ -29,6 +30,7 @@ configureCategorieRoutes(app);
 configurePageRoutes(app);
 configureVideoRoutes(app);
 configureExerciceRoutes(app);
+configureDemandeAbonnementRoutes(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
