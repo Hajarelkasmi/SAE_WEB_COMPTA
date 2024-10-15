@@ -80,6 +80,28 @@ const Categorie = sequelize.define('Categorie', {
     timestamps: false
 });
 
+const SousCategorie = sequelize.define('Sous_Categorie', {
+    id_parent : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Categorie',
+            key: 'id'
+        }
+    },
+    id_enfant : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Categorie',
+            key: 'id'
+        }
+    }
+}, {
+    tableName: 'Sous_Categorie',
+    timestamps: false
+});
+
 const Page = sequelize.define('Page', {
     id : {
         type: DataTypes.INTEGER,
@@ -295,6 +317,7 @@ module.exports = {
     Classe,
     Etudiant,
     Categorie,
+    SousCategorie,
     Page,
     Rubrique,
     Lien,
