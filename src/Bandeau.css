@@ -59,7 +59,7 @@ nav li {
     z-index: 1000;
 }
 
-nav>ul>li:hover .sous {
+nav ul>li:hover>.sous {
     display: block;
 }
 
