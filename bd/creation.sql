@@ -31,6 +31,15 @@ create table Categorie(
     description varchar(255),
     est_publie boolean
 );
+
+create table Sous_Categorie(
+    id_parent INTEGER,
+    id_enfant INTEGER,
+    PRIMARY KEY (id_parent, id_enfant),
+    FOREIGN KEY (id_parent) REFERENCES Categorie(id),
+    FOREIGN KEY (id_enfant) REFERENCES Categorie(id)
+);
+
 create table Page(
     id INTEGER PRIMARY KEY AUTOINCREMENT not null,
     nom varchar(255),
