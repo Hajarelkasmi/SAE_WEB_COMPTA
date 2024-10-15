@@ -17,3 +17,39 @@ body {
   padding: 0.5em;
   border-radius: 30px;
 }
+
+.register-form {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+label {
+  flex-basis: 50%;
+  flex-grow: 0;
+  margin: auto;
+}
+
+input {
+  flex-basis: 100%;
+  flex-grow: 1;
+  margin: 0.7em;
+  background-color: black;
+  color : white;
+  padding: 0.8em;
+  border-radius: 30px;
+  border-color: black;
+}
+
+.name-block {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.name-block, .register-form {
+  width: 50%;
+  margin: auto;
+}
+
+form {
+  margin: auto;
+}
