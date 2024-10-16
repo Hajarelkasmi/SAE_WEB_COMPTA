@@ -6,14 +6,16 @@ function App() {
   let elemsMenu = [
     {link: "/accueil", text: "Accueil"},
     {link: "/compta", text: "Comptabilité", enfants: [
-      {link: "/compta/partie1", text: "Partie 1", enfants: [
-        {link: "/compta/partie1/chapitre1", text: "Chapitre 1"},
-        {link: "/compta/partie1/chapitre2", text: "Chapitre 2", enfants: [
-          {link: "/compta/partie1/chapitre2/section1", text: "Section 1"},
-          {link: "/compta/partie1/chapitre2/section2", text: "Section 2"},
-        ]},
-        {link: "/compta/partie1/chapitre3", text: "Chapitre 3"},
-      ]},
+      {link: "/compta/partie1", text: "Partie 1"
+      //   , enfants: [
+      //   {link: "/compta/partie1/chapitre1", text: "Chapitre 1"},
+      //   {link: "/compta/partie1/chapitre2", text: "Chapitre 2", enfants: [
+      //     {link: "/compta/partie1/chapitre2/section1", text: "Section 1"},
+      //     {link: "/compta/partie1/chapitre2/section2", text: "Section 2"},
+      //   ]},
+      //   {link: "/compta/partie1/chapitre3", text: "Chapitre 3"},
+      // ]
+      },
       {link: "/compta/partie2", text: "Partie 2"},
       {link: "/compta/partie3", text: "Partie 3"},
     ]},
