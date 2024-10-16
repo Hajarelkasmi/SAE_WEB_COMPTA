@@ -37,8 +37,8 @@ function App() {
     {link: "/blog", text: "Blog"},
   ];
   let reseaux = [
-    {img: "logo192.png", link: "/logo"},
-    {img: "logo192.png", link: "/logo"},
+    {img: "/logo192.png", link: "/logo"},
+    {img: "/logo192.png", link: "/logo"},
   ];
   return (
     <div className="App">
