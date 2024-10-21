@@ -1,4 +1,5 @@
 const { Etudiant } = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
@@ -23,14 +24,16 @@ module.exports = (app) => {
         }
     });
     
-    app.post('/api/etudiants', async (req, res) => {
+    app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const etudiant = await Etudiant.create({ 
             nom: req.body.nom, 
             prenom: req.body.prenom, 
             mail: req.body.mail,
+            mot_de_passe: req.body.mot_de_passe,
             classe_id: req.body.classe_id,
-            est_abonne: req.body.est_abonne
+            est_abonne: req.body.est_abonne,
+            est_admin: req.body.est_admin
         });
         res.json(etudiant);
         } catch (error) {
@@ -38,7 +41,7 @@ module.exports = (app) => {
         }
     });
     
-    app.put('/api/etudiants/:id', async (req, res) => {
+    app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const etudiant = await Etudiant.findByPk(req.params.id);
         if (etudiant) {
@@ -46,8 +49,10 @@ module.exports = (app) => {
             nom: req.body.nom,
             prenom: req.body.prenom,
             mail: req.body.mail,
+            mot_de_passe: req.body.mot_de_passe,
             classe_id: req.body.classe_id,
-            est_abonne: req.body.est_abonne
+            est_abonne: req.body.est_abonne,
+            est_admin: req.body.est_admin
             });
             res.json(etudiant);
         } else {
@@ -58,7 +63,7 @@ module.exports = (app) => {
         }
     });
     
-    app.delete('/api/etudiants/:id', async (req, res) => {
+    app.delete('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const etudiant = await Etudiant.findByPk(req.params.id);
         if (etudiant) {

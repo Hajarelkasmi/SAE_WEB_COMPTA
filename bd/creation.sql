@@ -20,6 +20,7 @@ create table Etudiant(
     nom varchar(255),
     prenom varchar(255),
     mail varchar(255),
+    mdp varchar(255),
     classe_id INTEGER,
     est_abonne boolean,
     FOREIGN KEY (classe_id) REFERENCES Classe(id)
@@ -103,4 +104,9 @@ create table Classe_Page(
     PRIMARY KEY (classe_id, page_id),
     FOREIGN KEY (classe_id) REFERENCES Classe(id),
     FOREIGN KEY (page_id) REFERENCES page(id)
+);
+
+create table Demande_Abonnement(
+    etudiant_id INTEGER PRIMARY KEY,
+    FOREIGN KEY (etudiant_id) REFERENCES Etudiant(id)
 );

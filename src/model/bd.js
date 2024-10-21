@@ -40,6 +40,10 @@ const Etudiant = sequelize.define('Etudiant', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    mot_de_passe : {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
     classe_id : {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -49,6 +53,10 @@ const Etudiant = sequelize.define('Etudiant', {
         }
     },
     est_abonne : {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    est_admin : {
         type: DataTypes.BOOLEAN,
         allowNull: false
     }
@@ -309,6 +317,21 @@ const Classe_Page = sequelize.define('Classe_Page', {
     timestamps: false
 });
 
+const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
+    etudiant_id : {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        references: {
+            model: 'Etudiant',
+            key: 'id'
+        }
+    },
+}, {
+    tableName: 'Demande_Abonnement',
+    timestamps: false
+});
+
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
@@ -325,5 +348,6 @@ module.exports = {
     Video,
     Exercice,
     Classe_Categorie,
-    Classe_Page
+    Classe_Page,
+    Demande_Abonnement
 };

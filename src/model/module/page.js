@@ -1,5 +1,6 @@
 // page.js
 const {Page} = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/pages', async (req, res) => {
@@ -24,7 +25,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/pages', async (req, res) => {
+    app.post('/api/pages', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const page = await Page.create({
                 nom: req.body.nom,
@@ -39,7 +40,7 @@ module.exports = (app) => {
         }
     });
 
-    app.put('/api/pages/:id', async (req, res) => {
+    app.put('/api/pages/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const page = await Page.findByPk(req.params.id);
             if (page) {
@@ -59,7 +60,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/pages/:id', async (req, res) => {
+    app.delete('/api/pages/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const page = await Page.findByPk(req.params.id);
             if (page) {

@@ -1,5 +1,6 @@
 // classe.js
 const { Classe } = require('../bd'); // Chemin correct vers bd.js
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
   app.get('/api/classes', async (req, res) => {
@@ -24,7 +25,7 @@ module.exports = (app) => {
     }
   });
 
-  app.post('/api/classes', async (req, res) => {
+  app.post('/api/classes', verifyToken, verifyAdmin, async (req, res) => {
     try {
       const classe = await Classe.create({ nom: req.body.nom });
       res.json(classe);
@@ -33,7 +34,7 @@ module.exports = (app) => {
     }
   });
 
-    app.put('/api/classes/:id', async (req, res) => {
+    app.put('/api/classes/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const classe = await Classe.findByPk(req.params.id);
         if (classe) {
@@ -47,7 +48,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/classes/:id', async (req, res) => {
+    app.delete('/api/classes/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const classe = await Classe.findByPk(req.params.id);
         if (classe) {
