@@ -25,16 +25,16 @@ nav ul {
     padding: 0px 5px;
 }
 
-nav>ul>li {
-    flex-grow: 1;
+#pages>li {
+    padding: 0px 1px;
 }
 
 #pages>li>a {
     display: block;
 }
 
-#pages>li {
-    padding: 0px 1px;
+nav>ul>li {
+    flex-grow: 1;
 }
 
 nav li a {
