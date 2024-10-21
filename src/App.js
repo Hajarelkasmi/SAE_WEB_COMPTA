@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import Bandeau from './Bandeau';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   let elemsMenu = [
@@ -45,9 +46,15 @@ function App() {
   return (
     <div className="App">
       <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
-      <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={
+            <div className="App-header">
+              <img src={logo} className="App-logo" alt="logo" />
+            </div>
+          } />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
