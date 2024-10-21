@@ -1,9 +1,8 @@
-/* Styles par défaut */
 header {
     background-color: #1c3f59;
 }
 
-nav {
+nav{
     padding: 5px 20px;
 }
 
@@ -50,7 +49,7 @@ nav li {
 }
 
 
-/* Menu déroulant */
+/* menu déroulant */
 
 .sous {
     display: none;
@@ -64,7 +63,7 @@ nav ul>li:hover>.sous {
     display: block;
 }
 
-.sous li {
+.sous li{
     float: none;
     width: 100%;
     text-align: left;
@@ -87,58 +86,7 @@ nav ul>li:hover>.sous {
 
 .deroulant:hover>a::before {
     content: "▼ ";
+    font-size: 12px;
 }
 
 /* https://www.pierre-giraud.com/html-css-apprendre-coder-cours/creation-menu-deroulant/ pour faire des menus déroulant */
-
-
-/* Styles pour le mobile */
-@media screen and (max-width: 768px) {
-    header::before {
-        content: "☰";
-        font-size: 30px;
-        color: white;
-    }
-
-    header>* {
-        display: none;
-    }
-
-    header:hover>* {
-        display: block;
-        align-items: left;
-    }
-
-    nav {
-        padding: 0px 10px;
-    }
-    
-    nav>ul {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    nav>ul>li {
-        flex-grow: unset;
-    }
-
-    #pages {
-        width: 100%;
-    }
-
-    .sous {
-        position: relative;
-    }
-
-    .sous a {
-        padding: 0px;
-    }
-
-    .logo {
-        margin: 0 auto;
-    }
-
-    #pages {
-        padding: 10px 0px;
-    }
-}

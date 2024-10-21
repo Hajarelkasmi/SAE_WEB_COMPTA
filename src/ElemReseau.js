@@ -1,7 +1,7 @@
 function ElemReseau({img, link}) {
     return (
         <li>
-            <a href={link}><img src={img} alt="logo" class='logo' /></a>
+            <a href={link}><img src={img} alt="logo" className='logo' /></a>
         </li>
     );
 }

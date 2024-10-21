@@ -6,10 +6,10 @@ function Bandeau({elemsMenu, reseaux}) {
   return (
     <header>
         <nav>
-            <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" class='logo' /></a>
+            <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
             <ul id="pages">
                 {elemsMenu.map((elem, index) => (
-                    <ElemBandeau key={index} link={elem.link} text={elem.text} enfants={elem.enfants} />
+                    <ElemBandeau key={index} link={elem.link} nom={elem.nom} enfants={elem.enfants} />
                 ))}
             </ul>
             <ul id="reseaux">

@@ -1,17 +1,17 @@
-function ElemBandeau({link, text, enfants=[]}) {
+function ElemBandeau({link, nom, enfants=[]}) {
     if (enfants.length === 0) {
         return (
             <li>
-                <a href={link}>{text}</a>
+                <a href={link}>{nom}</a>
             </li>
         );
     }
     return (
-    <li class="deroulant">
-        <a href={link}>{text}</a>
-        <ul class="sous">
+    <li className="deroulant">
+        <a href={link}>{nom}</a>
+        <ul className="sous">
             {enfants.map((enfant, index) => (
-                <ElemBandeau key={index} link={enfant.link} text={enfant.text} enfants={enfant.enfants} />
+                <ElemBandeau key={index} link={enfant.link} nom={enfant.nom} enfants={enfant.enfants} />
             ))}
         </ul>
     </li>
