@@ -1,0 +1,94 @@
+#root>div {
+  margin: 2.5em;
+}
+
+body {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+.register-main-block {
+  margin: auto;
+  width: 50%;
+  background-color: #1c3f59;
+  border-radius: 30px;
+  padding-bottom: 1.2em;
+}
+
+.register-main-block>h1 {
+  background-color: white;
+  color: black;
+  padding: 0.5em;
+  border-radius: 30px;
+}
+
+.register-main-block>p {
+  width: 80%;
+  margin: auto;
+}
+
+form {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  width: 80%;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+input {
+  margin: 0.7em;
+  background-color: black;
+  color: white;
+  padding: 0.8em;
+  border: 0px;
+  font-size: 0.95em;
+}
+
+form>input {
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+
+.name-block>input {
+  width: 20%;
+  flex-basis: 50%;
+  flex-grow: 1;
+}
+
+#checkbox-register {
+  flex-basis: 100%;
+}
+
+#register-button {
+  margin: auto;
+  border-radius: 30px;
+  flex-basis: 35%;
+  flex-grow: 0;
+  font-size: 1.2em;
+  margin-top: 0.5em;
+}
+
+.name-block {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-basis: 100%;
+  flex-grow: 1;
+}
+
+h1,
+h2,
+#register-button {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+input::placeholder {
+  text-transform: uppercase;
+  opacity: 100%;
+}
+
+#register-logo {
+  width: 10%;
+}
