@@ -29,6 +29,7 @@ function App() {
       {link: "/pedagogie/partie1", nom: "Partie 1"},
       {link: "/pedagogie/partie2", nom: "Partie 2"},
       {link: "/pedagogie/partie3", nom: "Partie 3"},
+      {link: "/pedagogie/partie4", nom: "Partie 4"},
     ]},
     {link: "/blog", nom: "Blog"},
   ];
