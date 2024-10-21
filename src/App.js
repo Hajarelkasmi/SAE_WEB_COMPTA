@@ -9,14 +9,6 @@ function App() {
     {link: "/accueil", nom: "Accueil"},
     {link: "/compta", nom: "Comptabilité", enfants: [
       {link: "/compta/partie1", nom: "Partie 1"
-      //   , enfants: [
-      //   {link: "/compta/partie1/chapitre1", nom: "Chapitre 1"},
-      //   {link: "/compta/partie1/chapitre2", nom: "Chapitre 2", enfants: [
-      //     {link: "/compta/partie1/chapitre2/section1", nom: "Section 1"},
-      //     {link: "/compta/partie1/chapitre2/section2", nom: "Section 2"},
-      //   ]},
-      //   {link: "/compta/partie1/chapitre3", nom: "Chapitre 3"},
-      // ]
       },
       {link: "/compta/partie2", nom: "Partie 2"},
       {link: "/compta/partie3", nom: "Partie 3"},
