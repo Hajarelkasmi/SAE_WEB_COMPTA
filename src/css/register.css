@@ -10,10 +10,10 @@ body {
 
 #register-main-block {
   margin: auto;
-  width: 50%;
+  width: 30em;
   background-color: #1c3f59;
   border-radius: 30px;
-  padding-bottom: 1.2em;
+  padding-bottom: 1em;
 }
 
 #register-main-block>#h1-register {
@@ -24,7 +24,8 @@ body {
 }
 
 #register-main-block>p {
-  width: 80%;
+  /* width: 80%; */
+  padding: 0.5em;
   margin: auto;
 }
 
@@ -34,7 +35,7 @@ body {
   margin: auto;
   width: 80%;
   margin-top: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.7em;
 }
 
 .input-register,
@@ -85,11 +86,20 @@ body {
   font-weight: bold;
 }
 
-.input-register::placeholder {
+.input-register::placeholder,
+#select-default-value {
   text-transform: uppercase;
   opacity: 100%;
 }
 
 #register-logo {
-  width: 10%;
+  width: 10em;
+}
+
+#h2-register {
+  margin-bottom: 0.3em;
+}
+
+#register-button:focus {
+  font-style: italic;
 }
