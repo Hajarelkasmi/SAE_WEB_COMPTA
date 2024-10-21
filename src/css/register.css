@@ -1,4 +1,4 @@
-#root>div {
+#root>#register {
   margin: 2.5em;
 }
 
@@ -8,7 +8,7 @@ body {
   text-align: center;
 }
 
-.register-main-block {
+#register-main-block {
   margin: auto;
   width: 50%;
   background-color: #1c3f59;
@@ -16,19 +16,19 @@ body {
   padding-bottom: 1.2em;
 }
 
-.register-main-block>h1 {
+#register-main-block>#h1-register {
   background-color: white;
   color: black;
   padding: 0.5em;
   border-radius: 30px;
 }
 
-.register-main-block>p {
+#register-main-block>p {
   width: 80%;
   margin: auto;
 }
 
-form {
+#form-register {
   display: flex;
   flex-wrap: wrap;
   margin: auto;
@@ -37,7 +37,8 @@ form {
   margin-bottom: 1em;
 }
 
-input {
+.input-register,
+#register-button {
   margin: 0.7em;
   background-color: black;
   color: white;
@@ -46,12 +47,12 @@ input {
   font-size: 0.95em;
 }
 
-form>input {
+#form-register>.input-register {
   flex-basis: 100%;
   flex-grow: 1;
 }
 
-.name-block>input {
+.name-block>.input-register {
   width: 20%;
   flex-basis: 50%;
   flex-grow: 1;
@@ -77,14 +78,14 @@ form>input {
   flex-grow: 1;
 }
 
-h1,
-h2,
+#h1-register,
+#h2-register,
 #register-button {
   text-transform: uppercase;
   font-weight: bold;
 }
 
-input::placeholder {
+.input-register::placeholder {
   text-transform: uppercase;
   opacity: 100%;
 }

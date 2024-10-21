@@ -4,22 +4,22 @@ import logo from '../img/logo.png'
 
 function register() {
     return (
-        <div>
+        <div id="register">
             <img src={logo} alt="logo of the website" id="register-logo" />
-            <div class="register-main-block">
-                <h1>Bienvenue !</h1>
-                <h2>Inscription</h2>
+            <div id="register-main-block">
+                <h1 id="h1-register">Bienvenue !</h1>
+                <h2 id="h2-register">Inscription</h2>
                 <p>Inscrivez-vous pour accéder à tous nos cours et à une multitude d'exercices.</p>
-                <form>
+                <form id="form-register">
                     <div class="name-block">
-                        <input type="text" name="nom" id="nom" placeholder="Nom" required />
-                        <input type="text" name="prenom" id="prenom" placeholder="Prénom" required />
+                        <input class="input-register" type="text" name="nom" id="nom" placeholder="Nom" required />
+                        <input class="input-register" type="text" name="prenom" id="prenom" placeholder="Prénom" required />
                     </div>
-                    <input type="email" name="email" id="email" placeholder="Adresse mail" required />
-                    <input type="text" name="classe" id="classe" placeholder="Votre classe" required />
-                    <input type="password" name="password" id="password" placeholder="Mot de passe" required />
+                    <input class="input-register" type="email" name="email" id="email" placeholder="Adresse mail" required />
+                    <input class="input-register" type="text" name="classe" id="classe" placeholder="Votre classe" required />
+                    <input class="input-register" type="password" name="password" id="password" placeholder="Mot de passe" required />
                     <div id="checkbox-register">
-                        <input type="checkbox" name="access" id="access" />
+                        <input class="input-register" type="checkbox" name="access" id="access" />
                         <label for="access">Demander l'accès/s'abonner.</label>
                     </div>
                     <input id="register-button" type="submit" value="S'inscrire" />
