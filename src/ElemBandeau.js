@@ -11,7 +11,7 @@ function ElemBandeau({link, nom, enfants=[]}) {
         <a href={link}>{nom}</a>
         <ul className="sous">
             {enfants.map((enfant, index) => (
-                <ElemBandeau key={index} link={enfant.link} nom={enfant.nom} enfants={enfant.enfants} />
+                <ElemBandeau key={index} link={enfant.link} nom={enfant.nom} />
             ))}
         </ul>
     </li>
