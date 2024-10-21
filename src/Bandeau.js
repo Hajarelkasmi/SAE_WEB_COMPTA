@@ -9,7 +9,7 @@ function Bandeau({elemsMenu, reseaux}) {
             <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
             <ul id="pages">
                 {elemsMenu.map((elem, index) => (
-                    <ElemBandeau key={index} link={elem.link} nom={elem.nom} />
+                    <ElemBandeau key={index} link={elem.link} nom={elem.nom} enfants={elem.enfants} />
                 ))}
             </ul>
             <ul id="reseaux">
