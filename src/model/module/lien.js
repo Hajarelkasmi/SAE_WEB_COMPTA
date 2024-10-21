@@ -1,4 +1,5 @@
 const { Lien, Rubrique } = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/liens', async (req, res) => {
@@ -23,7 +24,7 @@ module.exports = (app) => {
         }
     });
     
-    app.post('/api/liens', async (req, res) => {
+    app.post('/api/liens', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const rubrique = await Rubrique.create({
             nom: req.body.nom, 
@@ -40,7 +41,7 @@ module.exports = (app) => {
         }
     });
     
-    app.put('/api/liens/:id', async (req, res) => {
+    app.put('/api/liens/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const rubrique = await Rubrique.findByPk(req.body.page_id);
         const lien = await Lien.findByPk(req.params.id);
@@ -63,7 +64,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/liens/:id', async (req, res) => {
+    app.delete('/api/liens/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const lien = await Lien.findByPk(req.params.id);
         if (lien) {

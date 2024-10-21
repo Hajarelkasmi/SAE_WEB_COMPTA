@@ -1,5 +1,6 @@
 // categorie.js
 const {Categorie} = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/categories', async (req, res) => {
@@ -24,7 +25,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/categories', async (req, res) => {
+    app.post('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categorie = await Categorie.create({
                 nom: req.body.nom,
@@ -37,7 +38,7 @@ module.exports = (app) => {
         }
     });
 
-    app.put('/api/categories/:id', async (req, res) => {
+    app.put('/api/categories/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categorie = await Categorie.findByPk(req.params.id);
             if (categorie) {
@@ -55,7 +56,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/categories/:id', async (req, res) => {
+    app.delete('/api/categories/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categorie = await Categorie.findByPk(req.params.id);
             if (categorie) {

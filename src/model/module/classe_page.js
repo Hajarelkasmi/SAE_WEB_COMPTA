@@ -1,6 +1,7 @@
 // classe_page.js
 
 const {Classe_Page} = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/classe_pages', async (req, res) => {
@@ -12,7 +13,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/classe_pages', async (req, res) => {
+    app.post('/api/classe_pages', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const classe_page = await Classe_Page.create({
                 classe_id: req.body.classe_id,
@@ -24,7 +25,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/classe_pages/:id_classe/:id_page', async (req, res) => {
+    app.delete('/api/classe_pages/:id_classe/:id_page', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const classe_page = await Classe_Page.findByPk(req.params.id_classe, req.params.id_page);
             if (classe_page) {

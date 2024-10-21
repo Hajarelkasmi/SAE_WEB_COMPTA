@@ -1,4 +1,5 @@
 const { Demande_Abonnement, Rubrique } = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/demande_abonnements', async (req, res) => {
@@ -10,7 +11,7 @@ module.exports = (app) => {
         }
     });
     
-    app.post('/api/demande_abonnements', async (req, res) => {
+    app.post('/api/demande_abonnements', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const demande_abonnement = await Demande_Abonnement.create({ 
             etudiant_id: req.body.etudiant_id
@@ -22,7 +23,7 @@ module.exports = (app) => {
     });
 
     
-    app.delete('/api/demande_abonnements/:id', async (req, res) => {
+    app.delete('/api/demande_abonnements/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const demande_abonnement = await Demande_Abonnement.findByPk(req.params.id);
         if (demande_abonnement) {

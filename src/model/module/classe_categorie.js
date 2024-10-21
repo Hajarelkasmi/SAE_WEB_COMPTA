@@ -1,6 +1,7 @@
 // classe_categories.js
 
 const {Classe_Categorie} = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/classe_categories', async (req, res) => {
@@ -12,7 +13,7 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/classe_categories', async (req, res) => {
+    app.post('/api/classe_categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const classe_categorie = await Classe_Categorie.create({
                 classe_id: req.body.classe_id,
@@ -24,7 +25,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/classe_categories/:id_classe/:id_cat', async (req, res) => {
+    app.delete('/api/classe_categories/:id_classe/:id_cat', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const classe_categorie = await Classe_Categorie.findByPk(req.params.id_classe, req.params.id_cat);
             if (classe_categorie) {

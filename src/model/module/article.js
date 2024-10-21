@@ -1,4 +1,5 @@
 const { Article, Rubrique } = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/articles', async (req, res) => {
@@ -23,7 +24,7 @@ module.exports = (app) => {
         }
     });
     
-    app.post('/api/articles', async (req, res) => {
+    app.post('/api/articles', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const rubrique = await Rubrique.create({
             nom: req.body.nom, 
@@ -41,7 +42,7 @@ module.exports = (app) => {
         }
     });
     
-    app.put('/api/articles/:id', async (req, res) => {
+    app.put('/api/articles/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const rubrique = await Rubrique.findByPk(req.body.page_id);
         const article = await Article.findByPk(req.params.id);
@@ -65,7 +66,7 @@ module.exports = (app) => {
         }
     });
 
-    app.delete('/api/articles/:id', async (req, res) => {
+    app.delete('/api/articles/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const article = await Article.findByPk(req.params.id);
         if (article) {

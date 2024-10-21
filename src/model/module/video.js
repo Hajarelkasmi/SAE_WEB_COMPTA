@@ -1,4 +1,5 @@
 const { Video, Rubrique } = require('../bd');
+const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/videos', async (req, res) => {
@@ -23,7 +24,7 @@ module.exports = (app) => {
         }
     });
     
-    app.post('/api/videos', async (req, res) => {
+    app.post('/api/videos', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const rubrique = await Rubrique.create({
             nom: req.body.nom, 
@@ -40,7 +41,7 @@ module.exports = (app) => {
         }
     });
     
-    app.put('/api/videos/:id', async (req, res) => {
+    app.put('/api/videos/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const rubrique = await Rubrique.findByPk(req.body.page_id);
         const video = await Video.findByPk(req.params.id);
@@ -63,7 +64,7 @@ module.exports = (app) => {
         }
     });
     
-    app.delete('/api/videos/:id', async (req, res) => {
+    app.delete('/api/videos/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const video = await Video.findByPk(req.params.id);
         if (video) {
