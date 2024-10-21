@@ -22,6 +22,7 @@ nav ul {
 #pages {
     width: 80%;
     flex-grow: 1;
+    padding: 0px 5px;
 }
 
 nav>ul>li {
@@ -30,6 +31,10 @@ nav>ul>li {
 
 #pages>li>a {
     display: block;
+}
+
+#pages>li {
+    padding: 0px 1px;
 }
 
 nav li a {
