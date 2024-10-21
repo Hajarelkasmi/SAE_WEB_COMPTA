@@ -40,8 +40,8 @@ function App() {
     {link: "/blog", nom: "Blog"},
   ];
   let reseaux = [
-    {img: "/logo192.png", link: "/logo"},
-    {img: "/logo192.png", link: "/logo"},
+    {img: "/logo192.png", link: "https://youtube.com"},
+    {img: "/logo192.png", link: "https://facebook.com"},
   ];
   return (
     <div className="App">
@@ -53,6 +53,16 @@ function App() {
               <img src={logo} className="App-logo" alt="logo" />
             </div>
           } />
+          {/* boucke sur les elemsmenu */}
+          {elemsMenu.map((elem, index) => {
+            return (
+              <Route key={index} path={elem.link} element={
+                <div className="App-header">
+                  <h1>{elem.nom}</h1>
+                </div>
+              } />
+            );
+          })}
         </Routes>
       </BrowserRouter>
     </div>
