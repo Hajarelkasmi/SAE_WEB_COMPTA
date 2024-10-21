@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import Bandeau from './Bandeau';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React from 'react';
 
 function App() {
   let elemsMenu = [
@@ -53,16 +54,29 @@ function App() {
               <img src={logo} className="App-logo" alt="logo" />
             </div>
           } />
-          {/* boucke sur les elemsmenu */}
+          {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (
-              <Route key={index} path={elem.link} element={
-                <div className="App-header">
-                  <h1>{elem.nom}</h1>
-                </div>
-              } />
+              <React.Fragment key={index}>
+                {/* Route pour l'élément principal */}
+                <Route path={elem.link} element={
+                  <div className="App-header">
+                    <h1>{elem.nom}</h1>
+                  </div>
+                } />
+
+                {/* Routes pour les enfants, si présents */}
+                {elem.enfants && elem.enfants.map((enfant, enfantIndex) => (
+                  <Route key={`${index}-${enfantIndex}`} path={enfant.link} element={
+                    <div className="App-header">
+                      <h1>{elem.nom} : {enfant.nom}</h1>
+                    </div>
+                  } />
+                ))}
+              </React.Fragment>
             );
-          })}
+          })
+        }
         </Routes>
       </BrowserRouter>
     </div>
