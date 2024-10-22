@@ -1,9 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-import Bandeau from './Bandeau';
+import Bandeau from './composants/Bandeau';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 import Accueil from './pages/Accueil';
+import Carrousel from './pages/Carrousel';
 
 function App() {
   let elemsMenu = [
@@ -43,13 +43,9 @@ function App() {
       <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={
-            <div className="App-header">
-              <img src={logo} className="App-logo" alt="logo" />
-            </div>
-          } />
+          <Route path="/" element={<Accueil />} />
           {/* Route pour l'accueil */}
-          <Route path="/accueil" element={<Accueil />} />
+          <Route path="/accueil" element={<Carrousel />} />
           {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (

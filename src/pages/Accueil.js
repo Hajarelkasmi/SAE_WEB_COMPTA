@@ -1,11 +1,10 @@
 import "../styles/Accueil.css";
+import SectionTitre from "../composants/SectionTitre";
 
 function Accueil() {
     return (
         <main>
-            <section id="titre">
-                <h1>Réussir ses études en gestion comptable et financière</h1>
-            </section>
+            <SectionTitre />
             <section id="presentation">
                 <img src="/logo_bitmoji.png" alt="Accueil" />
                 <div id="texte">

@@ -1,0 +1,20 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+main #cours h2 {
+    font-size: 5vh;;
+    color: white;
+    margin: 6vh 0px;
+    text-align: center;
+}
+
+main #carrousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 5vh 0px;
+    overflow: hidden;
+}

@@ -1,4 +1,4 @@
-import './Bandeau.css';
+import '../styles_composants/Bandeau.css';
 import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
 
