@@ -49,7 +49,7 @@ function App() {
             </div>
           } />
           {/* Route pour l'accueil */}
-          <Route path="/accueil" element={Accueil()} />
+          <Route path="/accueil" element={<Accueil />} />
           {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (
