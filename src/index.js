@@ -1,15 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
+//import './pages/login.css';  // Le style CSS
+import Login from './pages/login.js';  // Le composant Login
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-            <App/>
-    </React.StrictMode>
+  <React.StrictMode>
+    <Login />  {/* Le composant Login est maintenant défini */}
+  </React.StrictMode>
 );
+
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
