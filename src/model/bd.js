@@ -335,7 +335,26 @@ const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
-  
+
+Rubrique.hasMany(Lien, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Lien.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Rubrique.hasMany(Article, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Article.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Rubrique.hasMany(Video, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Video.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Rubrique.hasMany(Exercice, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Exercice.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Page.hasMany(Rubrique, { foreignKey: 'page_id', onDelete: 'CASCADE' });
+Rubrique.belongsTo(Page, { foreignKey: 'page_id' });
+
+Categorie.hasMany(Page, { foreignKey: 'categorie_id', onDelete: 'CASCADE' });
+Page.belongsTo(Categorie, { foreignKey: 'categorie_id' });
+
+
 module.exports = {
     Classe,
     Etudiant,
