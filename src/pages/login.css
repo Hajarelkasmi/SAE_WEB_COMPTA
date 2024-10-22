@@ -4,16 +4,21 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #1a2a43;
     color: #fff;
+  }
+
+
+  body {
+    background-color: #000;
   }
   
   h1 {
     margin-bottom: 10px;
     font-size: 36px;
+    font-family: Open Sans, sans-serif;
   }
   
-  form {
+  #login-form {
     background-color: #2f415d;
     padding: 20px;
     border-radius: 10px;
@@ -24,23 +29,28 @@
   
   h2 {
     margin-bottom: 15px;
+    font-family: Open Sans, sans-serif;
+    text-align: center;
   }
   
   p {
     font-size: 14px;
     margin-bottom: 20px;
     text-align: center;
+    font-family: Open Sans, sans-serif;
   }
   
-  label {
+  #login-label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    font-family: Open Sans, sans-serif;
   }
   
   input {
     width: 100%;
-    padding: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
     margin-bottom: 20px;
     border-radius: 5px;
     border: none;
@@ -70,3 +80,8 @@
   a:hover {
     text-decoration: underline;
   }
+
+  #login-logo {
+    width: 10em;
+  }
+  
