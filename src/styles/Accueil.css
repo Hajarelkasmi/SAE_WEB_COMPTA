@@ -5,7 +5,7 @@ main {
 
 main h1 {
     margin: 0px;
-    text-shadow: white 0px 0px 10px;
+    text-shadow: white 0px 0px 5px;
     max-width: 100%;
     max-height: 100%;
     padding: 2vh;
@@ -24,7 +24,7 @@ main #titre {
 }
 
 main #presentation {
-    height: 68.1vh;
+    min-height: 68vh;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -32,12 +32,12 @@ main #presentation {
 
 main h2 {
     font-size: 4vh;
-    margin: 0px;
+    margin: 0px 0px 2vh 0px;
     color: #1c3f59;
 }
 
 main img {
-    max-height: 80%;
+    max-height: 50vh;
     max-width: 50%;
 }
 
@@ -52,10 +52,28 @@ main #texte {
     font-weight: bold;
 }
 
-main #texte * {
-    margin: 2vh 0px;
+main #paragraphes>* {
+    padding: 2vh 0px;
 }
 
-main #paragraphes {
+@media screen and (max-width: 768px) {
+    main #presentation {
+        flex-direction: column;
+    }
 
+    main img {
+        max-height: 30vh;
+    }
+
+    main #texte {
+        width: 100%;
+    }
+    
+    main h1 {
+        font-size: 4vh;
+    }
+
+    main #presentation>* {
+        padding-top: 2vh;
+    }
 }
