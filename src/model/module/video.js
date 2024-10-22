@@ -3,8 +3,15 @@ const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/videos', async (req, res) => {
+        const { page_id } = req.query; 
         try {
-        const videos = await Video.findAll();
+        const videos = await Video.findAll({
+            include: {
+                model: Rubrique,
+                attributes: ['id', 'nom', 'description', 'page_id'],
+                where: page_id ? { page_id } : {},
+            },
+        });
         res.json(videos);
         } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching videos' });
@@ -43,7 +50,7 @@ module.exports = (app) => {
     
     app.put('/api/videos/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
-        const rubrique = await Rubrique.findByPk(req.body.page_id);
+        const rubrique = await Rubrique.findByPk(req.body.rubrique_id);
         const video = await Video.findByPk(req.params.id);
         if (video) {
             await rubrique.update({
