@@ -3,6 +3,7 @@ import './App.css';
 import Bandeau from './Bandeau';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
+import Accueil from './pages/Accueil';
 
 function App() {
   let elemsMenu = [
@@ -47,6 +48,8 @@ function App() {
               <img src={logo} className="App-logo" alt="logo" />
             </div>
           } />
+          {/* Route pour l'accueil */}
+          <Route path="/accueil" element={Accueil()} />
           {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (
