@@ -21,16 +21,22 @@ function Carrousel() {
   // Effect to handle resizing
   useEffect(() => {
     const updateVisibleItemsCount = () => {
-      let t = (window.innerWidth - 480) / 288 + 1;
-      if (t < 1) {
+      let visibleItemEstimate = (window.innerWidth - 480) / 288 + 1;
+      if (visibleItemEstimate < 1) { // si visibleItemEstimate vaut 0 ou moins
         setVisibleItemsCount(1);
-      } else if (t > 4) {
+      } else if (visibleItemEstimate > 4) { // si visibleItemEstimate vaut plus de 4 (max d'elems voulus en même temps)
         setVisibleItemsCount(4);
-      } else {
-        setVisibleItemsCount(t+1);
+      } else { // entre les deux
+        setVisibleItemsCount(visibleItemEstimate+1);
       }
       if (visibleItemsCount>totalItems) {
         setVisibleItemsCount(totalItems);
+      }
+      let remainingItems = totalItems - currentIndex;
+      if (remainingItems < visibleItemsCount) {
+        setDepassement(visibleItemsCount - remainingItems);
+      } else {
+        setDepassement(0);
       }
     };
 
@@ -40,8 +46,8 @@ function Carrousel() {
     return () => {
         window.removeEventListener('resize', updateVisibleItemsCount);
       };
-    }, [totalItems, visibleItemsCount]);
-
+    }, [totalItems, visibleItemsCount, currentIndex]
+  );
 
   // Fonction pour passer à l'élément suivant
   const handleNext = () => {
@@ -59,7 +65,7 @@ function Carrousel() {
 
   // Fonction pour passer à l'élément précédent
   const handlePrevious = () => {
-    if (currentIndex - 1 > 0) {
+    if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       if (depassement > 0) {setDepassement(depassement - 1);}
       else {setDepassement(0);}
