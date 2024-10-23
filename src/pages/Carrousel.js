@@ -6,13 +6,14 @@ import React, { useState } from 'react';
 function Carrousel() {
   let elemsCarrousel = [
     {src: "/Cours 1", img: "/logo_bitmoji.png", nom: "COMPTABILITÉ APPROFONDIE"},
-    {src: "/Cours 2", img: "/logo_bitmoji.png", nom: "COMMUNICATION"},
-    {src: "/Cours 3", img: "/logo_bitmoji.png", nom: "COMPTABILITÉ FINANCIÈRE"},
-    {src: "/Cours 4", img: "/logo_bitmoji.png", nom: "CONTRÔLE DE GESTION"},
-    {src: "/Cours 5", img: "/logo_bitmoji.png", nom: "GESTION FINANCIERE"},
+    {src: "/Cours 2", img: "/youtube_logo.png", nom: "COMMUNICATION"},
+    {src: "/Cours 3", img: "/tiktok_logo.png", nom: "COMPTABILITÉ FINANCIÈRE"},
+    {src: "/Cours 4", img: "/logo192.png", nom: "CONTRÔLE DE GESTION"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "GESTION FINANCIERE"},
   ];
   
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [depassement, setDepassement] = useState(0);
   const visibleItemsCount = 4;
 
   const totalItems = elemsCarrousel.length;
@@ -21,34 +22,46 @@ function Carrousel() {
   const handleNext = () => {
     if (currentIndex + visibleItemsCount < totalItems) {
       setCurrentIndex(currentIndex + 1);
+      setDepassement(0);
+    } else if (currentIndex + 1 < totalItems) {
+      setCurrentIndex(currentIndex + 1);
+      setDepassement(depassement + 1);
     } else {
-      setCurrentIndex(0); // Retour au début
+      setCurrentIndex(0);
+      setDepassement(0);
     }
   };
 
   // Fonction pour passer à l'élément précédent
   const handlePrevious = () => {
-    if (currentIndex > 0) {
+    // if (currentIndex > 0) {
+    //   setCurrentIndex(currentIndex - 1);
+    // } else {
+    //   setCurrentIndex(totalItems - 1);
+    // }
+    if (currentIndex - 1 > 0) {
       setCurrentIndex(currentIndex - 1);
+      setDepassement(depassement - 1);
     } else {
-      setCurrentIndex(totalItems - 1); // Aller à la fin
+      setCurrentIndex(totalItems - 1);
+      setDepassement(visibleItemsCount - 1);
     }
   };
-  
+
   return (
     <main>
         <SectionTitre />
         <section id="cours">
             <h2>Cours de Gestion de Comptabilité et Finance</h2>
             <div id="carrousel">
-                {/* <a href="#cours" id="precedent">P</a> */}
-                {/* {elemsCarrousel.map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
-                ))} */}
-                {/* <a href="#cours" id="suivant">S</a> */}
                 <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
                 {elemsCarrousel
                   .slice(currentIndex, currentIndex + visibleItemsCount)
+                  .map((elem, index) => (
+                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+                  ))}
+                {elemsCarrousel
+                  .slice(0, depassement)
                   .map((elem, index) => (
                     <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
                   ))}
