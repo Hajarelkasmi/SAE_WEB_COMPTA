@@ -10,12 +10,6 @@ function Carrousel() {
     {src: "/Cours 3", img: "/tiktok_logo.png", nom: "COMPTABILITÉ FINANCIÈRE"},
     {src: "/Cours 4", img: "/logo192.png", nom: "CONTRÔLE DE GESTION"},
     {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "GESTION FINANCIERE"},
-    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C1"},
-    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C2"},
-    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C3"},
-    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C4"},
-    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C5"},
-    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C6"},
   ];
   
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -35,15 +29,18 @@ function Carrousel() {
       } else {
         setVisibleItemsCount(t+1);
       }
+      if (visibleItemsCount>totalItems) {
+        setVisibleItemsCount(totalItems);
+      }
     };
 
-    updateVisibleItemsCount();
-    window.addEventListener('resize', updateVisibleItemsCount);
+      updateVisibleItemsCount();
+      window.addEventListener('resize', updateVisibleItemsCount);
 
     return () => {
         window.removeEventListener('resize', updateVisibleItemsCount);
       };
-    }, []);
+    }, [totalItems, visibleItemsCount]);
 
 
   // Fonction pour passer à l'élément suivant
@@ -64,7 +61,8 @@ function Carrousel() {
   const handlePrevious = () => {
     if (currentIndex - 1 > 0) {
       setCurrentIndex(currentIndex - 1);
-      setDepassement(depassement - 1);
+      if (depassement > 0) {setDepassement(depassement - 1);}
+      else {setDepassement(0);}
     } else {
       setCurrentIndex(totalItems - 1);
       setDepassement(visibleItemsCount - 1);
