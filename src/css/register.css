@@ -103,3 +103,16 @@ body {
 #register-button:focus {
   font-style: italic;
 }
+
+.success-message,
+.error-message {
+  font-weight: bold;
+}
+
+.success-message {
+  color: green;
+}
+
+.error-message {
+  color: red;
+}

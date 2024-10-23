@@ -34,32 +34,32 @@ module.exports = (app) => {
     }
   });
 
-    app.put('/api/classes/:id', verifyToken, verifyAdmin, async (req, res) => {
-        try {
-        const classe = await Classe.findByPk(req.params.id);
-        if (classe) {
-            await classe.update({ nom: req.body.nom });
-            res.json(classe);
-        } else {
-            res.status(404).json({ error: 'Class not found' });
-        }
-        } catch (error) {
-        res.status(500).json({ error: 'An error occurred while updating class' });
-        }
-    });
+  app.put('/api/classes/:id', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+      const classe = await Classe.findByPk(req.params.id);
+      if (classe) {
+        await classe.update({ nom: req.body.nom });
+        res.json(classe);
+      } else {
+        res.status(404).json({ error: 'Class not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while updating class' });
+    }
+  });
 
-    app.delete('/api/classes/:id', verifyToken, verifyAdmin, async (req, res) => {
-        try {
-        const classe = await Classe.findByPk(req.params.id);
-        if (classe) {
-            await classe.destroy();
-            res.json(classe);
-        } else {
-            res.status(404).json({ error: 'Class not found' });
-        }
-        } catch (error) {
-        res.status(500).json({ error: 'An error occurred while deleting class' });
-        }
-    });
+  app.delete('/api/classes/:id', verifyToken, verifyAdmin, async (req, res) => {
+    try {
+      const classe = await Classe.findByPk(req.params.id);
+      if (classe) {
+        await classe.destroy();
+        res.json(classe);
+      } else {
+        res.status(404).json({ error: 'Class not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while deleting class' });
+    }
+  });
 
 };
