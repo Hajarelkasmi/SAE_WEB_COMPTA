@@ -1,31 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import '../css/register.css'
 import logo from '../img/logo.png'
 
 function Register() {
-    const [formData, setFormData] = useState({
-        nom: '',
-        prenom: '',
-        mail: '',
-        classe: '',
-        mot_de_passe: '',
-        est_abonne: false,
-        est_admin: false
-    });
 
-    const handleChange = (event) => {
-        const { name, value, type, checked } = event.target;
-        setFormData(prevFormData => ({
-            ...prevFormData,
-            [name]: type === 'checkbox' ? checked : (name === 'classe' ? parseInt(value, 10) : value)
-        }));
-    };
+    const [nom, setNom] = useState('');
+    const [prenom, setPrenom] = useState('');
+    const [mail, setEmail] = useState('');
+    const [classe, setClasse] = useState('');
+    const [mot_de_passe, setPassword] = useState('');
+    const [demandeAbonnement, setDemandeAbonnement] = useState(false);
+    const [successMessage, setSuccessMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
+    const [classes, setClasses] = useState([]);
 
-    const handleSubmit = async (event) => {
+    useEffect(() => {
+        const fetchClasses = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/classes');
+                if (response.ok) {
+                    const data = await response.json();
+                    setClasses(data);
+                } else {
+                    console.error('Error fetching classes:', response.status);
+                }
+            } catch (error) {
+                console.error('Error fetching classes:', error);
+            }
+        };
+
+        fetchClasses();
+    }, []);
+
+    const handleRegister = async (event) => {
         event.preventDefault();
 
+        const formData = {
+            nom: nom,
+            prenom: prenom,
+            mail: mail,
+            classe_id: parseInt(classe),
+            mot_de_passe: mot_de_passe,
+            est_abonne: false,
+            est_admin: false
+        };
+
         try {
-            const response = await fetch('http://localhost:5000/api/registration', {
+            const response = await fetch('http://localhost:5000/api/etudiants', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,9 +56,7 @@ function Register() {
 
             if (response.ok) {
                 const newEtudiant = await response.json();
-                console.log('Inscription réussite !', newEtudiant);
-
-                if (formData.est_abonne) {
+                if (demandeAbonnement) {
                     try {
                         const demandeResponse = await fetch('http://localhost:5000/api/demande_abonnements', {
                             method: 'POST',
@@ -51,21 +70,26 @@ function Register() {
                             console.log('Demande d\'abonnement envoyée avec succès !');
                         } else {
                             console.error('Erreur dans l\'envoi d\'une demande d\'abonnement:', await demandeResponse.json());
+                            setErrorMessage('Erreur dans l\'envoi d\'une demande d\'abonnement');
                         }
                     } catch (error) {
                         console.error('Erreur dans l\'envoi d\'une demande d\'abonnement:', error);
+                        setErrorMessage('Erreur dans l\'envoi d\'une demande d\'abonnement');
                     }
                 }
-
-                setFormData({ ...formData, successMessage: 'Inscription réussie !' });
+                console.log('Inscription réussite !', newEtudiant);
+                setSuccessMessage('Inscription réussie !');
+                setErrorMessage('');
             } else {
                 const errorData = await response.json();
                 console.error('Registration error:', errorData);
-                setFormData({ ...formData, errorMessage: errorData.message });
+                setErrorMessage('Une erreur est survenue lors de l\'inscription.');
+                setSuccessMessage('');
             }
         } catch (error) {
             console.error('Network error:', error);
-            setFormData({ ...formData, errorMessage: 'Une erreur est survenue. Veuillez réessayer plus tard.' });
+            setErrorMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
+            setSuccessMessage('');
         }
     };
 
@@ -76,27 +100,27 @@ function Register() {
                 <h1 id="h1-register">Bienvenue !</h1>
                 <h2 id="h2-register">Inscription</h2>
                 <p>Inscrivez-vous pour accéder à tous nos cours et à une multitude d'exercices.</p>
-                <form id="form-register" onSubmit={handleSubmit}>
+                <form id="form-register" onSubmit={handleRegister}>
                     <div class="name-block">
-                        <input class="input-register" type="text" name="nom" id="nom" placeholder="Nom" onChange={handleChange} required />
-                        <input class="input-register" type="text" name="prenom" id="prenom" placeholder="Prénom" onChange={handleChange} required />
+                        <input class="input-register" type="text" name="nom" id="nom" placeholder="Nom" onChange={(e) => setNom(e.target.value)} required />
+                        <input class="input-register" type="text" name="prenom" id="prenom" placeholder="Prénom" onChange={(e) => setPrenom(e.target.value)} required />
                     </div>
-                    <input class="input-register" type="email" name="mail" id="email" placeholder="Adresse mail" onChange={handleChange} required />
-                    <select class="input-register" name="classe" id="classe" value={formData.classe} onChange={handleChange} required>
+                    <input class="input-register" type="email" name="mail" id="email" placeholder="Adresse mail" onChange={(e) => setEmail(e.target.value)} required />
+                    <select class="input-register" name="classe" id="classe" value={classe} onChange={(e) => setClasse(e.target.value)} required>
                         <option value="">CLASSE</option>
-                        <option value="1">Classe 1</option>
-                        <option value="2">Classe 2</option>
-                        <option value="3">Classe 3</option>
+                        {classes.map(classe => (
+                            <option key={classe.id} value={classe.id}>{classe.nom}</option>
+                        ))}
                     </select>
-                    <input class="input-register" type="password" name="mot_de_passe" id="password" placeholder="Mot de passe" onChange={handleChange} required />
+                    <input class="input-register" type="password" name="mot_de_passe" id="password" placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} required />
                     <div id="checkbox-register">
-                        <input class="input-register" type="checkbox" name="est_abonne" id="access" checked={formData.est_abonne} onChange={handleChange} />
+                        <input class="input-register" type="checkbox" name="est_abonne" id="access" checked={demandeAbonnement} onChange={(e) => setDemandeAbonnement(e.target.checked)} />
                         <label htmlFor="access">Demander l'accès/s'abonner.</label>
                     </div>
                     <input id="register-button" type="submit" value="S'inscrire" />
                 </form>
-                {formData.successMessage && <div className="success-message">{formData.successMessage}</div>}
-                {formData.errorMessage && <div className="error-message">{formData.errorMessage}</div>}
+                {successMessage && <div className="success-message">{successMessage}</div>}
+                {errorMessage && <div className="error-message">{errorMessage}</div>}
                 <p>Vous receverez un mail lorsque l'administrateur aura accepté votre demande.</p>
             </div>
         </div>
