@@ -34,11 +34,6 @@ function Carrousel() {
 
   // Fonction pour passer à l'élément précédent
   const handlePrevious = () => {
-    // if (currentIndex > 0) {
-    //   setCurrentIndex(currentIndex - 1);
-    // } else {
-    //   setCurrentIndex(totalItems - 1);
-    // }
     if (currentIndex - 1 > 0) {
       setCurrentIndex(currentIndex - 1);
       setDepassement(depassement - 1);

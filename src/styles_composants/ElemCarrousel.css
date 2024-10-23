@@ -3,7 +3,7 @@ main .composant_carrousel {
     margin: 3vh;
     height: 35vh;
     width: 30vh;
-    border-radius: 40px;
+    border-radius: 4vh;
     display: flex;
     align-items: center;
     flex-direction: column;

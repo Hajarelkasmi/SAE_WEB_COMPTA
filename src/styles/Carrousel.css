@@ -16,7 +16,6 @@ main #carrousel {
     align-items: center;
     width: 100%;
     margin: 5vh 0px;
-    overflow: hidden;
     position: relative;
 }
 
