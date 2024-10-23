@@ -49,7 +49,8 @@ function Register() {
             const response = await fetch('http://localhost:5000/api/etudiants', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
+                    // 'token': jwt.sign({ id: 1, isAdmin: false }, 'secretKey', { expiresIn: 600 })
                 },
                 body: JSON.stringify(formData)
             });
@@ -62,6 +63,7 @@ function Register() {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
+                                // 'token': jwt.sign({ id: 1, isAdmin: false }, 'secretKey', { expiresIn: 600 })
                             },
                             body: JSON.stringify({ etudiant_id: newEtudiant.id })
                         });

@@ -24,8 +24,7 @@ module.exports = (app) => {
         }
     });
 
-    // app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
-    app.post('/api/etudiants', async (req, res) => {
+    app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.create({
                 nom: req.body.nom,
