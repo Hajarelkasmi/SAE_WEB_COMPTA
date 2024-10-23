@@ -1,4 +1,4 @@
-main h1 {
+h1 {
     margin: 0px;
     text-shadow: white 0px 0px 5px;
     max-width: 100%;
@@ -6,7 +6,7 @@ main h1 {
     padding: 2vh;
 }
 
-main #titre {
+#titre {
     background-image: url("https://www.cnfce.com/course/assets/0c320294-8666-4a7f-b5c1-b16738e71d1d/img?cache=2024-08-21T12%3A32%3A54%2B00%3A00");
     background-size: cover;
     background-position: center;
@@ -16,4 +16,10 @@ main #titre {
     justify-content: center;
     display: flex;
     align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 4vh;
+    }
 }

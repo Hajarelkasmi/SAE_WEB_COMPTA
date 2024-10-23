@@ -3,7 +3,6 @@ import Bandeau from './composants/Bandeau';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 import Accueil from './pages/Accueil';
-import Carrousel from './pages/Carrousel';
 
 function App() {
   let elemsMenu = [
@@ -43,9 +42,9 @@ function App() {
       <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
       <BrowserRouter>
         <Routes>
+          {/* Routes pour l'accueil */}
           <Route path="/" element={<Accueil />} />
-          {/* Route pour l'accueil */}
-          <Route path="/accueil" element={<Carrousel />} />
+          <Route path="/accueil" element={<Accueil />} />
           {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (

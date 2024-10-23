@@ -3,19 +3,6 @@ body {
     color: white;
 }
 
-main #presentation {
-    min-height: 68vh;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-main #presentation h2 {
-    font-size: 4vh;
-    margin: 0px 0px 2vh 0px;
-    color: #1c3f59;
-}
-
 main img {
     max-height: 50vh;
     max-width: 50%;
@@ -24,36 +11,4 @@ main img {
 main p {
     font-size: 3vh;
     margin: 0px;
-}
-
-main #texte {
-    width: 50%;
-    max-height: 100%;
-    font-weight: bold;
-}
-
-main #paragraphes>* {
-    padding: 2vh 0px;
-}
-
-@media screen and (max-width: 768px) {
-    main #presentation {
-        flex-direction: column;
-    }
-
-    main img {
-        max-height: 30vh;
-    }
-
-    main #texte {
-        width: 100%;
-    }
-    
-    main h1 {
-        font-size: 4vh;
-    }
-
-    main #presentation>* {
-        padding-top: 2vh;
-    }
 }

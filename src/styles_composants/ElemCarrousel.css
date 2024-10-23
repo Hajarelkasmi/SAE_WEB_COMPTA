@@ -1,4 +1,4 @@
-main .composant_carrousel {
+.composant_carrousel {
     background-color: white;
     margin: 3vh;
     height: 35vh;
@@ -10,7 +10,7 @@ main .composant_carrousel {
     justify-content: space-between;
 }
 
-main .composant_carrousel p {
+.composant_carrousel p {
     background-color: #1c3f59;
     border-radius: 40px;
     width: 100%;
@@ -20,14 +20,14 @@ main .composant_carrousel p {
     align-items: center;
 }
 
-main .composant_carrousel a {
+.composant_carrousel a {
     color: white;
     text-decoration: none;
     text-align: center;
     font-size: 2vh;
 }
 
-main .composant_carrousel img {
+.composant_carrousel img {
     border-radius: 100%;
     max-width: unset;
     margin: 3vh 0px;

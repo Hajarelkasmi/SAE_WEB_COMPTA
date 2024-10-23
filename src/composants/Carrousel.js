@@ -1,6 +1,5 @@
-import SectionTitre from "../composants/SectionTitre";
-import "../styles/Carrousel.css";
-import ElemCarrousel from "../composants/ElemCarrousel";
+import "../styles_composants/Carrousel.css";
+import ElemCarrousel from "./ElemCarrousel";
 import React, { useState, useEffect } from 'react';
 
 function Carrousel() {
@@ -76,26 +75,23 @@ function Carrousel() {
   };
 
   return (
-    <main>
-        <SectionTitre />
-        <section id="cours">
-            <h2>Cours de Gestion de Comptabilité et Finance</h2>
-            <div id="carrousel">
-                <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
-                {elemsCarrousel
-                  .slice(currentIndex, currentIndex + visibleItemsCount)
-                  .map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
-                  ))}
-                {elemsCarrousel
-                  .slice(0, depassement)
-                  .map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
-                  ))}
-                <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
-            </div>
-        </section>
-    </main>
+    <section id="cours">
+        <h2>Cours de Gestion de Comptabilité et Finance</h2>
+        <div id="carrousel">
+            <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
+            {elemsCarrousel
+              .slice(currentIndex, currentIndex + visibleItemsCount)
+              .map((elem, index) => (
+                <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+              ))}
+            {elemsCarrousel
+              .slice(0, depassement)
+              .map((elem, index) => (
+                <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+              ))}
+            <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
+        </div>
+    </section>
   );
 }
 
