@@ -46,13 +46,13 @@ function Carrousel() {
                     <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
                 ))} */}
                 {/* <a href="#cours" id="suivant">S</a> */}
-                <button id="precedent" onClick={handlePrevious}><img src="https://cdn.icon-icons.com/icons2/1863/PNG/512/keyboard-arrow-left_119012.png" alt="fleche gauche" /></button>
+                <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
                 {elemsCarrousel
                   .slice(currentIndex, currentIndex + visibleItemsCount)
                   .map((elem, index) => (
                     <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
                   ))}
-                <button id="suivant" onClick={handleNext}><img src="https://cdn.icon-icons.com/icons2/1863/PNG/512/keyboard-arrow-left_119012.png" alt="fleche droite" /></button>
+                <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
             </div>
         </section>
     </main>

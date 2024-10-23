@@ -17,25 +17,12 @@ main #carrousel {
     width: 100%;
     margin: 5vh 0px;
     overflow: hidden;
-}
-
-#carrousel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    overflow: hidden; /* Cache les éléments qui dépassent */
     position: relative;
 }
 
-#carrousel-items {
-    display: flex;
-    width: 100%; /* Prend toute la largeur disponible */
-}
-
-#precedent, #suivant {
+main #precedent, main #suivant {
     cursor: pointer;
     padding: 10px;
-    background-color: #ccc;
+    background-color: transparent;
     border: none;
 }
