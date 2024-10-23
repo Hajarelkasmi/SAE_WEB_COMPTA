@@ -1,7 +1,7 @@
 import SectionTitre from "../composants/SectionTitre";
 import "../styles/Carrousel.css";
 import ElemCarrousel from "../composants/ElemCarrousel";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Carrousel() {
   let elemsCarrousel = [
@@ -10,13 +10,41 @@ function Carrousel() {
     {src: "/Cours 3", img: "/tiktok_logo.png", nom: "COMPTABILITÉ FINANCIÈRE"},
     {src: "/Cours 4", img: "/logo192.png", nom: "CONTRÔLE DE GESTION"},
     {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "GESTION FINANCIERE"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C1"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C2"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C3"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C4"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C5"},
+    {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "C6"},
   ];
   
   const [currentIndex, setCurrentIndex] = useState(0);
   const [depassement, setDepassement] = useState(0);
-  const visibleItemsCount = 4;
+  const [visibleItemsCount, setVisibleItemsCount] = useState(4);
 
   const totalItems = elemsCarrousel.length;
+
+  // Effect to handle resizing
+  useEffect(() => {
+    const updateVisibleItemsCount = () => {
+      let t = (window.innerWidth - 480) / 288 + 1;
+      if (t < 1) {
+        setVisibleItemsCount(1);
+      } else if (t > 4) {
+        setVisibleItemsCount(4);
+      } else {
+        setVisibleItemsCount(t+1);
+      }
+    };
+
+    updateVisibleItemsCount();
+    window.addEventListener('resize', updateVisibleItemsCount);
+
+    return () => {
+        window.removeEventListener('resize', updateVisibleItemsCount);
+      };
+    }, []);
+
 
   // Fonction pour passer à l'élément suivant
   const handleNext = () => {

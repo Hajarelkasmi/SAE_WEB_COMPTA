@@ -21,7 +21,14 @@ main #carrousel {
 
 main #precedent, main #suivant {
     cursor: pointer;
-    padding: 10px;
+    padding: 1vh;
     background-color: transparent;
     border: none;
+}
+
+@media screen and (max-width: 768px) {
+    main #cours h2 {
+        font-size: 4vh;
+        margin: 3vh 0px;
+    }
 }
