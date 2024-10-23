@@ -332,6 +332,25 @@ const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
     timestamps: false
 });
 
+const Connexion_Log = sequelize.define('Connexion_Log', {
+    id_etudiant : {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        references: {
+            model: 'Etudiant',
+            key: 'id'
+        }
+    },
+    date : {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+}, { 
+    tableName: 'Connexion_Log',
+    timestamps: false
+});
+
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
@@ -354,6 +373,8 @@ Rubrique.belongsTo(Page, { foreignKey: 'page_id' });
 Categorie.hasMany(Page, { foreignKey: 'categorie_id', onDelete: 'CASCADE' });
 Page.belongsTo(Categorie, { foreignKey: 'categorie_id' });
 
+Etudiant.hasMany(Connexion_Log, { foreignKey: 'id_etudiant' });
+Connexion_Log.belongsTo(Etudiant, { foreignKey: 'id_etudiant' });
 
 module.exports = {
     Classe,
@@ -368,5 +389,6 @@ module.exports = {
     Exercice,
     Classe_Categorie,
     Classe_Page,
-    Demande_Abonnement
+    Demande_Abonnement,
+    Connexion_Log
 };
