@@ -6,7 +6,7 @@ body {
 main #cours h2 {
     font-size: 5vh;;
     color: white;
-    margin: 6vh 0px;
+    margin: 5vh 0px;
     text-align: center;
 }
 
@@ -17,4 +17,25 @@ main #carrousel {
     width: 100%;
     margin: 5vh 0px;
     overflow: hidden;
+}
+
+#carrousel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    overflow: hidden; /* Cache les éléments qui dépassent */
+    position: relative;
+}
+
+#carrousel-items {
+    display: flex;
+    width: 100%; /* Prend toute la largeur disponible */
+}
+
+#precedent, #suivant {
+    cursor: pointer;
+    padding: 10px;
+    background-color: #ccc;
+    border: none;
 }
