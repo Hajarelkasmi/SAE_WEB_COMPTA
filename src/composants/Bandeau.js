@@ -3,8 +3,22 @@ import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
 
 function Bandeau({elemsMenu, reseaux}) {
+  window.onload = function() {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const header = document.querySelector('header');
+
+    menuToggle.addEventListener('click', function() {
+        header.classList.toggle('menu-open');
+        if (header.classList.contains('menu-open')) {
+            menuToggle.innerHTML = '✖';
+        } else {
+            menuToggle.innerHTML = '☰';
+        }
+    });
+  };
   return (
     <header>
+        <button className='menu-toggle'>☰</button>
         <nav>
             <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
             <ul id="pages">

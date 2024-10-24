@@ -101,29 +101,48 @@ nav ul>li:hover>.sous {
     content: "▼ ";
 }
 
+.menu-toggle {
+    display: none;
+}
+
 /* https://www.pierre-giraud.com/html-css-apprendre-coder-cours/creation-menu-deroulant/ pour faire des menus déroulant */
 
 
 /* Styles pour le mobile */
 @media screen and (max-width: 768px) {
-    header::before {
-        content: "☰";
-        font-size: 5vh;
+    .menu-toggle {
+        display: block;
+        background-color: transparent;
+        border: none;
         color: white;
+        font-size: 4vh;
     }
 
     header>* {
         display: none;
     }
 
-    header:hover>* {
+    header>button {
+        display: block;
+    }
+
+    .menu-open>* {
+        display: block;
+        align-items: left;
+    }
+
+    .menu-open {
+        height: auto;
+    }
+
+    /* header:hover>* {
         display: block;
         align-items: left;
     }
 
     header:hover {
         height: auto;
-    }
+    } */
 
     nav {
         padding: 0px 10px;
@@ -148,10 +167,6 @@ nav ul>li:hover>.sous {
 
     .sous a {
         padding: 0px;
-    }
-
-    .logo {
-        margin: 0 auto;
     }
 
     #pages {
