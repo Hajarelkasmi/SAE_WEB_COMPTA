@@ -1,10 +1,17 @@
-const { Etudiant } = require('../bd');
+const { Etudiant, Classe} = require('../bd');
 const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
-        const etudiants = await Etudiant.findAll();
+        const etudiants = await Etudiant.findAll(
+            {
+                include: {
+                    model: Classe,
+                    attributes: ['nom']
+                }
+            }
+        );
         res.json(etudiants);
         } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching etudiants' });
