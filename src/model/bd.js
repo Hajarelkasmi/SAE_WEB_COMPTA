@@ -335,7 +335,6 @@ const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
 const Connexion_Log = sequelize.define('Connexion_Log', {
     id_etudiant : {
         type: DataTypes.INTEGER,
-        primaryKey: true,
         allowNull: false,
         references: {
             model: 'Etudiant',
@@ -375,6 +374,9 @@ Page.belongsTo(Categorie, { foreignKey: 'categorie_id' });
 
 Etudiant.hasMany(Connexion_Log, { foreignKey: 'id_etudiant' });
 Connexion_Log.belongsTo(Etudiant, { foreignKey: 'id_etudiant' });
+
+Classe.hasMany(Etudiant, { foreignKey: 'classe_id', onDelete: 'CASCADE' });
+Etudiant.belongsTo(Classe, { foreignKey: 'classe_id' });
 
 module.exports = {
     Classe,
