@@ -11,7 +11,8 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/demande_abonnements', verifyToken, verifyAdmin, async (req, res) => {
+    // app.post('/api/demande_abonnements', verifyToken, verifyAdmin, async (req, res) => {
+    app.post('/api/demande_abonnements', async (req, res) => {
         try {
             const demande_abonnement = await Demande_Abonnement.create({
                 etudiant_id: req.body.etudiant_id
