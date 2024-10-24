@@ -35,11 +35,6 @@ module.exports = (app) => {
                 est_abonne: req.body.est_abonne,
                 est_admin: req.body.est_admin
             });
-            const token = authenticate({ body: { mail: req.body.mail, mot_de_passe: req.body.mot_de_passe } });
-            res.json({
-                id: etudiant.id,
-                token: token
-            })
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while creating etudiant' });
         }
@@ -56,7 +51,11 @@ module.exports = (app) => {
                 est_abonne: 0,
                 est_admin: 0
             });
-            res.json(etudiant);
+            const token = authenticate(req, res);
+            res.json({
+                id: etudiant.id,
+                token: token
+            })
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while creating etudiant' });
         }
