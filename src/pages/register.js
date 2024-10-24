@@ -56,6 +56,11 @@ function Register() {
 
             if (response.ok) {
                 const newEtudiant = await response.json();
+                try {
+                    localStorage.setItem('token', newEtudiant.token);
+                } catch (error) {
+                    document.cookie = `token=${newEtudiant.token}; path=/`;
+                }
                 if (demandeAbonnement) {
                     try {
                         const demandeResponse = await fetch('http://localhost:5000/api/demande_abonnements', {
@@ -87,6 +92,7 @@ function Register() {
                 setErrorMessage('Une erreur est survenue lors de l\'inscription.');
                 setSuccessMessage('');
             }
+            console.log(localStorage.getItem('token'));
         } catch (error) {
             console.error('Network error:', error);
             setErrorMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
