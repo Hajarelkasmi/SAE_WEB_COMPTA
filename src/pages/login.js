@@ -1,29 +1,34 @@
 import React, { useState } from 'react';
 import './login.css';
 import logo from '../img/logo.png';
-import { authenticateUser } from '../model/auth2.js';
+// import { authenticateUser } from '../model/auth2.js';
+import axios from 'axios';
 
 const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Logique pour gérer la connexion
-    console.log('Login:', { email, password });
-    authenticateUser({ email, password })
-      .then((data) => {
-        console.log('Utilisateur authentifié:', data);
-        // Rediriger l'utilisateur vers la page d'accueil
-        window.location.href = '/';
-      })
-      .catch((error) => {
-        console.error('Erreur de connexion:', error);
-        // Gérer l'erreur de connexion
-        alert('Erreur de connexion. Veuillez réessayer.');
-      });
-  };
+    setError('');
+
+    try {
+        const response = await axios.post('/api/authenticate', {
+            mail: email,
+            mot_de_passe: password
+        });
+
+        // Stockez le token dans localStorage ou state
+        localStorage.setItem('token', response.data.token);
+        console.log('Connexion réussie', response.data.token);
+        // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
+    } catch (err) {
+        setError(err.response?.data?.error || 'Une erreur est survenue');
+        console.error('Erreur lors de la connexion:', err);
+    }
+};
 
   return (
     <div className="login-container">

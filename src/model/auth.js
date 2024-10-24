@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const { Etudiant } = require('./bd'); 
+const { Etudiant } = require('./bd');
+
+const secretKey = 'AAA';
 
 async function authenticate(req, res) {
     console.log(req.body);
