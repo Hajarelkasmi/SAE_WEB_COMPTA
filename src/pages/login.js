@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import './login.css';
 import logo from '../img/logo.png';
-import { authenticate } from '../model/auth2.js';
+import { authenticateUser } from '../model/auth2.js';
 
 const Login = () => {
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -11,6 +12,17 @@ const Login = () => {
     e.preventDefault();
     // Logique pour gérer la connexion
     console.log('Login:', { email, password });
+    authenticateUser({ email, password })
+      .then((data) => {
+        console.log('Utilisateur authentifié:', data);
+        // Rediriger l'utilisateur vers la page d'accueil
+        window.location.href = '/';
+      })
+      .catch((error) => {
+        console.error('Erreur de connexion:', error);
+        // Gérer l'erreur de connexion
+        alert('Erreur de connexion. Veuillez réessayer.');
+      });
   };
 
   return (
