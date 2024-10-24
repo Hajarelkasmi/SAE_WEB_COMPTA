@@ -46,7 +46,7 @@ function Register() {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/etudiants', {
+            const response = await fetch('http://localhost:5000/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -63,7 +63,6 @@ function Register() {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
-                                // 'token': jwt.sign({ id: 1, isAdmin: false }, 'secretKey', { expiresIn: 600 })
                             },
                             body: JSON.stringify({ etudiant_id: newEtudiant.id })
                         });
@@ -79,7 +78,7 @@ function Register() {
                         setErrorMessage('Erreur dans l\'envoi d\'une demande d\'abonnement');
                     }
                 }
-                console.log('Inscription réussite !', newEtudiant);
+                console.log('Inscription réussite !');
                 setSuccessMessage('Inscription réussie !');
                 setErrorMessage('');
             } else {

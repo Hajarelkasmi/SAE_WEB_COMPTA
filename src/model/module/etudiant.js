@@ -24,8 +24,7 @@ module.exports = (app) => {
         }
     });
 
-    // app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
-    app.post('/api/etudiants', async (req, res) => {
+    app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.create({
                 nom: req.body.nom,
@@ -35,6 +34,23 @@ module.exports = (app) => {
                 classe_id: req.body.classe_id,
                 est_abonne: req.body.est_abonne,
                 est_admin: req.body.est_admin
+            });
+            res.json(etudiant);
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while creating etudiant' });
+        }
+    });
+
+    app.post('/api/register', async (req, res) => {
+        try {
+            const etudiant = await Etudiant.create({
+                nom: req.body.nom,
+                prenom: req.body.prenom,
+                mail: req.body.mail,
+                mot_de_passe: req.body.mot_de_passe,
+                classe_id: req.body.classe_id,
+                est_abonne: 0,
+                est_admin: 0
             });
             res.json(etudiant);
         } catch (error) {
