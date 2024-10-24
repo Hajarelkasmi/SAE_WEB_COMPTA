@@ -335,6 +335,9 @@ const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
+
+Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});
+Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
   
 module.exports = {
     Classe,
