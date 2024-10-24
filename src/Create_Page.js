@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import './Create_Page.css';
 
-const Create_Page = ({ id }) => {
+const Create_Page = () => {
+    const { id_categorie, id_page } = useParams();
     const [titre, setTitre] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
@@ -10,11 +11,27 @@ const Create_Page = ({ id }) => {
     const [estPublic, setEstPublic] = useState(true);
     const [classes, setClasses] = useState([]);
     const [classe_selected, setClasse_selected] = useState([]);
+    const [estCree, setEstCree] = useState(false);
     const navigate = useNavigate(); 
 
     useEffect(() => {
         const fetchClasses = async () => {
             try {
+                if (id_page) {
+                    const page = await fetch('http://localhost:5000/api/pages/' + id_page);
+                    if (!page.ok) {
+                        const errorText = await page.text();
+                        console.error('Réponse de l\'API:', errorText);
+                        throw new Error('Erreur lors de la récupération de la page');
+                    }
+                    const pageData = await page.json();
+                    setTitre(pageData.nom);
+                    setDescription(pageData.description);
+                    setImage(pageData.image);
+                    setEstPublic(pageData.est_public);
+                    setEstCree(true);
+                }
+
                 const response = await fetch('http://localhost:5000/api/classes');
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -24,7 +41,7 @@ const Create_Page = ({ id }) => {
                 const classes = await response.json();
                 setClasses(classes);
 
-                const responseClasseCategories = await fetch('http://localhost:5000/api/classe_categories?categorie_id=' + id);
+                const responseClasseCategories = await fetch('http://localhost:5000/api/classe_categories?categorie_id=' + id_categorie);
                 if (!responseClasseCategories.ok) {
                     const errorText = await responseClasseCategories.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -50,20 +67,36 @@ const Create_Page = ({ id }) => {
  
     const handleCreate = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/pages', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    nom: titre,
-                    description: description,
-                    image: imageFile.name,
-                    classe_id: id,
-                    est_public: estPublic,
-                    categorie_id: 1,
-                }),
-            });
+            let response;
+            if (id_page) {
+                response = await fetch('http://localhost:5000/api/pages/' + id_page, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nom: titre,
+                        description: description,
+                        image: imageFile ? imageFile.name : image,
+                        est_public: estPublic,
+                        categorie_id: id_categorie,
+                    }),
+                });
+            } else {
+                response = await fetch('http://localhost:5000/api/pages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        nom: titre,
+                        description: description,
+                        image: imageFile.name,
+                        est_public: estPublic,
+                        categorie_id: id_categorie,
+                    }),
+                });
+            }
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -76,10 +109,9 @@ const Create_Page = ({ id }) => {
             setDescription('');
             setImage('');
             setImageFile(null);
-            navigate(`/main/${newPage.id}`); 
+            navigate(`/main/${newPage.id}`);
                 
             if (classe_selected.length > 0) {
-                console.log('test');
                 classe_selected.forEach(async (classe) => {
                     const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
                         method: 'POST',
@@ -130,7 +162,7 @@ const Create_Page = ({ id }) => {
 
     return (
         <div class="DivCreateMain">
-            <h2>Création d'une page</h2>
+            {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
             <div class="DivCreate">
                 <label>
                     Titre de la page :
@@ -147,6 +179,8 @@ const Create_Page = ({ id }) => {
                 <label>
                     Image de fond de la page:
                 </label>
+                <h3>Image actuelle</h3>
+                {image && <img src={"/static/image/"+image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
                 <input type="text" value={imageFile ? imageFile.name : ''}/>
                 <input type="file" onChange={handleImageChange} />
                 {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
@@ -178,7 +212,7 @@ const Create_Page = ({ id }) => {
                     ))}
                 </ul>
             </div>
-            <button onClick={handleCreate} class="ButtonCreate">Créer</button>
+            <button onClick={handleCreate} class="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
         </div>
     );
 }
