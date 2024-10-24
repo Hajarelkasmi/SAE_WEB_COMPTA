@@ -10,6 +10,7 @@ const Container_Admin_Stat = () => {
         yearly: {}
     });
     const [classesData, setClassesData] = useState({});
+    const [EtudiantParClasse, setEtudiantParClasse] = useState({});
     const [active_data , setActive_data] = useState('daily');
 
     useEffect(() => {
@@ -22,8 +23,29 @@ const Container_Admin_Stat = () => {
                     throw new Error('Erreur lors de la récupération des statistiques');
                 }
                 const data = await response.json();
+
+                const response2 = await fetch('http://localhost:5000/api/etudiants');
+                if (!response2.ok) {
+                    const errorText = await response2.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la récupération des statistiques');
+                }
+                const data2 = await response2.json();
+                const classes = groupDataByClasse(data2);
+                const EtudiantclassesData = {};
+                const ClassDataTrier = groupDataByClasse(data.logs);
+                const ClassesData = {};
+                
+                for (const classe_id in classes) {
+                    const nom_classe = data2.find(classe => classe.id === parseInt(classe_id)).Classe.nom;
+                    EtudiantclassesData[nom_classe] = classes[classe_id];
+                    ClassesData[nom_classe] = ClassDataTrier[classe_id];
+                }
+
                 setGlobalData(groupDataByPeriod(data.logs));
-                setClassesData(groupDataByClasse(data.logs));
+                setClassesData(ClassesData);
+
+                setEtudiantParClasse(EtudiantclassesData);
             }
             catch (error) {
                 console.error('Erreur:', error);
@@ -43,9 +65,9 @@ const Container_Admin_Stat = () => {
 
         data.forEach(log => {
             const date = new Date(log.date);
-            const day = date.toISOString().split('T')[0];
-            const week = `${date.getFullYear()}-W${Math.ceil(date.getDate() / 7)}`; 
-            const month = `${date.getFullYear()}-${date.getMonth() + 1}`; 
+            const day = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
+            const week = `${date.getFullYear()}-S${Math.ceil(date.getDate() / 7)}`; 
+            const month = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(date);
             const year = date.getFullYear(); 
 
             if (!groupedData.daily[day]) {
@@ -108,6 +130,7 @@ const Container_Admin_Stat = () => {
             <Bar data={chartData(globalData[active_data], 'Nombre de connexions')} />
 
             <Pie data={chartData(classesData, 'Nombre de connexions par classe')} />
+            <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')} />
         </div>
     );
 }
