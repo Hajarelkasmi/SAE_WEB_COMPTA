@@ -62,7 +62,7 @@ function Register() {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Authorization': `Bearer ${newEtudiant.token}`
+                                'Authorization': `${newEtudiant.token}`
                             },
                             body: JSON.stringify({ etudiant_id: newEtudiant.id })
                         });

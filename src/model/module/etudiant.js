@@ -51,7 +51,7 @@ module.exports = (app) => {
                 est_abonne: 0,
                 est_admin: 0
             });
-            const token = authenticate(req, res);
+            const token = await authenticate(req, 0);
             res.json({
                 id: etudiant.id,
                 token: token

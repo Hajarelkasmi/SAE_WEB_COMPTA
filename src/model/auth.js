@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { Etudiant } = require('./bd'); 
 
-secretKey = 'b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW'
+const secretKey = 'b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW'
 
 async function authenticate(req, res) {
     const etudiant = await Etudiant.findOne({ where: { mail: req.body.mail, mot_de_passe: req.body.mot_de_passe } });
@@ -11,6 +11,9 @@ async function authenticate(req, res) {
     const token = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, secretKey, {
         expiresIn: 600
     });
+    if (!res){
+        return token;
+    }
     res.json({ token: token });
 }
 
