@@ -50,7 +50,6 @@ function Register() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'token': jwt.sign({ id: 1, isAdmin: false }, 'secretKey', { expiresIn: 600 })
                 },
                 body: JSON.stringify(formData)
             });
@@ -62,7 +61,8 @@ function Register() {
                         const demandeResponse = await fetch('http://localhost:5000/api/demande_abonnements', {
                             method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json'
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${newEtudiant.token}`
                             },
                             body: JSON.stringify({ etudiant_id: newEtudiant.id })
                         });

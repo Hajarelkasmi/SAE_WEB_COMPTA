@@ -1,5 +1,5 @@
 const { Etudiant } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { verifyToken, verifyAdmin, authenticate } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
@@ -35,7 +35,11 @@ module.exports = (app) => {
                 est_abonne: req.body.est_abonne,
                 est_admin: req.body.est_admin
             });
-            res.json(etudiant);
+            const token = authenticate({ body: { mail: req.body.mail, mot_de_passe: req.body.mot_de_passe } });
+            res.json({
+                id: etudiant.id,
+                token: token
+            })
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while creating etudiant' });
         }

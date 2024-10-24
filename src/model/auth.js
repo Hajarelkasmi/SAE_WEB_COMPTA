@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { Etudiant } = require('./bd'); 
 
+secretKey = 'b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW'
+
 async function authenticate(req, res) {
-    console.log(req.body);
     const etudiant = await Etudiant.findOne({ where: { mail: req.body.mail, mot_de_passe: req.body.mot_de_passe } });
     if (!etudiant) {
         return res.status(403).json({ error: 'Connection échouée' });
