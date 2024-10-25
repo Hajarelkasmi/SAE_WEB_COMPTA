@@ -46,6 +46,8 @@ function App() {
           {/* Routes pour l'accueil */}
           <Route path="/" element={<Accueil />} />
           <Route path="/accueil" element={<Accueil />} />
+          {/* Routes pour l'authentification */}
+          <Route exact path='/inscription' element={<Register />}></Route>
           {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (
