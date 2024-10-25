@@ -4,10 +4,10 @@ const fileUpload = require('express-fileupload');
 const configureClasseRoutes = require('./module/classe'); 
 const configureClasseCategorieRoutes = require('./module/classe_categorie');
 const configureClassePageRoutes = require('./module/classe_page');
-const configureEtudiantRoutes = require('./module/etudiant'); 
-const configureLienRoutes = require('./module/lien'); 
-const configureArticleRoutes = require('./module/article'); 
-const configureCategorieRoutes = require('./module/categorie'); 
+const configureEtudiantRoutes = require('./module/etudiant');
+const configureLienRoutes = require('./module/lien');
+const configureArticleRoutes = require('./module/article');
+const configureCategorieRoutes = require('./module/categorie');
 const configurePageRoutes = require('./module/page');
 const configureVideoRoutes = require('./module/video');
 const configureExerciceRoutes = require('./module/exercice');
@@ -15,7 +15,6 @@ const configureDemandeAbonnementRoutes = require('./module/demande_abonnement');
 const configureAuthentificationRoutes = require('./module/authentification');
 const configureImageRoutes = require('./module/images');
 const configureLogRoutes = require('./module/log');
-
 
 const app = express();
 const PORT = process.env.PORT || 5000;

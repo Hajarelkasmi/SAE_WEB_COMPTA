@@ -16,6 +16,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
+    "react-bootstrap": "^2.10.5",
     "react-scripts": "5.0.1",
     "sequelize": "^6.37.3",
     "sqlite3": "^5.1.7",
