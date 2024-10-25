@@ -2,7 +2,8 @@ const { verifyToken, verifyAdmin } = require('../auth');
 const { Connexion_Log, Etudiant } = require('../bd');
 
 module.exports = (app) => {
-    app.get('/api/log/connexion', verifyToken, verifyAdmin, async (req, res) => {
+    // app.get('/api/log/connexion', verifyToken, verifyAdmin, async (req, res) => {
+    app.get('/api/log/connexion', async (req, res) => {
         try {
             const logs = await Connexion_Log.findAll({
                 attributes: ['date'],
@@ -22,6 +23,7 @@ module.exports = (app) => {
             }
             res.json(formated_data); 
         } catch (error) {
+            console.log(error);
             res.status(500).json({ error: 'An error occurred while fetching logs' });
         }
     });

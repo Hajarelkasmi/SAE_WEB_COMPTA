@@ -74,7 +74,7 @@ function Compte() {
     }
 
     return (
-        <div>
+        <div className="table-container">
             <h2>Gestion des comptes</h2>
             <table>
                 <thead>
@@ -118,7 +118,7 @@ function Compte() {
                                 <input type="text" name="mot_de_passe" value={formData.mot_de_passe}
                                        onChange={handleChange}/>
                             ) : (
-                                compte.mot_de_passe
+                                "********"
                             )}
                         </td>
                         <td>

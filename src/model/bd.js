@@ -332,12 +332,34 @@ const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
     timestamps: false
 });
 
+
+const Connexion_Log = sequelize.define('Connexion_Log', {
+    id_etudiant : {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Etudiant',
+            key: 'id'
+        }
+    },
+    date : {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+}, {
+    tableName: 'Connexion_Log',
+    timestamps: false
+});
+
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
 
 Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});
+
 Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
+
+Connexion_Log.belongsTo(Etudiant, {foreignKey: 'id_etudiant'});
   
 module.exports = {
     Classe,
@@ -352,5 +374,6 @@ module.exports = {
     Exercice,
     Classe_Categorie,
     Classe_Page,
-    Demande_Abonnement
+    Demande_Abonnement,
+    Connexion_Log
 };
