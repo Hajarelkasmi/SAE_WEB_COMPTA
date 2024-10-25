@@ -108,20 +108,20 @@ function Register() {
                 <h2 id="h2-register">Inscription</h2>
                 <p>Inscrivez-vous pour accéder à tous nos cours et à une multitude d'exercices.</p>
                 <form id="form-register" onSubmit={handleRegister}>
-                    <div class="name-block">
-                        <input class="input-register" type="text" name="nom" id="nom" placeholder="Nom" onChange={(e) => setNom(e.target.value)} required />
-                        <input class="input-register" type="text" name="prenom" id="prenom" placeholder="Prénom" onChange={(e) => setPrenom(e.target.value)} required />
+                    <div className="name-block">
+                        <input className="input-register" type="text" name="nom" id="nom" placeholder="Nom" onChange={(e) => setNom(e.target.value)} required />
+                        <input className="input-register" type="text" name="prenom" id="prenom" placeholder="Prénom" onChange={(e) => setPrenom(e.target.value)} required />
                     </div>
-                    <input class="input-register" type="email" name="mail" id="email" placeholder="Adresse mail" onChange={(e) => setEmail(e.target.value)} required />
-                    <select class="input-register" name="classe" id="classe" value={classe} onChange={(e) => setClasse(e.target.value)} required>
+                    <input className="input-register" type="email" name="mail" id="email" placeholder="Adresse mail" onChange={(e) => setEmail(e.target.value)} required />
+                    <select className="input-register" name="classe" id="classe" value={classe} onChange={(e) => setClasse(e.target.value)} required>
                         <option value="">CLASSE</option>
                         {classes.map(classe => (
                             <option key={classe.id} value={classe.id}>{classe.nom}</option>
                         ))}
                     </select>
-                    <input class="input-register" type="password" name="mot_de_passe" id="password" placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} required />
+                    <input className="input-register" type="password" name="mot_de_passe" id="password" placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} required />
                     <div id="checkbox-register">
-                        <input class="input-register" type="checkbox" name="est_abonne" id="access" checked={demandeAbonnement} onChange={(e) => setDemandeAbonnement(e.target.checked)} />
+                        <input className="input-register" type="checkbox" name="est_abonne" id="access" checked={demandeAbonnement} onChange={(e) => setDemandeAbonnement(e.target.checked)} />
                         <label htmlFor="access">Demander l'accès/s'abonner.</label>
                     </div>
                     <input id="register-button" type="submit" value="S'inscrire" />

@@ -272,21 +272,21 @@ const Create_Page = () => {
     }
 
     return (
-        <div class="DivCreateMain">
+        <div className="DivCreateMain">
             {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
-            <div class="DivCreate">
+            <div className="DivCreate">
                 <label>
                     Titre de la page :
                 </label>
                 <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
             </div>
-            <div class="DivCreate">
+            <div className="DivCreate">
                 <label>
                     Description de la page:
                 </label>
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
-            <div class="DivCreate">
+            <div className="DivCreate">
                 <label>
                     Image de fond de la page:
                 </label>
@@ -296,13 +296,13 @@ const Create_Page = () => {
                 <input type="file" onChange={handleImageChange} accept="image/*" />
                 {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
             </div>
-            <div class="DivCreate">
+            <div className="DivCreate">
                 <label>
                     Est public :
                 </label>
                 <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
             </div>
-            <div class="DivCreate">
+            <div className="DivCreate">
                 <label>
                     Classe :
                 </label>
@@ -313,7 +313,7 @@ const Create_Page = () => {
                     ))}
                 </select>
             </div>
-            <div class="DivCreate">
+            <div className="DivCreate">
                 <label>
                     Classes sélectionnées :
                 </label>
@@ -323,7 +323,7 @@ const Create_Page = () => {
                     ))}
                 </ul>
             </div>
-            <button onClick={handleCreate} class="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
+            <button onClick={handleCreate} className="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
         </div>
     );
 }
