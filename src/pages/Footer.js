@@ -3,7 +3,7 @@ import "../css/Footer.css";
 function Footer() {
   return (
     <footer>
-        <div>
+        <div id="nos_contacts">
             <div>
                 <a href="/" alt="home"><img src="/logo_bitmoji.png" alt="logo" className="logo" id="footer_logo_bitmoji" /></a>
                 <a href="https://www.youtube.com" alt="youtube" target="_blank" rel="noreferrer"><img src="/logo_youtube.png" alt="logo" className="logo" /></a>

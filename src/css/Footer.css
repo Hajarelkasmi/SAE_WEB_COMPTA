@@ -67,3 +67,7 @@ footer span {
     display: flex;
     align-items: center;
 }
+
+#nos_contacts {
+    align-items: left;
+}
