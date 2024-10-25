@@ -4,6 +4,7 @@ import './App.css';
 import Bandeau from './pages/Bandeau';
 import Footer from './pages/Footer';
 import Accueil from './pages/Accueil';
+import Register from './pages/Register';
 
 function App() {
   let elemsMenu = [

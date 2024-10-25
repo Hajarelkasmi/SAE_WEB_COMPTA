@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import '../css/register.css'
+import '../css/Register.css'
 import logo from '../img/logo.png'
 
 function Register() {
