@@ -1,0 +1,9 @@
+main img {
+    max-height: 50vh;
+    max-width: 50%;
+}
+
+main p {
+    font-size: 3vh;
+    margin: 0px;
+}

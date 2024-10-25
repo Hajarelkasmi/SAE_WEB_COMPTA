@@ -1,0 +1,73 @@
+footer {
+    background-color: #1c3f59;
+    padding: 2vh;
+    display: flex;
+    gap: 2vw;
+    font-size: 2vh;
+    margin-top: 10vh;
+}
+
+footer p {
+    margin: 0px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #99b2c4;
+}
+
+footer .logo {
+    height: 4vh;
+    padding: 0px 0.5vw;
+}
+
+footer>div {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    justify-content: center;
+}
+
+footer span {
+    font-weight: bold;
+}
+
+#footer_logo_bitmoji {
+    height: 8vh;
+}
+
+#footer_github_logo {
+    display: flex;
+    align-items: center;
+}
+
+#footer_links>* {
+    margin: 2vh 0px 2vh 0px;
+}
+
+#footer_links a {
+    display: inline-block;
+    margin: 2vh 3vw;
+    font-weight: bold;
+}
+
+#footer_links p {
+    margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#footer_links {
+    display: flex;
+    align-items: center;
+}
+
+#nos_contacts {
+    align-items: left;
+}
