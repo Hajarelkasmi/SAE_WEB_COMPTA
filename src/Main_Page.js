@@ -1,22 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Container_Lien from './Container_Lien';
 import Container_Article from './Container_Article';
 import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
 import './Main_Page.css';
 
-const Main_Page = ({ id }) => {
+const Main_Page = () => {
+    const { id } = useParams();
     const isAdmin = true;
     const [isChoosingRubrique, setIsChoosingRubrique] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [rubriques, setRubriques] = useState([]); // État initial défini comme un tableau vide
+    const [rubriques, setRubriques] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch page data
                 const response = await fetch(`http://localhost:5000/api/pages/${id}`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -24,7 +26,6 @@ const Main_Page = ({ id }) => {
                 const result = await response.json();
                 setData(result);
 
-                // Fetch rubriques data
                 const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`);
                 if (!liens_response.ok) {
                     throw new Error(`HTTP error! status: ${liens_response.status}`);
@@ -35,8 +36,11 @@ const Main_Page = ({ id }) => {
                     nom: lien.Rubrique.nom,
                     description: lien.Rubrique.description,
                     lien: lien.lien,
-                    type: "lien"
+                    type: "lien",
+                    rubrique_id: lien.rubrique_id,
+                    page_id : lien.Rubrique.page_id
                 }));
+
                 const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`);
                 if (!articles_response.ok) {
                     throw new Error(`HTTP error! status: ${articles_response.status}`);
@@ -52,18 +56,20 @@ const Main_Page = ({ id }) => {
                     rubrique_id: article.rubrique_id,
                     page_id : article.Rubrique.page_id
                 }));
+                
                 const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`);
                 if (!videos_response.ok) {
                     throw new Error(`HTTP error! status: ${videos_response.status}`);
                 }
                 const videos_result = await videos_response.json();
-                const nouveaux_videos = videos_result.map((video) => ({
+                const nouvelles_videos = videos_result.map((video) => ({
                     id: video.id,
                     nom: video.Rubrique.nom,
                     description: video.Rubrique.description,
                     lien: video.lien,
                     type: "video"
                 }));
+
                 const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
                 if (!exercices_response.ok) {
                     throw new Error(`HTTP error! status: ${exercices_response.status}`);
@@ -77,7 +83,8 @@ const Main_Page = ({ id }) => {
                     lien_fichier: exercice.lien_fichier,
                     type: "exercice"
                 }));
-                const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouveaux_videos, ...nouveaux_exercices];
+
+                const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouvelles_videos, ...nouveaux_exercices];
                 setRubriques(nouvelles_rubriques);
             } catch (error) {
                 setError(error);
@@ -119,8 +126,10 @@ const Main_Page = ({ id }) => {
                 lien: '',
                 type: "lien",
                 isModifiable: true,
+                page_id: id,
+                rubrique_id: result.rubrique_id
             }]);
-            console.log(rubriques);
+            
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -150,8 +159,6 @@ const Main_Page = ({ id }) => {
 
             const result = await response.json();
 
-            console.log(result);
-
             setRubriques([...rubriques, {
                 id : result.id,
                 nom: '',
@@ -160,10 +167,9 @@ const Main_Page = ({ id }) => {
                 image: '',
                 type: "article",
                 isModifiable: true,
-                page_id: id
+                page_id: id,
+                rubrique_id: result.rubrique_id
             }]);
-
-            console.log(rubriques);
 
             
         } catch (error) {
@@ -252,8 +258,13 @@ const Main_Page = ({ id }) => {
 
     return (
         <div className="Main">
+            {isAdmin && (
+                <div className="Div_Admin">
+                    <button onClick={() => navigate('/categories/' + data.categorie_id + '/pages/' + id)}>Modifier</button>
+                </div>
+            )}
             <div className="Div_Title">
-            {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
+                {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
                 {data && <h1>{data.nom}</h1>}
             </div>
             <div className="Div_Content">

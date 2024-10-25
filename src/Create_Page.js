@@ -89,7 +89,6 @@ const Create_Page = () => {
                     body: JSON.stringify({
                         nom: titre,
                         description: description,
-                        image: '',
                         est_public: estPublic,
                         categorie_id: id_categorie,
                     }),
