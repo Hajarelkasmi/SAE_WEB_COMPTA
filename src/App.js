@@ -52,16 +52,16 @@ function App() {
               <React.Fragment key={index}>
                 {/* Route pour l'élément principal */}
                 <Route path={elem.link} element={
-                  <div className="App-header">
+                  <main>
                     <h1>{elem.nom}</h1>
-                  </div>
+                  </main>
                 } />
                 {/* Routes pour les enfants, si présents */}
                 {elem.enfants && elem.enfants.map((enfant, enfantIndex) => (
                   <Route key={`${index}-${enfantIndex}`} path={enfant.link} element={
-                    <div className="App-header">
+                    <main>
                       <h1>{elem.nom} : {enfant.nom}</h1>
-                    </div>
+                    </main>
                   } />
                 ))}
               </React.Fragment>
