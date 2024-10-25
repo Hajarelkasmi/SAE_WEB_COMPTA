@@ -6,6 +6,7 @@ module.exports = (app) => {
     app.post('/api/images', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const { image } = req.files;
+            const { name } = req.body;
 
             if (!image) return res.sendStatus(400);
 
@@ -17,7 +18,7 @@ module.exports = (app) => {
                 fs.mkdirSync(uploadPath, { recursive: true });
             }
 
-            const imagePath = path.join(uploadPath, image.name);
+            const imagePath = path.join(uploadPath, name);
             image.mv(imagePath, (err) => {
                 if (err) {
                     console.error('Error moving the image:', err);

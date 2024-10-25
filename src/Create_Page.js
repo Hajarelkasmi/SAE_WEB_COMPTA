@@ -89,7 +89,7 @@ const Create_Page = () => {
                     body: JSON.stringify({
                         nom: titre,
                         description: description,
-                        image: imageFile ? imageFile.name : image,
+                        image: '',
                         est_public: estPublic,
                         categorie_id: id_categorie,
                     }),
@@ -103,7 +103,7 @@ const Create_Page = () => {
                     body: JSON.stringify({
                         nom: titre,
                         description: description,
-                        image: imageFile.name,
+                        image: '',
                         est_public: estPublic,
                         categorie_id: id_categorie,
                     }),
@@ -129,7 +129,25 @@ const Create_Page = () => {
                 await createClasses(newPage);
             }
 
-            await imageSave();
+            const image_name = await imageSave(newPage.id || id_page);
+
+            if (image_name) {
+                const responseImage = await fetch('http://localhost:5000/api/pages/' + newPage.id || id_page, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: image_name,
+                    }),
+                });
+
+                if (!responseImage.ok) {
+                    const errorText = await responseImage.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la création de la page');
+                }
+            }
 
         } catch (error) {
             console.error('Erreur:', error);
@@ -223,13 +241,14 @@ const Create_Page = () => {
         });
     }
 
-    const imageSave = async () => {
+    const imageSave = async (id) => {
         if (!imageFile) {
             return;
         }
+        const name = 'image_page_' + id + '.' + imageFile.name.split('.').pop();
         const formData = new FormData();
         formData.append('image', imageFile);
-        formData.append('name', 'image_page_' + id_page + '.' + imageFile.name.split('.').pop());
+        formData.append('name', name);
         const response = await fetch('http://localhost:5000/api/images', {
             method: 'POST',
             body: formData,
@@ -240,6 +259,7 @@ const Create_Page = () => {
             console.error('Réponse de l\'API:', errorText);
             throw new Error('Erreur lors de la sauvegarde de l\'image');
         }
+        return name;
     }
 
     return (
