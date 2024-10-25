@@ -4,7 +4,7 @@ import Container_Lien from './Container_Lien';
 import Container_Article from './Container_Article';
 import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
-import './Main_Page.css';
+import '../Main_Page.css';
 
 const Main_Page = () => {
     const { id } = useParams();

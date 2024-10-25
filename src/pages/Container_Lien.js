@@ -87,7 +87,16 @@ const Container_Lien = ({ rubrique }) => {
             ) : (
                 <p>{description}</p>
             )}
-            <a href={lien} target="_blank" rel="noreferrer">{lien}</a>
+            {isModifiable ? (
+                <input
+                    type="text"
+                    value={lien}
+                    onChange={(event) => setLien(event.target.value)}
+                    placeholder='Lien'
+                />
+            ) : (
+                <a href={lien}>{lien}</a>
+            )}
         </div> 
     );
     

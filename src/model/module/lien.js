@@ -59,7 +59,7 @@ module.exports = (app) => {
             page_id: req.body.page_id
             });
             await lien.update({ 
-            url: req.body.lien,
+            lien: req.body.lien,
             rubrique_id: req.body.rubrique_id
             });
             res.json(lien);
