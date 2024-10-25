@@ -76,6 +76,7 @@ const Container_Video = ({ rubrique }) => {
                             type="text"
                             value={titre}
                             onChange={(event) => setTitre(event.target.value)}
+                            placeholder='Titre'
                         />
                     ) : (
                         <h2>{titre}</h2>
@@ -93,6 +94,7 @@ const Container_Video = ({ rubrique }) => {
                     type="text"
                     value={lien}
                     onChange={(event) => setLien(event.target.value)}
+                    placeholder='Lien de la vidéo'
                 />
             ) : (
                 <iframe
@@ -109,6 +111,7 @@ const Container_Video = ({ rubrique }) => {
                 <textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
+                    placeholder='Description'
                 />
             ) : (
                 <p>{description}</p>

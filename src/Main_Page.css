@@ -1,3 +1,10 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #222222;
+    color: white;
+}
+
 .Div_Title {
     position: relative;
     width: 100%;
@@ -24,10 +31,61 @@
     padding: 0;
 }
 
-.Div_Content {
-    padding: 20px;
+.Div_Content p {
+    font-size: 1.2em;
+    text-align: center;
+    margin: 20px 0;
+    padding: 0;
 }
 
 .Div_Rubriques {
-    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+    padding: 0;
+    flex-direction: column;
+}
+
+.Div_Lien_Title, .Div_Article_Title, .Div_Video_Title {
+    width: 100%;
+    display: flex;
+    margin: 10px 0;
+    padding: 0;
+}
+
+.Div_Rubriques button {
+    width: auto;
+    height: 30px;
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: auto 10px;
+    cursor: pointer;
+}
+
+.Div_Rubriques button:hover {
+    background-color: #777777;
+}
+
+.Div_Article_Content, .Div_Video_Content, .Div_Lien_Content {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+}
+
+.Div_Article_Content p, .Div_Video_Content p {
+    padding: 0;
+    margin-right: 10px;
+    flex-basis: 25%;
+    flex-grow: 1;
+}
+
+.Div_Article_Content img, .Div_Video_Content iframe {
+    height: 30vh;
+    margin-right: 10px;
+    flex-basis: 25%;
 }

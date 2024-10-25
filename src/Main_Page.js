@@ -67,7 +67,9 @@ const Main_Page = () => {
                     nom: video.Rubrique.nom,
                     description: video.Rubrique.description,
                     lien: video.lien,
-                    type: "video"
+                    type: "video",
+                    rubrique_id: video.rubrique_id,
+                    page_id : video.Rubrique.page_id
                 }));
 
                 const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
@@ -81,7 +83,9 @@ const Main_Page = () => {
                     description: exercice.Rubrique.description,
                     texte: exercice.texte,
                     lien_fichier: exercice.lien_fichier,
-                    type: "exercice"
+                    type: "exercice",
+                    rubrique_id: exercice.rubrique_id,
+                    page_id : exercice.Rubrique.page_id
                 }));
 
                 const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouvelles_videos, ...nouveaux_exercices];
@@ -198,13 +202,17 @@ const Main_Page = () => {
                 throw new Error('Erreur lors de la création de la vidéo');
             }
 
+            const result = await response.json();
+
             setRubriques([...rubriques, {
-                id: response.id,
+                id: result.id,
                 nom: '',
                 description: '',
                 lien: '',
                 type: "video",
-                isModifiable: true
+                isModifiable: true,
+                page_id: id,
+                rubrique_id: result.rubrique_id
             }]);
         } catch (error) {
             console.error('Erreur:', error);
@@ -233,15 +241,18 @@ const Main_Page = () => {
                 throw new Error('Erreur lors de la création de l\'exercice');
             }
 
+            const result = await response.json();
+
             setRubriques([...rubriques, {
-                id: response.id,
+                id: result.id,
                 nom: '',
                 description: '',
                 texte: '',
                 lien_fichier: '',
                 type: "exercice",
                 isModifiable: true,
-                page_id: id
+                page_id: id,
+                rubrique_id: result.rubrique_id
             }]);
         } catch (error) {
             console.error('Erreur:', error);

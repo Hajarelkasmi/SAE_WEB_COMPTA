@@ -12,15 +12,6 @@ const Container_Lien = ({ rubrique }) => {
 
     const handleSave = async () => {
         try {
-            console.log('Données envoyées:', {
-                id : rubrique.id,
-                nom: titre,
-                description: description,
-                lien: lien,
-                rubrique_id: rubrique.rubrique_id,
-                page_id: rubrique.page_id
-            });
-
             const response = await fetch(`http://localhost:5000/api/liens/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
@@ -75,6 +66,7 @@ const Container_Lien = ({ rubrique }) => {
                             type="text"
                             value={titre}
                             onChange={(event) => setTitre(event.target.value)}
+                            placeholder='Titre'
                         />
                     ) : (
                         <h2>{titre}</h2>
@@ -90,6 +82,7 @@ const Container_Lien = ({ rubrique }) => {
                 <textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
+                    placeholder='Description'
                 />
             ) : (
                 <p>{description}</p>

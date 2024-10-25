@@ -293,7 +293,7 @@ const Create_Page = () => {
                 <h3>Image actuelle</h3>
                 {image && <img src={"/static/image/"+image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
                 <input type="text" value={imageFile ? imageFile.name : ''}/>
-                <input type="file" onChange={handleImageChange} />
+                <input type="file" onChange={handleImageChange} accept="image/*" />
                 {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
             </div>
             <div class="DivCreate">

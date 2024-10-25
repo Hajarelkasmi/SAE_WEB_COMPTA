@@ -71,6 +71,7 @@ const Container_Article = ({ rubrique }) => {
                             type="text"
                             value={titre}
                             onChange={(event) => setTitre(event.target.value)}
+                            placeholder='Titre'
                         />
                     ) : (
                         <h2>{titre}</h2>
@@ -87,15 +88,18 @@ const Container_Article = ({ rubrique }) => {
                         <textarea
                             value={description}
                             onChange={(event) => setDescription(event.target.value)}
+                            placeholder='Description'
                         />
                         <textarea
                             value={texte}
                             onChange={(event) => setTexte(event.target.value)}
+                            placeholder='Texte'
                         />
                         <input
                             type="text"
                             value={image}
                             onChange={(event) => setImage(event.target.value)}
+                            placeholder='Image'
                         />
                     </div>
                 ) : (
