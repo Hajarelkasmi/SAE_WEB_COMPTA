@@ -40,6 +40,7 @@ function App() {
   return (
     <div className="App">
       <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
+      <div className="spacer">
       <BrowserRouter>
         <Routes>
           {/* Routes pour l'accueil */}
@@ -69,6 +70,7 @@ function App() {
         }
         </Routes>
       </BrowserRouter>
+      </div>
       <Footer />
     </div>
   );
