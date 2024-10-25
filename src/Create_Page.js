@@ -121,7 +121,7 @@ const Create_Page = () => {
             setDescription('');
             setImage('');
             setImageFile(null);
-            // navigate(`/main/${newPage.id}`);
+            navigate(`/main/${newPage.id}`);
                 
             if (id_page) {
                 await modifClasses();
@@ -129,20 +129,8 @@ const Create_Page = () => {
                 await createClasses(newPage);
             }
 
-            if (imageFile) {
-                const formData = new FormData();
-                formData.append('image', imageFile);
-                const responseImage = await fetch('http://localhost:5000/api/images', {
-                    method: 'POST',
-                    body: formData,
-                });
+            await imageSave();
 
-                if (!responseImage.ok) {
-                    const errorText = await responseImage.text();
-                    console.error('Réponse de l\'API:', errorText);
-                    throw new Error('Erreur lors de la sauvegarde de l\'image');
-                }
-            }
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -233,6 +221,25 @@ const Create_Page = () => {
                 }
             }
         });
+    }
+
+    const imageSave = async () => {
+        if (!imageFile) {
+            return;
+        }
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('name', 'image_page_' + id_page + '.' + imageFile.name.split('.').pop());
+        const response = await fetch('http://localhost:5000/api/images', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Réponse de l\'API:', errorText);
+            throw new Error('Erreur lors de la sauvegarde de l\'image');
+        }
     }
 
     return (
