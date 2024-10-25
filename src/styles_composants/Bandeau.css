@@ -135,15 +135,6 @@ nav ul>li:hover>.sous {
         height: auto;
     }
 
-    /* header:hover>* {
-        display: block;
-        align-items: left;
-    }
-
-    header:hover {
-        height: auto;
-    } */
-
     nav {
         padding: 0px 10px;
     }

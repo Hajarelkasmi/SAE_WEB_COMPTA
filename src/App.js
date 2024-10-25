@@ -1,5 +1,6 @@
 import './App.css';
 import Bandeau from './composants/Bandeau';
+import Footer from './composants/Footer';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
 import Accueil from './pages/Accueil';
@@ -8,8 +9,7 @@ function App() {
   let elemsMenu = [
     {link: "/accueil", nom: "Accueil"},
     {link: "/compta", nom: "Comptabilité", enfants: [
-      {link: "/compta/partie1", nom: "Partie 1"
-      },
+      {link: "/compta/partie1", nom: "Partie 1"},
       {link: "/compta/partie2", nom: "Partie 2"},
       {link: "/compta/partie3", nom: "Partie 3"},
     ]},
@@ -69,6 +69,7 @@ function App() {
         }
         </Routes>
       </BrowserRouter>
+      <Footer />
     </div>
   );
 }
