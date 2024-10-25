@@ -3,8 +3,15 @@ const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/exercices', async (req, res) => {
+        const { page_id } = req.query; 
         try {
-        const exercices = await Exercice.findAll();
+        const exercices = await Exercice.findAll({
+            include: {
+                model: Rubrique,
+                attributes: ['id', 'nom', 'description', 'page_id'],
+                where: page_id ? { page_id } : {},
+            },
+        });
         res.json(exercices);
         } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching exercices' });
@@ -46,7 +53,7 @@ module.exports = (app) => {
 
     app.put('/api/exercices/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
-        const rubrique = await Rubrique.findByPk(req.body.page_id);
+        const rubrique = await Rubrique.findByPk(req.body.rubrique_id);
         const exercice = await Exercice.findByPk(req.params.id);
         if (exercice) {
             await rubrique.update({

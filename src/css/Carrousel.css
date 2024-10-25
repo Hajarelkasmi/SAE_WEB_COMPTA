@@ -1,0 +1,29 @@
+#cours h2 {
+    font-size: 5vh;;
+    color: white;
+    margin: 5vh 0px;
+    text-align: center;
+}
+
+#carrousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 5vh 0px;
+    position: relative;
+}
+
+#precedent, #suivant {
+    cursor: pointer;
+    padding: 1vh;
+    background-color: transparent;
+    border: none;
+}
+
+@media screen and (max-width: 768px) {
+    #cours h2 {
+        font-size: 4vh;
+        margin: 3vh 0px;
+    }
+}

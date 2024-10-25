@@ -332,7 +332,6 @@ const Demande_Abonnement = sequelize.define('Demande_Abonnement', {
     timestamps: false
 });
 
-
 const Connexion_Log = sequelize.define('Connexion_Log', {
     id_etudiant : {
         type: DataTypes.INTEGER,
@@ -357,10 +356,30 @@ sequelize.sync().then(() => {
 
 Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});
 
-Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
+Rubrique.hasMany(Lien, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Lien.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
 
-Connexion_Log.belongsTo(Etudiant, {foreignKey: 'id_etudiant'});
-  
+Rubrique.hasMany(Article, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Article.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Rubrique.hasMany(Video, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Video.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Rubrique.hasMany(Exercice, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Exercice.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
+
+Page.hasMany(Rubrique, { foreignKey: 'page_id', onDelete: 'CASCADE' });
+Rubrique.belongsTo(Page, { foreignKey: 'page_id' });
+
+Categorie.hasMany(Page, { foreignKey: 'categorie_id', onDelete: 'CASCADE' });
+Page.belongsTo(Categorie, { foreignKey: 'categorie_id' });
+
+Etudiant.hasMany(Connexion_Log, { foreignKey: 'id_etudiant' });
+Connexion_Log.belongsTo(Etudiant, { foreignKey: 'id_etudiant' });
+
+Classe.hasMany(Etudiant, { foreignKey: 'classe_id', onDelete: 'CASCADE' });
+Etudiant.belongsTo(Classe, { foreignKey: 'classe_id' });
+
 module.exports = {
     Classe,
     Etudiant,

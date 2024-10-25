@@ -3,8 +3,15 @@ const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/articles', async (req, res) => {
+        const { page_id } = req.query; 
         try {
-        const articles = await Article.findAll();
+        const articles = await Article.findAll({
+            include: {
+                model: Rubrique,
+                attributes: ['id', 'nom', 'description', 'page_id'],
+                where: page_id ? { page_id } : {},
+            },
+        });
         res.json(articles);
         } catch (error) {
         res.status(500).json({ error: 'An error occurred while fetching articles' });
@@ -44,7 +51,7 @@ module.exports = (app) => {
     
     app.put('/api/articles/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
-        const rubrique = await Rubrique.findByPk(req.body.page_id);
+        const rubrique = await Rubrique.findByPk(req.body.rubrique_id);
         const article = await Article.findByPk(req.params.id);
         if (article) {
             await rubrique.update({
