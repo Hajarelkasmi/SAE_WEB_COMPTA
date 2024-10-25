@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import './Demande.css';
+import sendEmail from "./sendEmail";
 
 function Demande() {
     const [demandes, setDemandes] = useState([]);
@@ -18,7 +18,7 @@ function Demande() {
         fetchDemandes().catch(r => console.error("Erreur", r));
     }, []);
 
-    async function accepterDemande(id) {
+    async function accepterDemande(id, email) {
         await fetch(`http://localhost:5000/api/etudiants/${id}`, {
             method: 'PUT',
             headers: {
@@ -37,10 +37,12 @@ function Demande() {
             }
         }).catch(r => console.error("Erreur", r));
 
+        await sendEmail(email, 'Demande Acceptée', "Votre demande d'abonnement a été acceptée.");
+
         fetchDemandes().catch(r => console.error("Erreur", r));
     }
 
-    async function refuserDemande(id) {
+    async function refuserDemande(id, email) {
         const confirmed = window.confirm("Êtes-vous sûr de vouloir refuser cette demande ?");
         if (!confirmed) {
             return;
@@ -53,12 +55,14 @@ function Demande() {
             }
         }).catch(r => console.error("Erreur", r));
 
+        await sendEmail(email, 'Demande Refusée', "Votre demande d'abonnement a été refusée.");
+
         fetchDemandes().catch(r => console.error("Erreur", r));
     }
 
 
     return (
-        <div>
+        <div className="table-container">
             <h2>Gestion des abonnements</h2>
             <table>
                 <thead>
@@ -76,10 +80,10 @@ function Demande() {
                         <td>{demande.Etudiant.mail}</td>
                         <td>{demande.Etudiant.Classe.nom}</td>
                         <td>
-                            <button onClick={() => accepterDemande(demande.Etudiant.id)}>
+                            <button onClick={() => accepterDemande(demande.Etudiant.id, demande.Etudiant.mail)}>
                                 <img src={"/static/check.png"} alt="Button Accepter"/>
                             </button>
-                            <button onClick={() => refuserDemande(demande.Etudiant.id)}>
+                            <button onClick={() => refuserDemande(demande.Etudiant.id, demande.Etudiant.mail)}>
                                 <img src={"/static/cross.png"} alt="Button Refuser"/>
                             </button>
                         </td>
