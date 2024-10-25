@@ -1,8 +1,8 @@
-import './App.css';
-import Bandeau from './composants/Bandeau';
-import Footer from './composants/Footer';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import './App.css';
+import Bandeau from './pages/Bandeau';
+import Footer from './pages/Footer';
 import Accueil from './pages/Accueil';
 
 function App() {

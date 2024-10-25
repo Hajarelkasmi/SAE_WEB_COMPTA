@@ -1,4 +1,4 @@
-import "../styles_composants/ElemCarrousel.css";
+import "../css/ElemCarrousel.css";
 
 function ElemCarrousel({ src, img, nom }) {
     return (

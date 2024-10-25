@@ -1,4 +1,4 @@
-import "../styles_composants/SectionTitre.css";
+import "../css/SectionTitre.css";
 
 function SectionTitre() {
     return (

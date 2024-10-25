@@ -1,7 +1,7 @@
-import "../styles/Accueil.css";
-import SectionTitre from "../composants/SectionTitre";
-import PresentationAccueil from "../composants/PresentationAccueil";
-import Carrousel from "../composants/Carrousel";
+import "../css/Accueil.css";
+import SectionTitre from "./SectionTitre";
+import PresentationAccueil from "./PresentationAccueil";
+import Carrousel from "./Carrousel";
 
 function Accueil() {
     return (

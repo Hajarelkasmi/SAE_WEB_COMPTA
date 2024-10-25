@@ -1,4 +1,4 @@
-import "../styles_composants/Carrousel.css";
+import "../css/Carrousel.css";
 import ElemCarrousel from "./ElemCarrousel";
 import React, { useState, useEffect } from 'react';
 

@@ -1,4 +1,4 @@
-import "../styles_composants/PresentationAccueil.css";
+import "../css/PresentationAccueil.css";
 
 function PresentationAccueil() {
   return (
