@@ -4,6 +4,7 @@ footer {
     display: flex;
     gap: 2vw;
     font-size: 2vh;
+    margin-top: 10vh;
 }
 
 footer p {
