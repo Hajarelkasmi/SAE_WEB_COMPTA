@@ -14,9 +14,19 @@ const Create_Page = () => {
     const [estCree, setEstCree] = useState(false);
     const navigate = useNavigate(); 
 
+
     useEffect(() => {
         const fetchClasses = async () => {
             try {
+                const response = await fetch('http://localhost:5000/api/classes');
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la récupération des classes');
+                }
+                const classes = await response.json();
+                setClasses(classes);
+
                 if (id_page) {
                     const page = await fetch('http://localhost:5000/api/pages/' + id_page);
                     if (!page.ok) {
@@ -30,16 +40,18 @@ const Create_Page = () => {
                     setImage(pageData.image);
                     setEstPublic(pageData.est_public);
                     setEstCree(true);
-                }
 
-                const response = await fetch('http://localhost:5000/api/classes');
-                if (!response.ok) {
-                    const errorText = await response.text();
-                    console.error('Réponse de l\'API:', errorText);
-                    throw new Error('Erreur lors de la récupération des classes');
+                    const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page);
+                    if (!responseClassePage.ok) {
+                        const errorText = await responseClassePage.text();
+                        console.error('Réponse de l\'API:', errorText);
+                        throw new Error('Erreur lors de la récupération des classes_pages');
+                    }
+                    const classePages = await responseClassePage.json();
+                    const classeSelected = classePages.map((classePage) => classes.find((classe) => classe.id === classePage.classe_id));
+                    setClasse_selected(classeSelected);
+                    return;
                 }
-                const classes = await response.json();
-                setClasses(classes);
 
                 const responseClasseCategories = await fetch('http://localhost:5000/api/classe_categories?categorie_id=' + id_categorie);
                 if (!responseClasseCategories.ok) {
@@ -109,28 +121,12 @@ const Create_Page = () => {
             setDescription('');
             setImage('');
             setImageFile(null);
-            navigate(`/main/${newPage.id}`);
+            // navigate(`/main/${newPage.id}`);
                 
-            if (classe_selected.length > 0) {
-                classe_selected.forEach(async (classe) => {
-                    const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            classe_id: classe.id,
-                            page_id: newPage.id,
-                        }),
-                    });
-
-                    if (!responseClassePage.ok) {
-                        const errorText = await responseClassePage.text();
-                        console.error('Réponse de l\'API:', errorText);
-                        throw new Error('Erreur lors de la création de la classe_page');
-                    }
-                }
-                );
+            if (id_page) {
+                await modifClasses();
+            } else {
+                await createClasses(newPage);
             }
 
             if (imageFile) {
@@ -159,6 +155,85 @@ const Create_Page = () => {
             setImage(URL.createObjectURL(file));
         }
     };
+
+    const createClasses = async (id_page) => {
+        if (classe_selected.length > 0) {
+            classe_selected.forEach(async (classe) => {
+                const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        classe_id: classe.id,
+                        page_id: id_page.id,
+                    }),
+                });
+
+                if (!responseClassePage.ok) {
+                    const errorText = await responseClassePage.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la création de la classe_page');
+                }
+            }
+            );
+        }
+    }
+
+    const modifClasses = async () => {
+        const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!responseClassePage.ok) {
+            const errorText = await responseClassePage.text();
+            console.error('Réponse de l\'API:', errorText);
+            throw new Error('Erreur lors de la récupération de la classe_page');
+        }
+
+        const classePages = await responseClassePage.json();
+        const alreadyExist = {};
+        for (const classePage of classePages) {
+            if (!(classe_selected.find((classe) => classe.id === classePage.classe_id))) {
+                const responseDelete = await fetch('http://localhost:5000/api/classe_pages/' + classePage.classe_id + '/' + id_page, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (!responseDelete.ok) {
+                    const errorText = await responseDelete.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la suppression de la classe_page');
+                }
+            } else {
+                alreadyExist[classePage.classe_id] = true;
+            }
+        }
+
+        classe_selected.forEach(async (classe) => {
+            if (!alreadyExist[classe.id]) {
+                const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        classe_id: classe.id,
+                        page_id: id_page,
+                    }),
+                });
+                if (!responseClassePage.ok) {
+                    const errorText = await responseClassePage.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la création de la classe_page');
+                }
+            }
+        });
+    }
 
     return (
         <div class="DivCreateMain">
