@@ -32,4 +32,21 @@ module.exports = (app) => {
             res.sendStatus(500);
         }
     });
+
+    app.delete('/api/images/:name', verifyToken, verifyAdmin, async (req, res) => {
+        try {
+            const { name } = req.params;
+
+            const imagePath = path.join(__dirname, '../../../public/static/image', name);
+
+            if (!fs.existsSync(imagePath)) return res.sendStatus(404);
+
+            fs.unlinkSync(imagePath);
+
+            res.sendStatus(200);
+        } catch (error) {
+            console.error('Error handling the image deletion:', error);
+            res.sendStatus(500);
+        }
+    });
 };
