@@ -131,14 +131,15 @@ const Create_Page = () => {
             const image_name = await imageSave(newPage.id || id_page);
 
             if (image_name) {
-                const deleteImage = await fetch('http://localhost:5000/api/images/' + newPage.image, {
-                    method: 'DELETE',
-                });
-
-                if (!deleteImage.ok) {
-                    const errorText = await deleteImage.text();
-                    console.error('Réponse de l\'API:', errorText);
-                    throw new Error('Erreur lors de la suppression de l\'image');
+                if (newPage.image) {
+                    const deleteImage = await fetch('http://localhost:5000/api/images/' + newPage.image, {
+                        method: 'DELETE',
+                    });
+                    if (!deleteImage.ok) {
+                        const errorText = await deleteImage.text();
+                        console.error('Réponse de l\'API:', errorText);
+                        throw new Error('Erreur lors de la suppression de l\'image');
+                    }
                 }
                 const responseImage = await fetch('http://localhost:5000/api/pages/' + newPage.id || id_page, {
                     method: 'PUT',
