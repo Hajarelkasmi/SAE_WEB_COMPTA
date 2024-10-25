@@ -14,7 +14,7 @@ function Footer() {
             <p>
                 <span>@Site réalisé par : </span><a href="https://www.github.com" target="_blank" rel="noreferrer">Brizard Amélie</a>, <a href="https://www.github.com" target="_blank" rel="noreferrer">El Kasmi Hajar</a>, <a href="https://www.github.com" target="_blank" rel="noreferrer">Haudebourg Baptiste</a>, <a href="https://www.github.com" target="_blank" rel="noreferrer">Merit Juliann</a>, <a href="https://www.github.com" target="_blank" rel="noreferrer">Rousselet Juliette</a>
             </p>
-            <p id="footer_github_logo">Nous contacter : <a href="https://www.github.com/" target="_blank" rel="noreferrer"><img src="github_logo.png" alt="github" className="logo" /></a></p>
+            <p id="footer_github_logo">Voir notre travail : <a href="https://www.github.com/" target="_blank" rel="noreferrer"><img src="/github_logo.png" alt="github" className="logo" /></a></p>
         </div>
         <div id="footer_links">
             <p>
