@@ -5,8 +5,14 @@ const { verifyToken, verifyAdmin } = require('../auth');
 module.exports = (app) => {
     app.get('/api/pages', async (req, res) => {
         try {
-            const pages = await Page.findAll();
-            res.json(pages);
+            const categorie_id = req.query.categorie_id;
+            if (categorie_id) {
+                const pages = await Page.findAll({where: {categorie_id: categorie_id}});
+                res.json(pages);
+            } else {
+                const pages = await Page.findAll();
+                res.json(pages);
+            }
         } catch (error) {
             res.status(500).json({error: 'An error occurred while fetching pages'});
         }

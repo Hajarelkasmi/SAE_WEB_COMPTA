@@ -1,0 +1,8 @@
+.categorie a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+.categorie a:hover {
+    color: #BBBBBB;
+}

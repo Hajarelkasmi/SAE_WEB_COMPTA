@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import '../css/login.css';
+import {useNavigate} from 'react-router-dom';
 
 const Login = () => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const Navigate = useNavigate();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -33,7 +35,7 @@ const Login = () => {
 
             // Stockez le token dans localStorage ou state
             localStorage.setItem('token', data.token);
-            console.log('Connexion réussie', data.token);
+            Navigate('/');            
             // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
         } catch (err) {
             setError(err.response?.data?.error || 'Une erreur est survenue');
