@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import React, {useState, useEffect} from 'react';
+import {Bar, Pie} from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const Container_Admin_Stat = () => {
@@ -11,12 +11,13 @@ const Container_Admin_Stat = () => {
     });
     const [classesData, setClassesData] = useState({});
     const [EtudiantParClasse, setEtudiantParClasse] = useState({});
-    const [active_data , setActive_data] = useState('daily');
+    const [active_data, setActive_data] = useState('daily');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/log/connexion');
+                const response = await fetch('http://localhost:5000/api/log/connexion',
+                    {headers: {'Authorization': localStorage.getItem('token')}});
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -35,7 +36,7 @@ const Container_Admin_Stat = () => {
                 const EtudiantclassesData = {};
                 const ClassDataTrier = groupDataByClasse(data.logs);
                 const ClassesData = {};
-                
+
                 for (const classe_id in classes) {
                     const nom_classe = data2.find(classe => classe.id === parseInt(classe_id)).Classe.nom;
                     EtudiantclassesData[nom_classe] = classes[classe_id];
@@ -46,8 +47,7 @@ const Container_Admin_Stat = () => {
                 setClassesData(ClassesData);
 
                 setEtudiantParClasse(EtudiantclassesData);
-            }
-            catch (error) {
+            } catch (error) {
                 console.error('Erreur:', error);
             }
         }
@@ -65,32 +65,32 @@ const Container_Admin_Stat = () => {
 
         data.forEach(log => {
             const date = new Date(log.date);
-            const day = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
-            const week = `${date.getFullYear()}-S${Math.ceil(date.getDate() / 7)}`; 
-            const month = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(date);
-            const year = date.getFullYear(); 
+            const day = new Intl.DateTimeFormat('fr-FR', {day: '2-digit', month: 'long', year: 'numeric'}).format(date);
+            const week = `${date.getFullYear()}-S${Math.ceil(date.getDate() / 7)}`;
+            const month = new Intl.DateTimeFormat('fr-FR', {month: 'long', year: 'numeric'}).format(date);
+            const year = date.getFullYear();
 
             if (!groupedData.daily[day]) {
                 groupedData.daily[day] = 0;
             }
-            groupedData.daily[day] ++;
+            groupedData.daily[day]++;
 
             if (!groupedData.weekly[week]) {
                 groupedData.weekly[week] = 0;
             }
-            groupedData.weekly[week] ++;
+            groupedData.weekly[week]++;
 
             if (!groupedData.monthly[month]) {
                 groupedData.monthly[month] = 0;
             }
-            groupedData.monthly[month] ++;
+            groupedData.monthly[month]++;
 
             if (!groupedData.yearly[year]) {
                 groupedData.yearly[year] = 0;
             }
-            groupedData.yearly[year] ++;
+            groupedData.yearly[year]++;
         });
-        
+
         return groupedData;
     };
 
@@ -101,7 +101,7 @@ const Container_Admin_Stat = () => {
             if (!groupedData[log.classe_id]) {
                 groupedData[log.classe_id] = 0;
             }
-            groupedData[log.classe_id] ++;
+            groupedData[log.classe_id]++;
         });
 
         return groupedData;

@@ -8,7 +8,7 @@ function Admin() {
     const compte = Compte();
     const container_admin_stat = Container_Admin_Stat();
     return (
-        <div>
+        <div className={"admin-container"}>
             <h1>Administration</h1>
             {demande}
             {compte}

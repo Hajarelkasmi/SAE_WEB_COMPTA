@@ -1,4 +1,4 @@
-const { Etudiant } = require('../bd');
+const { Etudiant, Classe } = require('../bd');
 const { verifyToken, verifyAdmin, authenticate } = require('../auth');
 
 module.exports = (app) => {
