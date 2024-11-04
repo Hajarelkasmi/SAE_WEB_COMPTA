@@ -64,7 +64,7 @@ const Login = () => {
         <button type="submit">CONTINUER</button>
         {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
-      <p>Vous n'êtes pas inscrit ? <a href="/register">Inscription</a></p>
+      <p>Vous n'êtes pas inscrit ? <a href="/inscription">Inscription</a></p>
     </div>
   );
 };
