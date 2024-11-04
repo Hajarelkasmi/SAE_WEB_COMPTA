@@ -3,6 +3,7 @@ const { Etudiant, Connexion_Log } = require('./bd');
 
 const secretKey = 'secret';
 
+
 async function authenticate(req, res) {
     const etudiant = await Etudiant.findOne({ where: { mail: req.body.mail, mot_de_passe: req.body.mot_de_passe } });
     if (!etudiant) {
