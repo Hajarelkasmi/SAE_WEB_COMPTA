@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../css/login.css';
+import '../css/Login.css';
 import logo from '../img/logo.png';
 import axios from 'axios';
 
@@ -31,7 +31,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
-   <img src={logo} alt="logo of the website" id="login-logo" />
+      <img src={logo} alt="logo of the website" id="login-logo" />
       <h1>BIENVENUE !</h1>
       <form onSubmit={handleLogin} id="login-form">
         <h2>CONNEXION</h2>

@@ -1,25 +1,25 @@
-h1, h2 {
+.admin h1, h2 {
     text-align: center;
 }
 
-h2 {
+.admin h2 {
     color: red;
 }
 
-img {
+.admin img {
     width: 4vh;
     height: 4vh;
     object-fit: cover;
     border-radius: 10px;
 }
 
-button {
+.admin button {
     background-color: transparent;
     border: none;
     cursor: pointer;
 }
 
-img:hover {
+.admin img:hover {
     transform: scale(1.3);
 }
 
@@ -28,7 +28,7 @@ img:hover {
     overflow-x: auto; /* Enable horizontal scrolling */
 }
 
-table {
+.admin table {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
@@ -38,13 +38,13 @@ table {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
-th, td {
+.admin th, td {
     padding: 12px 15px;
     border: 1px solid #ddd;
     text-align: left;
 }
 
-th {
+.admin th {
     background-color: #f44336; /* Red theme for header */
     color: white;
 }
@@ -53,7 +53,7 @@ th {
     margin: 20px 0;
 }
 
-label {
+.admin label {
     font-weight: bold;
     text-align: center;
     display: block;

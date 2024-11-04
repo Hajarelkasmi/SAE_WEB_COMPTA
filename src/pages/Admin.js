@@ -1,6 +1,6 @@
 import Demande from "./Demande";
 import Compte from "./Compte";
-import './Admin.css';
+import '../css/Admin.css';
 import Container_Admin_Stat from "./Container_Admin_Stat";
 
 function Admin() {
@@ -8,7 +8,7 @@ function Admin() {
     const compte = Compte();
     const container_admin_stat = Container_Admin_Stat();
     return (
-        <div>
+        <div className="admin">
             <h1>Administration</h1>
             {demande}
             {compte}

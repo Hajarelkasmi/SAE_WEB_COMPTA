@@ -7,7 +7,7 @@ const secretKey = 'secret';
 async function authenticate(req, res) {
     const etudiant = await Etudiant.findOne({ where: { mail: req.body.mail, mot_de_passe: req.body.mot_de_passe } });
     if (!etudiant) {
-        return res.status(403).json({ error: 'Connection échouée' });
+        return res.status(403).json({ error: 'Connexion échouée' });
     }
 
     const token = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, secretKey, {

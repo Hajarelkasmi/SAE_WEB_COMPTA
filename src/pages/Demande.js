@@ -1,5 +1,5 @@
 import {useState, useEffect} from "react";
-import sendEmail from "./sendEmail";
+import sendEmail from "../sendEmail";
 
 function Demande() {
     const [demandes, setDemandes] = useState([]);

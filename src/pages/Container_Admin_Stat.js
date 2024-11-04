@@ -121,16 +121,28 @@ const Container_Admin_Stat = () => {
     });
 
     return (
-        <div>
+        <div className="stats">
             <h2>Statistiques de Connexion</h2>
-            <button onClick={() => setActive_data('daily')}>Jour</button>
-            <button onClick={() => setActive_data('weekly')}>Semaine</button>
-            <button onClick={() => setActive_data('monthly')}>Mois</button>
-            <button onClick={() => setActive_data('yearly')}>Année</button>
-            <Bar data={chartData(globalData[active_data], 'Nombre de connexions')} />
-
-            <Pie data={chartData(classesData, 'Nombre de connexions par classe')} />
-            <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')} />
+            <div className="button-container">
+                <button onClick={() => setActive_data('daily')}>Jour</button>
+                <button onClick={() => setActive_data('weekly')}>Semaine</button>
+                <button onClick={() => setActive_data('monthly')}>Mois</button>
+                <button onClick={() => setActive_data('yearly')}>Année</button>
+            </div>
+            <div className="chart-row">
+                <div className="first-chart-container">
+                    <label>Nombre de connexions :</label>
+                    <Bar data={chartData(globalData[active_data], 'Nombre de connexions')}/>
+                </div>
+                <div className="chart-container">
+                    <label>Nombre de connexion totale par classe :</label>
+                    <Pie data={chartData(classesData, 'Nombre de connexions par classe')}/>
+                </div>
+                <div className="chart-container">
+                    <label>Nombre d'étudiants par classe :</label>
+                    <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')}/>
+                </div>
+            </div>
         </div>
     );
 }
