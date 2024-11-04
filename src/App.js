@@ -9,6 +9,7 @@ import Login from './pages/login';
 import Main_Page from './pages/Main_Page';
 import Create_Page from './pages/Create_Page';
 import Admin from "./pages/Admin";
+import Categorie from "./pages/Categorie";
 
 function App() {
     let reseaux = [
@@ -30,8 +31,9 @@ function App() {
                         {/* Routes pour les pages */}
                         <Route exact path='/admin' element={<Admin/>}></Route>
                         <Route exact path='/page/:id' element={<Main_Page/>}></Route>
+                        <Route exact path='/categories/:id_categorie' element={<Categorie/>}></Route>
                         <Route exact path='/categories/:id_categorie/pages/:id_page' element={<Create_Page/>}></Route>
-                        <Route exact path='/categories/:id_categorie/pages/' element={<Create_Page/>}></Route>
+                        <Route exact path='/categories/:id_categorie/pages' element={<Create_Page/>}></Route>
                     </Routes>
                 </BrowserRouter>
             </div>

@@ -42,7 +42,7 @@ const Categorie = () => {
             <ul>
                 {pages.map(page => (
                     <li key={page.id}>
-                        <Link to={`/categories/${id_categorie}/pages/${page.id}`}>{page.nom}</Link>
+                        <Link to={`/page/${page.id}`}>{page.nom}</Link>
                     </li>
                 ))}
             </ul>
