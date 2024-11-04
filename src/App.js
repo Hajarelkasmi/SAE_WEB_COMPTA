@@ -5,6 +5,7 @@ import Bandeau from './pages/Bandeau';
 import Footer from './pages/Footer';
 import Accueil from './pages/Accueil';
 import Register from './pages/Register';
+import Login from './pages/Login';
 
 function App() {
   let elemsMenu = [
@@ -40,43 +41,53 @@ function App() {
   ];
   return (
     <div className="App">
-      <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
-      <div className="spacer">
       <BrowserRouter>
         <Routes>
-          {/* Routes pour l'accueil */}
-          <Route path="/" element={<Accueil />} />
-          <Route path="/accueil" element={<Accueil />} />
           {/* Routes pour l'authentification */}
-          <Route exact path='/inscription' element={<Register />}></Route>
-          {/* Routes pour les éléments du menu */}
-          {elemsMenu.map((elem, index) => {
-            return (
-              <React.Fragment key={index}>
-                {/* Route pour l'élément principal */}
-                <Route path={elem.link} element={
-                  <main>
-                    <h1>{elem.nom}</h1>
-                  </main>
-                } />
-                {/* Routes pour les enfants, si présents */}
-                {elem.enfants && elem.enfants.map((enfant, enfantIndex) => (
-                  <Route key={`${index}-${enfantIndex}`} path={enfant.link} element={
-                    <main>
-                      <h1>{elem.nom} : {enfant.nom}</h1>
-                    </main>
-                  } />
-                ))}
-              </React.Fragment>
-            );
-          })
-        }
+          <Route path="/inscription" element={<Register />} />
+          <Route path="/connexion" element={<Login />} />
+  
+          {/* Routes avec bandeau et footer */}
+          <Route
+            path="*"
+            element={
+              <>
+                <Bandeau elemsMenu={elemsMenu} reseaux={reseaux} />
+                <div className="spacer">
+                  <Routes>
+                    {/* Routes pour l'accueil */}
+                    <Route path="/" element={<Accueil />} />
+                    <Route path="/accueil" element={<Accueil />} />
+
+                    {/* Routes pour les éléments du menu */}
+                    {elemsMenu.map((elem, index) => (
+                      <React.Fragment key={index}>
+                        {/* Route pour l'élément principal */}
+                        <Route path={elem.link} element={
+                          <main>
+                            <h1>{elem.nom}</h1>
+                          </main>
+                        } />
+                        {/* Routes pour les sous-elements du menu, si présents */}
+                        {elem.enfants && elem.enfants.map((enfant, enfantIndex) => (
+                          <Route key={`${index}-${enfantIndex}`} path={enfant.link} element={
+                            <main>
+                              <h1>{elem.nom} : {enfant.nom}</h1>
+                            </main>
+                          } />
+                        ))}
+                      </React.Fragment>
+                    ))}
+                  </Routes>
+                </div>
+                <Footer />
+              </>
+            }
+          />
         </Routes>
       </BrowserRouter>
-      </div>
-      <Footer />
     </div>
-  );
+  );  
 }
 
 export default App;

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import './login.css';
+import '../css/login.css';
 import logo from '../img/logo.png';
-// import { authenticateUser } from '../model/auth2.js';
 import axios from 'axios';
 
 const Login = () => {

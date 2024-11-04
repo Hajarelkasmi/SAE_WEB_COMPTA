@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-//import './pages/login.css';  // Le style CSS
-import Login from './pages/login.js';  // Le composant Login
 import reportWebVitals from './reportWebVitals';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Login />  {/* Le composant Login est maintenant défini */}
+    <App />
   </React.StrictMode>
 );
 
