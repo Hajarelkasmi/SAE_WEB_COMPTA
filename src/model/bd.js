@@ -380,6 +380,9 @@ Connexion_Log.belongsTo(Etudiant, { foreignKey: 'id_etudiant' });
 Classe.hasMany(Etudiant, { foreignKey: 'classe_id', onDelete: 'CASCADE' });
 Etudiant.belongsTo(Classe, { foreignKey: 'classe_id' });
 
+Categorie.hasMany(SousCategorie, { foreignKey: 'id_parent', onDelete: 'CASCADE' });
+SousCategorie.belongsTo(Categorie, { foreignKey: 'id_parent' });
+
 module.exports = {
     Classe,
     Etudiant,
