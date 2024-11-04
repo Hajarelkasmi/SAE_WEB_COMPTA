@@ -1,0 +1,43 @@
+#presentation {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 5vh 0px;
+}
+
+#presentation h2 {
+    font-size: 4vh;
+    padding-right: 12px;
+    padding-left: 12px;
+    color: #1c3f59;
+}
+
+#texte {
+    width: 50%;
+    max-height: 100%;
+    font-weight: bold;
+
+}
+
+#paragraphes>* {
+    padding: 2vh 15px 2vh 15px;
+}
+
+@media screen and (max-width: 768px) {
+    #presentation {
+        flex-direction: column;
+    }
+
+    #presentation>* {
+        padding-top: 2vh;
+    }
+
+    #presentation img {
+        max-height: 30vh;
+    }
+
+    #texte {
+        width: 100%;
+    }
+}
+

@@ -1,0 +1,170 @@
+/* Styles par défaut */
+header {
+    background-color: #1c3f59;
+    height: 7vh;
+    font-size: 2vh;
+}
+
+nav {
+    padding: 0px 1vw;
+    height: 100%;
+}
+
+nav, nav>ul {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+nav ul {
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+}
+
+#pages {
+    width: 80%;
+    flex-grow: 1;
+    padding: 0px 5px;
+}
+
+#pages>li {
+    padding: 0px 1px;
+}
+
+#pages>li>a {
+    display: block;
+}
+
+nav>ul>li {
+    flex-grow: 1;
+}
+
+nav li a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+}
+
+nav li {
+    list-style: none;
+    position: relative;
+}
+
+#reseaux li a {
+    display: flex;
+}
+
+.logo {
+    margin: 0 auto;
+    padding: 0px 3px;
+    height: 5vh;
+}
+
+
+/* Menu déroulant */
+
+.sous {
+    display: none;
+    background-color: #1c3f59;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+nav ul>li:hover>.sous {
+    display: block;
+}
+
+.sous li {
+    float: none;
+    width: 100%;
+    text-align: left;
+}
+
+.sous a {
+    padding: 10px;
+    display: block;
+}
+
+.sous a:hover {
+    background-color: rgba(200, 200, 200, 0.1)
+}
+
+.deroulant>a::before {
+    content: "▶ ";
+    font-size: 1.7vh;
+    vertical-align: text-top;
+}
+
+.deroulant:hover>a::before {
+    content: "▼ ";
+}
+
+.menu-toggle {
+    display: none;
+}
+
+/* https://www.pierre-giraud.com/html-css-apprendre-coder-cours/creation-menu-deroulant/ pour faire des menus déroulant */
+
+
+/* Styles pour le mobile */
+@media screen and (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        background-color: transparent;
+        border: none;
+        color: white;
+        font-size: 4vh;
+    }
+
+    header>* {
+        display: none;
+    }
+
+    header>button {
+        display: block;
+    }
+
+    .menu-open>* {
+        display: block;
+        align-items: left;
+    }
+
+    .menu-open {
+        height: auto;
+    }
+
+    nav {
+        padding: 0px 10px;
+    }
+    
+    nav>ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav>ul>li {
+        flex-grow: unset;
+    }
+
+    #pages {
+        width: 100%;
+    }
+
+    .sous {
+        position: relative;
+    }
+
+    .sous a {
+        padding: 0px;
+    }
+
+    #pages {
+        padding: 10px 0px;
+    }
+
+    #reseaux .logo {
+        height: 30px;
+    }
+}
