@@ -1,6 +1,6 @@
 import Demande from "./Demande";
 import Compte from "./Compte";
-import './Admin.css';
+import '../css/Admin.css';
 import Container_Admin_Stat from "./Container_Admin_Stat";
 
 function Admin() {

@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import './login.css';
 import logo from '../img/logo.png';
-// import { authenticateUser } from '../model/auth2.js';
-import axios from 'axios';
 
 const Login = () => {
 
@@ -15,14 +13,28 @@ const Login = () => {
     setError('');
 
     try {
-        const response = await axios.post('/api/authenticate', {
-            mail: email,
-            mot_de_passe: password
+        const response = await fetch('http://localhost:5000/api/authenticate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                mail: email,
+                mot_de_passe: password
+            })
         });
 
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Réponse de l\'API:', errorText);
+            throw new Error('Erreur lors de la connexion');
+        }
+
+        const data = await response.json();
+
         // Stockez le token dans localStorage ou state
-        localStorage.setItem('token', response.data.token);
-        console.log('Connexion réussie', response.data.token);
+        localStorage.setItem('token', data.token);
+        console.log('Connexion réussie', data.token);
         // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
     } catch (err) {
         setError(err.response?.data?.error || 'Une erreur est survenue');

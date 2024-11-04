@@ -5,6 +5,7 @@ import Bandeau from './pages/Bandeau';
 import Footer from './pages/Footer';
 import Accueil from './pages/Accueil';
 import Register from './pages/Register';
+import Login from './pages/login';
 
 function App() {
   let elemsMenu = [
@@ -49,6 +50,7 @@ function App() {
           <Route path="/accueil" element={<Accueil />} />
           {/* Routes pour l'authentification */}
           <Route exact path='/inscription' element={<Register />}></Route>
+          <Route path={'/connexion'} element={<Login />}></Route>
           {/* Routes pour les éléments du menu */}
           {elemsMenu.map((elem, index) => {
             return (
