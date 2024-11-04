@@ -4,8 +4,15 @@ const { verifyToken, verifyAdmin, authenticate } = require('../auth');
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
-            const etudiants = await Etudiant.findAll();
-            res.json(etudiants);
+        const etudiants = await Etudiant.findAll(
+            {
+                include: {
+                    model: Classe,
+                    attributes: ['nom']
+                }
+            }
+        );
+        res.json(etudiants);
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while fetching etudiants' });
         }

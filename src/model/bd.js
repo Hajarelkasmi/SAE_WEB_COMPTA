@@ -345,7 +345,7 @@ const Connexion_Log = sequelize.define('Connexion_Log', {
         type: DataTypes.DATE,
         allowNull: false
     },
-}, { 
+}, {
     tableName: 'Connexion_Log',
     timestamps: false
 });
@@ -353,6 +353,8 @@ const Connexion_Log = sequelize.define('Connexion_Log', {
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
+
+Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});
 
 Rubrique.hasMany(Lien, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
 Lien.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
