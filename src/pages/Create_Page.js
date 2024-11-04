@@ -123,7 +123,7 @@ const Create_Page = () => {
             setDescription('');
             setImage('');
             setImageFile(null);
-            navigate(`/main/${newPage.id}`);
+            navigate(`/page/${newPage.id}`);
                 
             if (id_page) {
                 await modifClasses();

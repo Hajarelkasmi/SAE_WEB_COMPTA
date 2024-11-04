@@ -101,11 +101,13 @@ const Main_Page = () => {
     }, [id]);
 
     const handleAddRubriqueLien = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('http://localhost:5000/api/liens', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `${token}`
                 },
                 body: JSON.stringify({
                     nom: '',
@@ -140,11 +142,13 @@ const Main_Page = () => {
     }
 
     const handleAddRubriqueArticle = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('http://localhost:5000/api/articles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `${token}`
                 },
                 body: JSON.stringify({
                     nom: '',
@@ -182,11 +186,13 @@ const Main_Page = () => {
     }
 
     const handleAddRubriqueVideo = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('http://localhost:5000/api/videos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `${token}`
                 },
                 body: JSON.stringify({
                     nom: '',
@@ -220,11 +226,13 @@ const Main_Page = () => {
     }
 
     const handleAddRubriqueExercice = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch('http://localhost:5000/api/exercices', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `${token}`
                 },
                 body: JSON.stringify({
                     nom: '',
