@@ -13,13 +13,13 @@ function Admin() {
     useEffect(() => {
         let header = document.querySelector("header");
         let footer = document.querySelector("footer");
-        header.style.backgroundColor = "#f44336";
-        footer.style.backgroundColor = "#f44336";
+        header.style.backgroundColor = "#c61111";
+        footer.style.backgroundColor = "#c61111";
         header.querySelectorAll("*").forEach(child => {
-            child.style.backgroundColor = "#f44336";
+            child.style.backgroundColor = "#c61111";
         });
         footer.querySelectorAll("*").forEach(child => {
-            child.style.backgroundColor = "#f44336";
+            child.style.backgroundColor = "#c61111";
         });
     });
     return (

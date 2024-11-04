@@ -74,7 +74,7 @@ function Demande() {
                 </tr>
                 </thead>
                 <tbody>
-                {demandes.map((demande) => (
+                {Array.isArray(demandes) && demandes.map((demande) => (
                     <tr>
                         <td>{demande.Etudiant.nom} {demande.Etudiant.prenom}</td>
                         <td>{demande.Etudiant.mail}</td>
