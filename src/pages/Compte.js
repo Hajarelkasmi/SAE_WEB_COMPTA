@@ -37,9 +37,11 @@ function Compte() {
             return;
         }
 
+        const token = localStorage.getItem('token');
         await fetch(`http://localhost:5000/api/etudiants/${id}`, {
             method: 'DELETE',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             }
         }).catch(r => console.error("Erreur", r));
@@ -53,9 +55,11 @@ function Compte() {
     }
 
     async function updateCompte(id) {
+        const token = localStorage.getItem('token');
         await fetch(`http://localhost:5000/api/etudiants/${id}`, {
             method: 'PUT',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)

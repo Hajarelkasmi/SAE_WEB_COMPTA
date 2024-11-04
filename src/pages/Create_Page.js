@@ -13,7 +13,7 @@ const Create_Page = () => {
     const [classe_selected, setClasse_selected] = useState([]);
     const [estCree, setEstCree] = useState(false);
     const navigate = useNavigate(); 
-
+    
 
     useEffect(() => {
         const fetchClasses = async () => {
@@ -78,12 +78,14 @@ const Create_Page = () => {
     } 
  
     const handleCreate = async () => {
+        const token = localStorage.getItem('token');
         try {
             let response;
             if (id_page) {
                 response = await fetch('http://localhost:5000/api/pages/' + id_page, {
                     method: 'PUT',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -97,6 +99,7 @@ const Create_Page = () => {
                 response = await fetch('http://localhost:5000/api/pages', {
                     method: 'POST',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -133,6 +136,7 @@ const Create_Page = () => {
             if (image_name) {
                 if (newPage.image) {
                     const deleteImage = await fetch('http://localhost:5000/api/images/' + newPage.image, {
+                        'Authorization': token,
                         method: 'DELETE',
                     });
                     if (!deleteImage.ok) {
@@ -144,6 +148,7 @@ const Create_Page = () => {
                 const responseImage = await fetch('http://localhost:5000/api/pages/' + newPage.id || id_page, {
                     method: 'PUT',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -172,11 +177,13 @@ const Create_Page = () => {
     };
 
     const createClasses = async (id_page) => {
+        const token = localStorage.getItem('token');
         if (classe_selected.length > 0) {
             classe_selected.forEach(async (classe) => {
                 const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
                     method: 'POST',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -196,6 +203,7 @@ const Create_Page = () => {
     }
 
     const modifClasses = async () => {
+        const token = localStorage.getItem('token');
         const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page, {
             method: 'GET',
             headers: {
@@ -216,6 +224,7 @@ const Create_Page = () => {
                 const responseDelete = await fetch('http://localhost:5000/api/classe_pages/' + classePage.classe_id + '/' + id_page, {
                     method: 'DELETE',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -234,6 +243,7 @@ const Create_Page = () => {
                 const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
                     method: 'POST',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -251,6 +261,7 @@ const Create_Page = () => {
     }
 
     const imageSave = async (id) => {
+        const token = localStorage.getItem('token');
         if (!imageFile) {
             return;
         }
@@ -259,6 +270,9 @@ const Create_Page = () => {
         formData.append('image', imageFile);
         formData.append('name', name);
         const response = await fetch('http://localhost:5000/api/images', {
+            headers: {
+                'Authorization': token,
+            },
             method: 'POST',
             body: formData,
         });

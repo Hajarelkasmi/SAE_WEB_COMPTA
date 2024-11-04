@@ -5,8 +5,13 @@ function Demande() {
     const [demandes, setDemandes] = useState([]);
 
     async function fetchDemandes() {
+        const token = localStorage.getItem('token');
         try {
-            let response = await fetch('http://localhost:5000/api/demande_abonnements');
+            let response = await fetch('http://localhost:5000/api/demande_abonnements', {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                });
             let data = await response.json();
             setDemandes(data);
         } catch (error) {
@@ -19,9 +24,11 @@ function Demande() {
     }, []);
 
     async function accepterDemande(id, email) {
+        const token = localStorage.getItem('token');
         await fetch(`http://localhost:5000/api/etudiants/${id}`, {
             method: 'PUT',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -33,6 +40,7 @@ function Demande() {
         await fetch(`http://localhost:5000/api/demande_abonnements/${id}`, {
             method: 'DELETE',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             }
         }).catch(r => console.error("Erreur", r));
@@ -48,9 +56,11 @@ function Demande() {
             return;
         }
 
+        const token = localStorage.getItem('token');
         await fetch(`http://localhost:5000/api/demande_abonnements/${id}`, {
             method: 'DELETE',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             }
         }).catch(r => console.error("Erreur", r));

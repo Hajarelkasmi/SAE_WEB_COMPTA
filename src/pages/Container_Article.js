@@ -13,10 +13,12 @@ const Container_Article = ({ rubrique }) => {
     };
 
     const handleSave = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch(`http://localhost:5000/api/articles/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -32,6 +34,9 @@ const Container_Article = ({ rubrique }) => {
             if (image_name) {
                 if (response.image) {
                     const deleteImage = await fetch('http://localhost:5000/api/images/' + response.image, {
+                        headers: {
+                            'Authorization': `${token}`,
+                        },
                         method: 'DELETE',
                     });
                     if (!deleteImage.ok) {
@@ -43,6 +48,7 @@ const Container_Article = ({ rubrique }) => {
                 const responseImage = await fetch(`http://localhost:5000/api/articles/${rubrique.id}`, {
                     method: 'PUT',
                     headers: {
+                        'Authorization': `${token}`,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -75,6 +81,9 @@ const Container_Article = ({ rubrique }) => {
         if (confirmDelete) {
             try {
                 const response = await fetch(`http://localhost:5000/api/articles/${rubrique.id}`, {
+                    headers: {
+                        'Authorization': `${localStorage.getItem('token')}`,
+                    },
                     method: 'DELETE',
                 });
 

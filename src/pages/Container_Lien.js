@@ -11,10 +11,12 @@ const Container_Lien = ({ rubrique }) => {
     };
 
     const handleSave = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch(`http://localhost:5000/api/liens/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -42,6 +44,9 @@ const Container_Lien = ({ rubrique }) => {
         if (confirmDelete) {
             try {
                 const response = await fetch(`http://localhost:5000/api/liens/${rubrique.id}`, {
+                    headers: {
+                        'Authorization': `${localStorage.getItem('token')}`,
+                    },
                     method: 'DELETE',
                 });
 

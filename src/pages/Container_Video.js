@@ -21,10 +21,12 @@ const Container_Video = ({ rubrique }) => {
     }
 
     const handleSave = async () => {
+        const token = localStorage.getItem('token');
         try {
             const response = await fetch(`http://localhost:5000/api/videos/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
+                    'Authorization': `${token}`,
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
@@ -48,10 +50,14 @@ const Container_Video = ({ rubrique }) => {
     }
 
     const handleDelete = async () => {
+        const token = localStorage.getItem('token');
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cette vidéo ?");
         if (confirmDelete) {
             try {
                 const response = await fetch(`http://localhost:5000/api/videos/${rubrique.id}`, {
+                    headers: {
+                        'Authorization': `${token}`,
+                    },
                     method: 'DELETE',
                 });
 
