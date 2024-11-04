@@ -1,22 +1,22 @@
 /* Styles par défaut */
-header {
+.bandeau {
     background-color: #1c3f59;
     height: 7vh;
     font-size: 2vh;
 }
 
-nav {
+.bandeau nav {
     padding: 0px 1vw;
     height: 100%;
 }
 
-nav, nav>ul {
+.bandeau nav, nav>ul {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-nav ul {
+.bandeau nav ul {
     padding: 0px;
     margin: 0px;
     text-align: center;
@@ -40,13 +40,13 @@ nav>ul>li {
     flex-grow: 1;
 }
 
-nav li a {
+.bandeau nav li a {
     color: white;
     text-decoration: none;
     text-align: center;
 }
 
-nav li {
+.bandeau nav li {
     list-style: none;
     position: relative;
 }
@@ -72,7 +72,7 @@ nav li {
     z-index: 1000;
 }
 
-nav ul>li:hover>.sous {
+.bandeau nav ul>li:hover>.sous {
     display: block;
 }
 
@@ -118,11 +118,11 @@ nav ul>li:hover>.sous {
         font-size: 4vh;
     }
 
-    header>* {
+    .bandeau>* {
         display: none;
     }
 
-    header>button {
+    .bandeau>button {
         display: block;
     }
 
@@ -135,16 +135,16 @@ nav ul>li:hover>.sous {
         height: auto;
     }
 
-    nav {
+    .bandeau nav {
         padding: 0px 10px;
     }
     
-    nav>ul {
+    .bandeau nav>ul {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    nav>ul>li {
+    .bandeau nav>ul>li {
         flex-grow: unset;
     }
 

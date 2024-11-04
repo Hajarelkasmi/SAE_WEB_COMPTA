@@ -2,7 +2,7 @@ import "../css/Footer.css";
 
 function Footer() {
   return (
-    <footer>
+    <footer className="footer">
         <div id="nos_contacts">
             <div>
                 <a href="/" alt="home"><img src="/logo_bitmoji.png" alt="logo" className="logo" id="footer_logo_bitmoji" /></a>

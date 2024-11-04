@@ -6,6 +6,7 @@ import Footer from './pages/Footer';
 import Accueil from './pages/Accueil';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Admin from './pages/Admin';
 
 function App() {
   let elemsMenu = [
@@ -58,6 +59,9 @@ function App() {
                     {/* Routes pour l'accueil */}
                     <Route path="/" element={<Accueil />} />
                     <Route path="/accueil" element={<Accueil />} />
+
+                    {/* Routes pour l'admin */}
+                    <Route path="/admin" element={<Admin />} />
 
                     {/* Routes pour les éléments du menu */}
                     {elemsMenu.map((elem, index) => (

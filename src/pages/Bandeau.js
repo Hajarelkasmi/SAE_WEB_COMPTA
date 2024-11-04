@@ -17,7 +17,7 @@ function Bandeau({elemsMenu, reseaux}) {
     });
   };
   return (
-    <header>
+    <header className='bandeau'>
         <button className='menu-toggle'>☰</button>
         <nav>
             <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>

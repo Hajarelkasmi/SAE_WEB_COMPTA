@@ -1,4 +1,4 @@
-footer {
+.footer {
     background-color: #1c3f59;
     padding: 2vh;
     display: flex;
@@ -7,25 +7,25 @@ footer {
     margin-top: 10vh;
 }
 
-footer p {
+.footer p {
     margin: 0px;
 }
 
-footer a {
+.footer a {
     color: white;
     text-decoration: none;
 }
 
-footer a:hover {
+.footer a:hover {
     color: #99b2c4;
 }
 
-footer .logo {
+.footer .logo {
     height: 4vh;
     padding: 0px 0.5vw;
 }
 
-footer>div {
+.footer>div {
     width: 50%;
     display: flex;
     flex-direction: column;
@@ -33,7 +33,7 @@ footer>div {
     justify-content: center;
 }
 
-footer span {
+.footer span {
     font-weight: bold;
 }
 
