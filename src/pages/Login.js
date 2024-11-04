@@ -22,7 +22,8 @@ const Login = () => {
         // Stockez le token dans localStorage ou state
         localStorage.setItem('token', response.data.token);
         console.log('Connexion réussie', response.data.token);
-        // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
+        // Rediriger l'utilisateur vers la page d'accueil
+        window.location = '/';
     } catch (err) {
         setError(err.response?.data?.error || 'Une erreur est survenue');
         console.error('Erreur lors de la connexion:', err);

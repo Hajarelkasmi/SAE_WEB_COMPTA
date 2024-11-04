@@ -86,6 +86,8 @@ function Register() {
                 console.log('Inscription réussite !');
                 setSuccessMessage('Inscription réussie !');
                 setErrorMessage('');
+                // rediriger vers la page d'accueil
+                window.location = '/';
             } else {
                 const errorData = await response.json();
                 console.error('Registration error:', errorData);

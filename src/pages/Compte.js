@@ -90,7 +90,7 @@ function Compte() {
                 </tr>
                 </thead>
                 <tbody>
-                {comptes.map(compte => (
+                {Array.isArray(comptes) && comptes.map(compte => (
                     <tr key={compte.id}>
                         <td>
                             {isEditing && formData.id === compte.id ? (
