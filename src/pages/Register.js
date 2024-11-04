@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import '../css/Register.css'
-import logo from '../img/logo.png'
-
 function Register() {
 
     const [nom, setNom] = useState('');
@@ -102,7 +100,7 @@ function Register() {
 
     return (
         <div id="register">
-            <img src={logo} alt="logo of the website" id="register-logo" />
+            <img src={"/static/logo.png"} alt="logo of the website" id="register-logo" />
             <div id="register-main-block">
                 <h1 id="h1-register">Bienvenue !</h1>
                 <h2 id="h2-register">Inscription</h2>
