@@ -51,7 +51,7 @@ nav li {
     position: relative;
 }
 
-#reseaux li a {
+#auths li a {
     display: flex;
 }
 
@@ -164,7 +164,7 @@ nav ul>li:hover>.sous {
         padding: 10px 0px;
     }
 
-    #reseaux .logo {
+    #auths .logo {
         height: 30px;
     }
 }
