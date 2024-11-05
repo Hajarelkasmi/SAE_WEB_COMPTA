@@ -44,17 +44,8 @@ function Bandeau() {
 
     const [authItems, setAuthItems] = useState([]); 
     useEffect(() => {
-        let initialAuthItems = authItems;
         let isConnected = !!localStorage.getItem('token');
         setAuthItems(isConnected ? auths.slice(2) : auths.slice(0, 2));
-        
-        if (initialAuthItems === authItems) {
-            const timeout = setTimeout(() => {
-                let isConnected = !!localStorage.getItem('token');
-                setAuthItems(isConnected ? auths.slice(2) : auths.slice(0, 2));
-            }, 5000);
-            return () => clearTimeout(timeout);
-        }
     }, []);
 
     return (

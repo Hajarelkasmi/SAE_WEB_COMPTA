@@ -15,27 +15,38 @@ import Logout from './pages/Logout';
 function App() {
     return (
         <div className="App">
-            <Bandeau />
-            <div className="spacer">
-                <BrowserRouter>
-                    <Routes>
-                        {/* Routes pour l'accueil */}
-                        <Route path="/" element={<Accueil/>}/>
-                        <Route path="/accueil" element={<Accueil/>}/>
-                        {/* Routes pour l'authentification */}
-                        <Route exact path='/inscription' element={<Register/>}></Route>
-                        <Route exact path='/connexion' element={<Login/>}></Route>
-                        <Route exact path='/deconnexion' element={<Logout/>}></Route>
-                        {/* Routes pour les pages */}
-                        <Route exact path='/admin' element={<Admin/>}></Route>
-                        <Route exact path='/page/:id' element={<Main_Page/>}></Route>
-                        <Route exact path='/categories/:id_categorie' element={<Categorie/>}></Route>
-                        <Route exact path='/categories/:id_categorie/pages/:id_page' element={<Create_Page/>}></Route>
-                        <Route exact path='/categories/:id_categorie/pages' element={<Create_Page/>}></Route>
-                    </Routes>
-                </BrowserRouter>
-            </div>
-            <Footer/>
+            <BrowserRouter>
+                <Routes>
+                    {/* Routes pour l'authentification */}
+                    <Route exact path='/inscription' element={<Register/>}></Route>
+                    <Route exact path='/connexion' element={<Login/>}></Route>
+                    <Route exact path='/deconnexion' element={<Logout/>}></Route>
+
+                    {/* Routes avec bandeau et footer */}
+                    <Route path="*" element={
+                        <>
+                            <Bandeau/>
+                            <div className="spacer">
+                                <Routes>
+                                    {/* Routes pour l'accueil */}
+                                    <Route path="/" element={<Accueil/>}/>
+                                    <Route path="/accueil" element={<Accueil/>}/>
+
+                                    {/* Routes pour l'admin */}
+                                    <Route path="/admin" element={<Admin/>}/>
+
+                                    {/* Routes pour les éléments du menu */}
+                                    <Route path="/page/:id" element={<Main_Page/>}/>
+                                    <Route path="/categories/:id_categorie" element={<Categorie/>}/>
+                                    <Route path="/categories/:id_categorie/pages/:id_page" element={<Create_Page/>}/>
+                                    <Route path="/categories/:id_categorie/pages" element={<Create_Page/>}/>
+                                </Routes>
+                            </div>
+                            <Footer/>
+                        </>
+                    }/>
+                </Routes>
+            </BrowserRouter>
         </div>
     );
 }
