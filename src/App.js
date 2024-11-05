@@ -12,13 +12,9 @@ import Admin from "./pages/Admin";
 import Categorie from "./pages/Categorie";
 
 function App() {
-    let reseaux = [
-        {img: "/youtube_logo.png", link: "https://youtube.com"},
-        {img: "/tiktok_logo.png", link: "https://tiktok.com"},
-    ];
     return (
         <div className="App">
-            <Bandeau reseaux={reseaux}/>
+            <Bandeau />
             <div className="spacer">
                 <BrowserRouter>
                     <Routes>
