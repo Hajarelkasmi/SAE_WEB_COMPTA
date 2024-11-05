@@ -40,6 +40,9 @@ function App() {
                                     <Route path="/categories/:id_categorie" element={<Categorie/>}/>
                                     <Route path="/categories/:id_categorie/pages/:id_page" element={<Create_Page/>}/>
                                     <Route path="/categories/:id_categorie/pages" element={<Create_Page/>}/>
+
+                                    {/* Route par défaut */}
+                                    <Route path="*" element={<h1>Erreur 404</h1>}/>
                                 </Routes>
                             </div>
                             <Footer/>
