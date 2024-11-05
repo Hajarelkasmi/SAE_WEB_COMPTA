@@ -10,6 +10,7 @@ import Main_Page from './pages/Main_Page';
 import Create_Page from './pages/Create_Page';
 import Admin from "./pages/Admin";
 import Categorie from "./pages/Categorie";
+import Logout from './pages/Logout';
 
 function App() {
     return (
@@ -24,6 +25,7 @@ function App() {
                         {/* Routes pour l'authentification */}
                         <Route exact path='/inscription' element={<Register/>}></Route>
                         <Route exact path='/connexion' element={<Login/>}></Route>
+                        <Route exact path='/deconnexion' element={<Logout/>}></Route>
                         {/* Routes pour les pages */}
                         <Route exact path='/admin' element={<Admin/>}></Route>
                         <Route exact path='/page/:id' element={<Main_Page/>}></Route>

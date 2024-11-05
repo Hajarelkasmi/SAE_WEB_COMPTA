@@ -35,8 +35,8 @@ const Login = () => {
 
             // Stockez le token dans localStorage ou state
             localStorage.setItem('token', data.token);
-            Navigate('/');            
             // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
+            Navigate('/');
         } catch (err) {
             setError(err.response?.data?.error || 'Une erreur est survenue');
             console.error('Erreur lors de la connexion:', err);
