@@ -5,7 +5,7 @@ import Bandeau from './pages/Bandeau';
 import Footer from './pages/Footer';
 import Accueil from './pages/Accueil';
 import Register from './pages/Register';
-import Login from './pages/login';
+import Login from './pages/Login';
 import Main_Page from './pages/Main_Page';
 import Create_Page from './pages/Create_Page';
 import Admin from "./pages/Admin";
