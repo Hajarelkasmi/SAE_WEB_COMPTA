@@ -14,6 +14,7 @@ const Main_Page = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [rubriques, setRubriques] = useState([]);
+    const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -266,6 +267,10 @@ const Main_Page = () => {
             console.error('Erreur:', error);
         }
     }
+
+    const handleEditRubrique = (id) => {
+        setActiveRubrique(id);
+    }
     
     if (loading) {
         return <div>Chargement...</div>;
@@ -293,13 +298,13 @@ const Main_Page = () => {
                 {
                     rubriques.map((rubrique) => (
                         rubrique.type === "lien" ? (
-                            <Container_Lien key={rubrique.id} rubrique={rubrique} />
+                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
                         ) : rubrique.type === "article" ? (
-                            <Container_Article key={rubrique.id} rubrique={rubrique} />
+                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
                         ) : rubrique.type === "video" ? (
-                            <Container_Video key={rubrique.id} rubrique={rubrique} />
+                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
                         ) :  rubrique.type === "exercice" ? (
-                            <Container_Exercice key={rubrique.id} rubrique={rubrique} />
+                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
                         ) : null
                     ))
                 }
@@ -315,7 +320,7 @@ const Main_Page = () => {
                             <button onClick={handleAddRubriqueExercice}>Exercice</button>
                         </div>
                     ) : (
-                        <button onClick={() => setIsChoosingRubrique(true)}>Ajouter une rubrique</button>
+                        <button onClick={() => setIsChoosingRubrique(true)} disabled={activeRubrique !== null}>Ajouter une rubrique</button>
                     )}
                 </div>
             )}

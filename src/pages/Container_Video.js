@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-const Container_Video = ({ rubrique }) => {
-    const [isModifiable, setIsModifiable] = useState(rubrique.isModifiable);
+const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique }) => {
+    const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
     const [lien, setLien] = useState(rubrique.lien);
@@ -18,6 +18,7 @@ const Container_Video = ({ rubrique }) => {
 
     const handleModify = () => {
         setIsModifiable(true);
+        handleEditRubrique(rubrique.rubrique_id);
     }
 
     const handleSave = async () => {
@@ -47,6 +48,8 @@ const Container_Video = ({ rubrique }) => {
         } catch (error) {
             console.error('Erreur:', error);
         }
+        handleEditRubrique();
+        localStorage.removeItem('edit_rubrique');
     }
 
     const handleDelete = async () => {
@@ -90,7 +93,7 @@ const Container_Video = ({ rubrique }) => {
                     {isModifiable ? (
                         <button onClick={handleSave}>Enregistrer</button>
                     ) : (
-                        <button onClick={handleModify}>Modifier</button>
+                        <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
                     )}
                     <button onClick={handleDelete}>Supprimer</button>
                 </div>    
