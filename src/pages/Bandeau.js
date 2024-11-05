@@ -32,42 +32,41 @@ function Bandeau() {
     }, []);
     
 
-  window.onload = function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const header = document.querySelector('header');
+    window.onload = function() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const header = document.querySelector('header');
 
-    menuToggle.addEventListener('click', function() {
-        header.classList.toggle('menu-open');
-        if (header.classList.contains('menu-open')) {
-            menuToggle.innerHTML = '✖';
-        } else {
-            menuToggle.innerHTML = '☰';
-        }
-    });
-  };
-  return (
-    <header>
-        <button className='menu-toggle'>☰</button>
-        <nav>
-            <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
-            <ul id="pages">
-                <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} />
-                {data.map((elem, index) => (
-                    <ElemBandeau key={index} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} />
-                ))}
-                <ElemBandeau link="/blog" nom="Blog" enfants={[]} />
-                { localStorage.getItem('token') ? <ElemBandeau link="/deconnexion" nom="Déconnexion" enfants={[]} /> : <ElemBandeau link="/connexion" nom="Connexion" enfants={[]} />
+        menuToggle.addEventListener('click', function() {
+            header.classList.toggle('menu-open');
+            menuToggle.innerHTML = header.classList.contains('menu-open') ? '✖' : '☰';
+        });
+    };
 
-                }
-            </ul>
-            <ul id="auths">
-              {auths.map((elem, index) => (
-                    <ElemAuth key={index} img={elem.img} link={elem.link} />
-                ))}
-            </ul>
-        </nav>
-    </header>
-  );
+    const [authItems, setAuthItems] = useState([]); 
+    useEffect(() => {
+        let isConnected = !!localStorage.getItem('token');
+        setAuthItems(isConnected ? auths.slice(2) : auths.slice(0, 2));
+    }, []);
+
+    return (
+        <header>
+            <button className='menu-toggle'>☰</button>
+            <nav>
+                <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
+                <ul id="pages">
+                    <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} />
+                    {data.map((elem, index) => (
+                        <ElemBandeau key={index} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} />
+                    ))}
+                </ul>
+                <ul id="auths">
+                {authItems.map((elem, index) => (
+                        <ElemAuth key={index} img={elem.img} link={elem.link} />
+                    ))}
+                </ul>
+            </nav>
+        </header>
+    );
 }
 
 export default Bandeau;
