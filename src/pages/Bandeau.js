@@ -3,7 +3,13 @@ import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
 import { useEffect, useState } from 'react';
 
-function Bandeau({reseaux}) {
+function Bandeau() {
+    let reseaux = [
+        {img: "https://static.vecteezy.com/system/resources/previews/021/919/677/non_2x/login-icon-in-trendy-flat-style-isolated-on-white-background-approach-symbol-for-your-web-site-design-logo-app-ui-illustration-eps10-flat-style-for-graphic-design-vector.jpg", link: "https://youtube.com"},
+        {img: "https://static.thenounproject.com/png/736545-200.png", link: "https://tiktok.com"},
+        {img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTemYz0V3xvKXKcdZrVdg_oU4IohHY7nfFn9Q&s", link: "https://tiktok.com"},
+        {img: "https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg", link: "https://tiktok.com"},
+    ];
     const [data, setData] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
