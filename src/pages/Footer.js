@@ -6,10 +6,12 @@ function Footer() {
         <div id="nos_contacts">
             <div>
                 <a href="/" alt="home"><img src="/logo_bitmoji.png" alt="logo" className="logo" id="footer_logo_bitmoji" /></a>
-                <a href="https://www.youtube.com" alt="youtube" target="_blank" rel="noreferrer"><img src="/logo_youtube.png" alt="logo" className="logo" /></a>
-                <a href="https://www.facebook.com" alt="facebook" target="_blank" rel="noreferrer"><img src="/logo_facebook.png" alt="logo" className="logo" /></a>
-                <a href="https://www.instagram.com" alt="instagram" target="_blank" rel="noreferrer"><img src="/logo_instagram.png" alt="logo" className="logo" /></a>
-                <a href="https://www.gmail.com" alt="gmail" target="_blank" rel="noreferrer"><img src="/logo_mail.png" alt="logo" className="logo" /></a>
+                <a href="https://www.youtube.com/c/CaroleGRILLET" alt="youtube" target="_blank" rel="noreferrer"><img src="/logo_youtube.png" alt="logo" className="logo" /></a>
+                <a href="https://www.facebook.com/laprofcgrillet" alt="facebook" target="_blank" rel="noreferrer"><img src="/logo_facebook.png" alt="logo" className="logo" /></a>
+                <a href="https://www.instagram.com/profcgrillet/" alt="instagram" target="_blank" rel="noreferrer"><img src="/logo_instagram.png" alt="logo" className="logo" /></a>
+                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=laprofdecompta@gmail.com" alt="gmail" target="_blank" rel="noreferrer"><img src="/logo_mail.png" alt="logo" className="logo" /></a>
+                <a href="https://www.tiktok.com/@laprofdecompta" alt="tiktok" target="_blank" rel="noreferrer"><img src="/tiktok_logo.png" alt="logo" className="logo" /></a>
+                <a href="https://www.linkedin.com/in/carolegrillet/" alt="linkedin" target="_blank" rel="noreferrer"><img src="/logo_linkedin.png" alt="logo" className="logo" /></a>
             </div>
             <p>
                 <span>@Site réalisé par : </span><a href="https://github.com/amelie-brizard" target="_blank" rel="noreferrer">Brizard Amélie</a>, <a href="https://github.com/Hajarelkasmi" target="_blank" rel="noreferrer">El Kasmi Hajar</a>, <a href="https://github.com/bap-haudebourg" target="_blank" rel="noreferrer">Haudebourg Baptiste</a>, <a href="https://github.com/JuliannMerit" target="_blank" rel="noreferrer">Merit Juliann</a>, <a href="https://github.com/Juliette0070" target="_blank" rel="noreferrer">Rousselet Juliette</a>
