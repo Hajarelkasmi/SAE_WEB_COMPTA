@@ -127,9 +127,10 @@ function Compte() {
                         }}>
                             <option value="" hidden>Choisir une classe</option>
                             {classes.map(classe => (
-                                <option key={classe.id} value={classe.id}>{classe.nom}</option>
+                                <option key={classe.id} value={classe.id} selected={filtres.classes && filtres.classes.includes(classe.id)}>{classe.nom}</option>
                             ))}
                         </select>
+                        <button onClick={() => setFiltres({...filtres, classes: null})}><img src={"/static/cross.png"} alt="Bouton annuler"/></button>
                     </th>
                     <th>
                         <label htmlFor="est_abonne">Abonné</label>
