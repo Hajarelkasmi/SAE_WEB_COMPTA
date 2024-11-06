@@ -12,6 +12,7 @@ import Admin from "./pages/Admin";
 import Categorie from "./pages/Categorie";
 import Logout from './pages/Logout';
 import Erreur from './pages/Erreur';
+import CompteEtudiant from './pages/CompteEtudiant';
 
 function App() {
     return (
@@ -35,6 +36,9 @@ function App() {
 
                                     {/* Routes pour l'admin */}
                                     <Route path="/admin" element={<Admin/>}/>
+
+                                    {/* Routes pour le compte de l'étudiant */}
+                                    <Route path="/compte" element={<CompteEtudiant/>}/>
 
                                     {/* Routes pour les éléments du menu */}
                                     <Route path="/page/:id" element={<Main_Page/>}/>
