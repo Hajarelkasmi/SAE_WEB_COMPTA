@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import '../css/Register.css'
+import { useNavigate } from "react-router-dom";
 
 function Register() {
     const [nom, setNom] = useState('');
@@ -12,6 +13,8 @@ function Register() {
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [classes, setClasses] = useState([]);
+
+    const Navigate = useNavigate();
 
     useEffect(() => {
         const fetchClasses = async () => {
@@ -90,6 +93,7 @@ function Register() {
                 console.log('Inscription réussite !');
                 setSuccessMessage('Inscription réussie !');
                 setErrorMessage('');
+                Navigate('/');
             } else {
                 const errorData = await response.json();
                 console.error('Registration error:', errorData);
