@@ -29,13 +29,13 @@ function CompteEtudiant() {
     return (
         <div id='compte_etudiant'>
             <h1>Compte de l'étudiant</h1>
-            <p>Nom: {compte.nom}</p>
-            <p>Prénom: {compte.prenom}</p>
-            <p>Email: {compte.mail}</p>
-            <p>Password: {compte.mot_de_passe}</p>
-            <p>Classe: {compte.classe}</p>
-            <p>Abonné: {compte.est_abonne ? 'Oui' : 'Non'}</p>
-            <p>Admin: {compte.est_admin ? 'Oui' : 'Non'}</p>
+            <p><span>Nom:</span> {compte.nom}</p>
+            <p><span>Prénom:</span> {compte.prenom}</p>
+            <p><span>Email:</span> {compte.mail}</p>
+            <p><span>Password:</span> {compte.mot_de_passe}</p>
+            <p><span>Classe:</span> {compte.classe}</p>
+            <p><span>Abonné:</span> {compte.est_abonne ? 'Oui' : 'Non'}</p>
+            <p><span>Admin:</span> {compte.est_admin ? 'Oui' : 'Non'}</p>
         </div>
     );
 }
