@@ -11,6 +11,7 @@ import Create_Page from './pages/Create_Page';
 import Admin from "./pages/Admin";
 import Categorie from "./pages/Categorie";
 import Logout from './pages/Logout';
+import Erreur from './pages/Erreur';
 
 function App() {
     return (
@@ -42,7 +43,7 @@ function App() {
                                     <Route path="/categories/:id_categorie/pages" element={<Create_Page/>}/>
 
                                     {/* Route par défaut */}
-                                    <Route path="*" element={<h1>Erreur 404: Page non trouvée</h1>}/>
+                                    <Route path="*" element={<Erreur numero={404} message="La page demandée n'a pas été trouvée"/>}/>
                                 </Routes>
                             </div>
                             <Footer/>
