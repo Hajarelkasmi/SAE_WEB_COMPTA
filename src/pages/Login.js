@@ -34,8 +34,15 @@ const Login = () => {
             const data = await response.json();
 
             // Stockez le token dans localStorage ou state
-            localStorage.setItem('token', data.token);
-            Navigate('/');            
+            try {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('refreshToken', data.refreshToken);
+            } catch (error) {
+                document.cookie = `token=${data.token}; path=/`;
+                document.cookie = `refreshToken=${data.refreshToken}; path=/`;
+            }
+            Navigate('/');
+            window.location.reload();
             // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
         } catch (err) {
             setError(err.response?.data?.error || 'Une erreur est survenue');
@@ -77,7 +84,7 @@ const Login = () => {
                 <button type="submit">CONTINUER</button>
                 {error && <p style={{color: 'red'}}>{error}</p>}
             </form>
-            <p>Vous n'êtes pas inscrit ? <a href="/register">Inscription</a></p>
+            <p>Vous n'êtes pas inscrit ? <a href="/inscription">Inscription</a></p>
         </div>
     );
 };

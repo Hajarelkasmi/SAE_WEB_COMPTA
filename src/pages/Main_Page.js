@@ -5,6 +5,7 @@ import Container_Article from './Container_Article';
 import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
 import '../css/Main_Page.css';
+import {refresh} from "./RefreshToken";
 
 const Main_Page = () => {
     const { id } = useParams();
@@ -97,6 +98,10 @@ const Main_Page = () => {
                 setLoading(false);
             }
         };
+
+        if (localStorage.getItem('token')) {
+            refresh();
+        }
 
         fetchData();
     }, [id]);
