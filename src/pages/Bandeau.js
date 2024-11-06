@@ -35,10 +35,12 @@ function Bandeau() {
         const menuToggle = document.querySelector('.menu-toggle');
         const header = document.querySelector('header');
 
-        menuToggle.addEventListener('click', function() {
-            header.classList.toggle('menu-open');
-            menuToggle.innerHTML = header.classList.contains('menu-open') ? '✖' : '☰';
-        });
+        if (menuToggle && header) {
+            menuToggle.addEventListener('click', function() {
+                header.classList.toggle('menu-open');
+                menuToggle.innerHTML = header.classList.contains('menu-open') ? '✖' : '☰';
+            });
+        }
     };
 
     const [authItems, setAuthItems] = useState([]); 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../css/CompteEtudiant.css';
+import { useNavigate } from 'react-router-dom';
 
 function CompteEtudiant() {
     const [compte, setCompte] = useState({
@@ -13,6 +14,7 @@ function CompteEtudiant() {
         est_admin: false
     });
     const [voir_mdp, setVoirMdp] = useState(false);
+    const Navigate = useNavigate();
 
     async function fetchCompte() {
         const response_etu = await fetch('http://localhost:5000/api/etudiants/1');
@@ -24,8 +26,10 @@ function CompteEtudiant() {
     }
 
     useEffect(() => {
-        fetchCompte().catch(console.error);
-    }, []);
+        let isConnected = !!localStorage.getItem('token');
+        if (!isConnected) {Navigate('/connexion');}
+        else {fetchCompte().catch(console.error);}
+    });
 
     return (
         <div id='compte_etudiant'>
