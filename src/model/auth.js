@@ -3,7 +3,7 @@ const { Etudiant, Connexion_Log } = require('./bd');
 
 const secretKey = 'secret';
 const refreshTokensSecret = 'refreshSecret';
-const refreshTokens = [''];
+const refreshTokens = []; // Possiblement plein trop vite, à voir si on supprime
 
 
 async function authenticate(req, res) {
@@ -13,7 +13,7 @@ async function authenticate(req, res) {
     }
 
     const token = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, secretKey, { expiresIn: '15m' });
-    const refreshToken = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, refreshTokensSecret, { expiresIn: '7d' });
+    const refreshToken = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, refreshTokensSecret, { expiresIn: '1d' });
     refreshTokens.push(refreshToken);
 
     if (!res){
