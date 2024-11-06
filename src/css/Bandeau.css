@@ -150,6 +150,7 @@ nav ul>li:hover>.sous {
 
     #pages {
         width: 100%;
+        padding: 10px 0px;
     }
 
     .sous {
@@ -158,13 +159,5 @@ nav ul>li:hover>.sous {
 
     .sous a {
         padding: 0px;
-    }
-
-    #pages {
-        padding: 10px 0px;
-    }
-
-    #auths .logo {
-        height: 30px;
     }
 }

@@ -23,7 +23,6 @@ function Bandeau() {
                 }
                 const data = await response.json();
                 setData(data);
-                console.log(data);
             }
             catch (error) {
                 console.error('Erreur:', error);
@@ -60,7 +59,7 @@ function Bandeau() {
                     ))}
                 </ul>
                 <ul id="auths">
-                {authItems.map((elem, index) => (
+                    {authItems.map((elem, index) => (
                         <ElemAuth key={index} img={elem.img} link={elem.link} />
                     ))}
                 </ul>
