@@ -29,7 +29,7 @@ function CompteEtudiant() {
         let isConnected = !!localStorage.getItem('token');
         if (!isConnected) {Navigate('/connexion');}
         else {fetchCompte().catch(console.error);}
-    });
+    }, []);
 
     return (
         <div id='compte_etudiant'>
