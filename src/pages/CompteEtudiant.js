@@ -12,6 +12,7 @@ function CompteEtudiant() {
         est_abonne: false,
         est_admin: false
     });
+    const [voir_mdp, setVoirMdp] = useState(false);
 
     async function fetchCompte() {
         const response_etu = await fetch('http://localhost:5000/api/etudiants/1');
@@ -32,7 +33,7 @@ function CompteEtudiant() {
             <p><span>Nom:</span> {compte.nom}</p>
             <p><span>Prénom:</span> {compte.prenom}</p>
             <p><span>Email:</span> {compte.mail}</p>
-            <p><span>Password:</span> {compte.mot_de_passe}</p>
+            <p><span>Mot de passe:</span> {voir_mdp ? compte.mot_de_passe : '********'} <button onClick={() => setVoirMdp(!voir_mdp)}>{voir_mdp ? 'Cacher' : 'Voir'}</button></p>
             <p><span>Classe:</span> {compte.classe}</p>
             <p><span>Abonné:</span> {compte.est_abonne ? 'Oui' : 'Non'}</p>
             <p><span>Admin:</span> {compte.est_admin ? 'Oui' : 'Non'}</p>
