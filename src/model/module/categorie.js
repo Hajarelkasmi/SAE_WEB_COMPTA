@@ -61,16 +61,47 @@ module.exports = (app) => {
         }
     });
 
+    app.get('/api/sous_categories/:id', async (req, res) => {
+        try {
+            const sous_categories = await SousCategorie.findAll({
+                where: {
+                    id_parent: req.params.id
+                }
+            });
+            const enfants = [];
+            for (const sc of sous_categories) {
+                enfants.push(await Categorie.findByPk(sc.id_enfant));
+            }
+            res.json(enfants);
+        } catch (error) {
+            res.status(500).json({error: 'An error occurred while fetching subcategories'});
+        }
+    });
+
     app.post('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categorie = await Categorie.create({
                 nom: req.body.nom,
                 description: req.body.description,
+                image: req.body.image,
                 est_public: req.body.est_public
             });
             res.json(categorie);
         } catch (error) {
             res.status(500).json({error: 'An error occurred while creating category'});
+        }
+    });
+
+
+    app.post('/api/sous_categories', verifyToken, verifyAdmin, async (req, res) => {
+        try {
+            const sous_categorie = await SousCategorie.create({
+                id_parent: req.body.id_parent,
+                id_enfant: req.body.id_enfant
+            });
+            res.json(sous_categorie);
+        } catch (error) {
+            res.status(500).json({error: 'An error occurred while creating subcategory'});
         }
     });
 
@@ -81,8 +112,9 @@ module.exports = (app) => {
                 await categorie.update({
                     nom: req.body.nom,
                     description: req.body.description,
-                    est_public: req.body.est_public,
-                    est_dans_carrousel: req.body.est_dans_carrousel
+                    est_dans_carrousel: req.body.est_dans_carrousel,
+                    image: req.body.image,
+                    est_public: req.body.est_public
                 });
                 res.json(categorie);
             } else {
