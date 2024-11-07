@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
+import {refresh} from "./RefreshToken";
 
 const Create_Page = () => {
     const { id_categorie, id_page } = useParams();
@@ -66,9 +67,13 @@ const Create_Page = () => {
                 console.error('Erreur:', error);
             }
         };
+        if (localStorage.getItem('token')) {
+            refresh();
+        }
+            
         fetchClasses();
     }
-    , []);
+    , [id_categorie, id_page]);
 
     const addClasseSelected = (id) => {
         const classe = classes.find((classe) => classe.id === parseInt(id));

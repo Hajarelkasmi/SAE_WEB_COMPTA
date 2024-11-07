@@ -1,16 +1,63 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useQuill } from 'react-quilljs';
+import 'react-quill/dist/quill.snow.css';
 
-const Container_Article = ({ rubrique }) => {
-    const [isModifiable, setIsModifiable] = useState(rubrique.isModifiable);
+const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => {
+    const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
     const [texte, setTexte] = useState(rubrique.texte);
     const [image, setImage] = useState(rubrique.image);
     const [imageFile, setImageFile] = useState(null);
+    const { quill, quillRef } = useQuill();
 
     const handleModify = () => {
         setIsModifiable(!isModifiable);
+        handleEditRubrique(rubrique.rubrique_id);
     };
+
+    const insertToEditor = (url) => {
+        const range = quill.getSelection();
+        quill.insertEmbed(range.index, 'image', url);
+    };
+
+    const saveToServer = async (file) => {
+        const body = new FormData();
+        body.append('image', file);
+        insertToEditor("/static/image/" + file.name);
+        await handleSave();
+        localStorage.setItem('edit_rubrique', rubrique.rubrique_id);
+        await fetch('http://localhost:5000/api/images_rubrique', {
+            method: 'POST',
+            headers: {
+                'Authorization': `${localStorage.getItem('token')}`,
+            },
+            body,
+        });
+    };
+    
+    const selectLocalImage = () => {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+    
+        input.onchange = async (e) => {
+            const file = input.files[0];
+            await saveToServer(file);
+
+        };
+    };
+
+    useEffect(() => {
+        if (quill) {
+            quill.getModule('toolbar').addHandler('image', selectLocalImage);
+            quill.clipboard.dangerouslyPasteHTML(texte);
+            quill.on('text-change', () => {
+                setTexte(quill.root.innerHTML);
+            });
+        }
+    }, [quill]);
 
     const handleSave = async () => {
         const token = localStorage.getItem('token');
@@ -24,7 +71,7 @@ const Container_Article = ({ rubrique }) => {
                 body: JSON.stringify({
                     nom: titre,
                     description: description,
-                    texte: texte,
+                    texte: document.querySelector('.ql-editor').innerHTML,
                     page_id: rubrique.page_id,
                     rubrique_id: rubrique.rubrique_id
                 }),
@@ -74,6 +121,8 @@ const Container_Article = ({ rubrique }) => {
         } catch (error) {
             console.error('Erreur:', error);
         }
+        handleEditRubrique();
+        localStorage.removeItem('edit_rubrique');
     };
 
     const handleDelete = async () => {
@@ -118,6 +167,9 @@ const Container_Article = ({ rubrique }) => {
         formData.append('name', name);
         const response = await fetch('http://localhost:5000/api/images', {
             method: 'POST',
+            headers: {
+                'Authorization': `${localStorage.getItem('token')}`,
+            },
             body: formData,
         });
 
@@ -145,7 +197,7 @@ const Container_Article = ({ rubrique }) => {
                 {isModifiable ? (
                     <button onClick={handleSave}>Enregistrer</button>
                 ) : (
-                    <button onClick={handleModify}>Modifier</button>
+                    <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
                 )}
                 <button onClick={handleDelete}>Supprimer</button>
             </div>
@@ -156,11 +208,7 @@ const Container_Article = ({ rubrique }) => {
                         onChange={(event) => setDescription(event.target.value)}
                         placeholder='Description'
                     />
-                    <textarea
-                        value={texte}
-                        onChange={(event) => setTexte(event.target.value)}
-                        placeholder='Texte'
-                    />
+                    <div ref={quillRef} class="quill-editor" />
                     <input
                         type="file"
                         onChange={handleImageChange}
@@ -171,7 +219,7 @@ const Container_Article = ({ rubrique }) => {
             ) : (
                 <div>
                     <p>{description}</p>
-                    <p>{texte}</p>
+                    <div dangerouslySetInnerHTML={{ __html: texte }} />
                     {image ? <img src={"/static/image/" + image} alt={titre} /> : null}
                 </div>
             )}

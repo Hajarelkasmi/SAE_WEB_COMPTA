@@ -2,10 +2,21 @@ import '../css/Bandeau.css';
 import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
 import { useEffect, useState } from 'react';
+import {checkAdmin} from "./CheckAdmin";
 
 function Bandeau({reseaux}) {
     const [data, setData] = useState([]);
+    const [isAdmin, setIsAdmin] = useState(null);
     useEffect(() => {
+        const fetchAdminStatus = async () => {
+            const adminStatus = await checkAdmin();
+            setIsAdmin(adminStatus);
+        };
+
+        fetchAdminStatus();
+
+        console.log(isAdmin);
+
         const fetchData = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/bandeau');
@@ -40,7 +51,7 @@ function Bandeau({reseaux}) {
     });
   };
   return (
-    <header>
+    <header style = {{ backgroundColor : isAdmin ? '#a63629' : '#1c3f59' }}>
         <button className='menu-toggle'>☰</button>
         <nav>
             <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>

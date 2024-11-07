@@ -22,13 +22,25 @@ module.exports = (app) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
             if (etudiant) {
-                res.json(etudiant);
+                const infos = {
+                    nom: etudiant.nom,
+                    prenom: etudiant.prenom,
+                    mail: etudiant.mail,
+                    classe: etudiant.classe.nom,
+                    est_abonne: etudiant.est_abonne,
+                    est_admin: etudiant.est_admin
+                }
+                res.json(infos);
             } else {
                 res.status(404).json({ error: 'Etudiant not found' });
             }
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while fetching etudiant' });
         }
+    });
+
+    app.get('/api/isAdmin', verifyToken, async (req, res) => {
+        res.json({ isAdmin: req.isAdmin });
     });
 
     app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {

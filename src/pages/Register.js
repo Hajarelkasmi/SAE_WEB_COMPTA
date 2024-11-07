@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import '../css/Register.css'
+import {useNavigate} from 'react-router-dom';
 
 function Register() {
     const [nom, setNom] = useState('');
@@ -12,6 +13,7 @@ function Register() {
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [classes, setClasses] = useState([]);
+    const Navigate = useNavigate();
 
     useEffect(() => {
         const fetchClasses = async () => {
@@ -40,7 +42,7 @@ function Register() {
         }
 
         const formData = {
-            nom: nom,
+            nom: nom.toUpperCase(),
             prenom: prenom,
             mail: mail,
             classe_id: parseInt(classe),
@@ -62,8 +64,10 @@ function Register() {
                 const newEtudiant = await response.json();
                 try {
                     localStorage.setItem('token', newEtudiant.token);
+                    localStorage.setItem('refreshToken', newEtudiant.refreshToken);
                 } catch (error) {
                     document.cookie = `token=${newEtudiant.token}; path=/`;
+                    document.cookie = `refreshToken=${newEtudiant.refreshToken}; path=/`;
                 }
                 if (demandeAbonnement) {
                     try {
@@ -96,7 +100,8 @@ function Register() {
                 setErrorMessage('Une erreur est survenue lors de l\'inscription.');
                 setSuccessMessage('');
             }
-            console.log(localStorage.getItem('token'));
+            Navigate('/');
+            window.location.reload();
         } catch (error) {
             console.error('Network error:', error);
             setErrorMessage('Une erreur est survenue. Veuillez réessayer plus tard.');

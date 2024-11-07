@@ -10,6 +10,8 @@ import Main_Page from './pages/Main_Page';
 import Create_Page from './pages/Create_Page';
 import Admin from "./pages/Admin";
 import Categorie from "./pages/Categorie";
+import Disconnect from "./pages/Disconnect";
+import InactivityTimer from "./InactivityTimer";
 
 function App() {
     let reseaux = [
@@ -18,6 +20,7 @@ function App() {
     ];
     return (
         <div className="App">
+            <InactivityTimer timeout={900000}/>
             <Bandeau reseaux={reseaux}/>
             <div className="spacer">
                 <BrowserRouter>
@@ -28,6 +31,7 @@ function App() {
                         {/* Routes pour l'authentification */}
                         <Route exact path='/inscription' element={<Register/>}></Route>
                         <Route exact path='/connexion' element={<Login/>}></Route>
+                        <Route exact path='/deconnexion' element={<Disconnect/>}></Route>
                         {/* Routes pour les pages */}
                         <Route exact path='/admin' element={<Admin/>}></Route>
                         <Route exact path='/page/:id' element={<Main_Page/>}></Route>

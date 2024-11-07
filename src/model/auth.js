@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const { Etudiant, Connexion_Log } = require('./bd'); 
 
 const secretKey = 'secret';
+const refreshTokensSecret = 'refreshSecret';
+const refreshTokens = []; // Possiblement plein trop vite, à voir si on supprime
 
 
 async function authenticate(req, res) {
@@ -10,13 +12,15 @@ async function authenticate(req, res) {
         return res.status(403).json({ error: 'Connection échouée' });
     }
 
-    const token = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, secretKey, {
-        expiresIn: 600
-    });
+    const token = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, secretKey, { expiresIn: '15m' });
+    const refreshToken = jwt.sign({ id: etudiant.id, isAdmin: etudiant.est_admin }, refreshTokensSecret, { expiresIn: '1d' });
+    refreshTokens.push(refreshToken);
+
     if (!res){
         return token;
     }
-    res.json({ token: token });
+
+    res.json({ token: token, refreshToken: refreshToken });
 
     const lastLog = await Connexion_Log.findOne({
         where: { id_etudiant: etudiant.id },
@@ -54,4 +58,31 @@ function verifyAdmin(req, res, next) {
     next();
 }
 
-module.exports = { authenticate, verifyToken, verifyAdmin };
+function refreshToken(req, res) {
+    const {token: refreshToken} = req.body;
+    if (!refreshToken) return res.status(401).json({error: 'No refresh token provided'});
+    if (!refreshTokens.includes(refreshToken)) return res.status(403).json({error: 'Invalid refresh token'});
+
+    jwt.verify(refreshToken, refreshTokensSecret, (err, user) => {
+        if (err) return res.status(403).json({error: 'Problem with refresh token'});
+
+        const currentAccessToken = req.headers['authorization'];
+        if (currentAccessToken) {
+            jwt.verify(currentAccessToken, secretKey, (err, decoded) => {
+                if (err && err.name === 'TokenExpiredError') {
+                    const newAccessToken = jwt.sign({
+                        id: user.id,
+                        isAdmin: user.isAdmin
+                    }, secretKey, {expiresIn: '15m'});
+                    return res.json({token: newAccessToken});
+                } else if (!err) {
+                    return res.json({token: currentAccessToken});
+                }
+            });
+        } else {
+            return res.status(400).json({error: 'No current access token provided'});
+        }
+    });
+}
+
+module.exports = { authenticate, verifyToken, verifyAdmin, refreshToken };
