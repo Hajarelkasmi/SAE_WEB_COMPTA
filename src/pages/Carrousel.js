@@ -3,6 +3,7 @@ import ElemCarrousel from "./ElemCarrousel";
 import React, { useState, useEffect } from 'react';
 
 function Carrousel() {
+    // Vérifier si l'utilisateur est admin
     const [isAdmin, setIsAdmin] = useState(null);
     useEffect(() => {
         const checkAdmin = async () => {
@@ -26,8 +27,9 @@ function Carrousel() {
             }
         };
         checkAdmin();
-    });
+    }, []);
 
+    // Liste des éléments du carrousel
     const [elemsCarrousel, setElemsCarrousel] = useState([
         {src: "/Cours 1", img: "/logo_bitmoji.png", nom: "COMPTABILITÉ APPROFONDIE"},
         {src: "/Cours 2", img: "/youtube_logo.png", nom: "COMMUNICATION"},
@@ -42,7 +44,7 @@ function Carrousel() {
 
     const [totalItems, setTotalItems] = useState(elemsCarrousel.length);
 
-    // Effect to handle resizing
+    // Calcul du nombre d'éléments visibles en fonction de la taille de la fenêtre et du nombre total d'éléments
     useEffect(() => {
         const updateVisibleItemsCount = () => {
             let visibleItemEstimate = (window.innerWidth - 480) / 288 + 1;
@@ -100,17 +102,11 @@ function Carrousel() {
         }
     };
 
+    // Fonction pour modifier les éléments du carrousel
     const [modifyElems, setModifyElems] = useState(false);
     const [allElems, setAllElems] = useState(elemsCarrousel);
-    function handleModify() {
-        setModifyElems(!modifyElems);
+    async function handleModify() {
         if (modifyElems) {
-            // récupérer les cours
-            // let elems = [];
-            // elems = fetch('http://localhost:5000/api/carrousel', {
-            //     method: 'GET',
-            // });
-            // setAllElems(elems);
             // récupérer les cours en vert
             let elems = [];
             let buttons = document.getElementsByClassName("cours");
@@ -122,8 +118,32 @@ function Carrousel() {
             setElemsCarrousel(elems);
             setTotalItems(elems.length);
         } else {
+            // récupérer tous les cours
+            let elems = [];
+            elems = await fetch('http://localhost:5000/api/bandeau', {
+                method: 'GET',
+            }).then(response => response.json());
+            console.log(elems);
+            setAllElems(elems);
         }
+        setModifyElems(!modifyElems);
     }
+
+    useEffect(() => {
+        if (modifyElems) {
+            allElems.forEach((elem, index) => {
+                //  récupérer le nom du cours (ex: compta)
+                let button = document.getElementById("cours_"+index);
+                // vérifier si le cours est déjà dans le carrousel à partir du nom
+                let elemIndex = elemsCarrousel.findIndex(e => e.nom === elem.nom);
+                if (elemIndex !== -1) { // si le cours est déjà dans le carrousel
+                    button.style.backgroundColor = "green";
+                } else {
+                    button.style.backgroundColor = "";
+                }
+            });
+        }
+    }, [allElems]);
 
     function handleModifyElem(event) {
         // trouver le bouton cliqué
