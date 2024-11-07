@@ -3,7 +3,7 @@ import ElemCarrousel from "./ElemCarrousel";
 import React, { useState, useEffect } from 'react';
 
 function Carrousel() {
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(null);
     useEffect(() => {
         const checkAdmin = async () => {
             const token = localStorage.getItem('token');
@@ -18,7 +18,6 @@ function Carrousel() {
                         'Authorization': `${token}`
                     }
                 });
-                console.log(response);
                 if (!response.ok) {setIsAdmin(false);}
                 const data = await response.json();
                 setIsAdmin(data.isAdmin);
@@ -27,41 +26,41 @@ function Carrousel() {
             }
         };
         checkAdmin();
-        console.log(isAdmin);
-    }, []);
+    });
 
-
-    let elemsCarrousel = [
+    const [elemsCarrousel, setElemsCarrousel] = useState([
         {src: "/Cours 1", img: "/logo_bitmoji.png", nom: "COMPTABILITÉ APPROFONDIE"},
         {src: "/Cours 2", img: "/youtube_logo.png", nom: "COMMUNICATION"},
         {src: "/Cours 3", img: "/tiktok_logo.png", nom: "COMPTABILITÉ FINANCIÈRE"},
         {src: "/Cours 4", img: "/logo192.png", nom: "CONTRÔLE DE GESTION"},
         {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "GESTION FINANCIERE"},
-    ];
+    ]);
   
     const [currentIndex, setCurrentIndex] = useState(0);
     const [depassement, setDepassement] = useState(0);
     const [visibleItemsCount, setVisibleItemsCount] = useState(4);
 
-    const totalItems = elemsCarrousel.length;
+    const [totalItems, setTotalItems] = useState(elemsCarrousel.length);
 
     // Effect to handle resizing
     useEffect(() => {
         const updateVisibleItemsCount = () => {
             let visibleItemEstimate = (window.innerWidth - 480) / 288 + 1;
+            let visibleItemCountTemp;
             if (visibleItemEstimate < 1) { // si visibleItemEstimate vaut 0 ou moins
-                setVisibleItemsCount(1);
+                visibleItemCountTemp = 1;
             } else if (visibleItemEstimate > 4) { // si visibleItemEstimate vaut plus de 4 (max d'elems voulus en même temps)
-                setVisibleItemsCount(4);
+                visibleItemCountTemp = 4;
             } else { // entre les deux
-                setVisibleItemsCount(visibleItemEstimate+1);
+                visibleItemCountTemp = visibleItemEstimate+1;
             }
-            if (visibleItemsCount>totalItems) {
-                setVisibleItemsCount(totalItems);
+            if (visibleItemCountTemp>totalItems) {
+                visibleItemCountTemp = totalItems;
             }
+            setVisibleItemsCount(visibleItemCountTemp);
             let remainingItems = totalItems - currentIndex;
-            if (remainingItems < visibleItemsCount) {
-                setDepassement(visibleItemsCount - remainingItems);
+            if (remainingItems < visibleItemCountTemp) {
+                setDepassement(visibleItemCountTemp - remainingItems);
             } else {
                 setDepassement(0);
             }
@@ -73,7 +72,7 @@ function Carrousel() {
         return () => {
             window.removeEventListener('resize', updateVisibleItemsCount);
         };
-    }, [totalItems, visibleItemsCount, currentIndex]);
+    }, [totalItems, currentIndex]);
 
     // Fonction pour passer à l'élément suivant
     const handleNext = () => {
@@ -101,6 +100,46 @@ function Carrousel() {
         }
     };
 
+    const [modifyElems, setModifyElems] = useState(false);
+    const [allElems, setAllElems] = useState(elemsCarrousel);
+    function handleModify() {
+        setModifyElems(!modifyElems);
+        if (modifyElems) {
+            // récupérer les cours
+            // let elems = [];
+            // elems = fetch('http://localhost:5000/api/carrousel', {
+            //     method: 'GET',
+            // });
+            // setAllElems(elems);
+            // récupérer les cours en vert
+            let elems = [];
+            let buttons = document.getElementsByClassName("cours");
+            for (let i=0; i<buttons.length; i++) {
+                if (buttons[i].style.backgroundColor === "green") {
+                    elems.push(allElems[i]);
+                }
+            }
+            setElemsCarrousel(elems);
+            setTotalItems(elems.length);
+        } else {
+        }
+    }
+
+    function handleModifyElem(event) {
+        // trouver le bouton cliqué
+        let elem = event.target;
+        while (elem.tagName !== "BUTTON") {
+            elem = elem.parentElement;
+            if (elem === null) {return;}
+        }
+        // changer la couleur du bouton
+        if (elem.style.backgroundColor === "green") {
+            elem.style.backgroundColor = "";
+        } else {
+            elem.style.backgroundColor = "green";
+        }
+    }
+
     return (
         <section id="cours">
             <h2>Cours de Gestion de Comptabilité et Finance</h2>
@@ -118,6 +157,18 @@ function Carrousel() {
                   ))}
                 <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
             </div>
+            {isAdmin && 
+                <div id="modification_cours">
+                    {modifyElems ? <button id="valider" onClick={handleModify}>Valider les modifications</button> : <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>}
+                    {modifyElems &&
+                        <div id="cours_carrousel" onClick={handleModifyElem}>
+                            {allElems.map((elem, index) => (
+                                <button key={"cours"+index} className="cours" id={"cours_"+index}><ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} /></button>
+                            ))}
+                        </div>
+                    }
+                </div>
+            }
         </section>
     );
 }
