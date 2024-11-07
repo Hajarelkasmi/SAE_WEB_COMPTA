@@ -95,6 +95,12 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
+
+    est_dans_carrousel: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    
 }, {
     tableName: 'Categorie',
     timestamps: false

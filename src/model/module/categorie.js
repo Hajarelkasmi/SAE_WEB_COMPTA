@@ -81,7 +81,8 @@ module.exports = (app) => {
                 await categorie.update({
                     nom: req.body.nom,
                     description: req.body.description,
-                    est_public: req.body.est_public
+                    est_public: req.body.est_public,
+                    est_dans_carrousel: req.body.est_dans_carrousel
                 });
                 res.json(categorie);
             } else {

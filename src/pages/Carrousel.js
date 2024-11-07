@@ -30,13 +30,32 @@ function Carrousel() {
     }, []);
 
     // Liste des éléments du carrousel
-    const [elemsCarrousel, setElemsCarrousel] = useState([
-        {src: "/Cours 1", img: "/logo_bitmoji.png", nom: "COMPTABILITÉ APPROFONDIE"},
-        {src: "/Cours 2", img: "/youtube_logo.png", nom: "COMMUNICATION"},
-        {src: "/Cours 3", img: "/tiktok_logo.png", nom: "COMPTABILITÉ FINANCIÈRE"},
-        {src: "/Cours 4", img: "/logo192.png", nom: "CONTRÔLE DE GESTION"},
-        {src: "/Cours 5", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS75ebrwvgVW5Ks_oLfCbG8Httf3_9g-Ynl_Q&s", nom: "GESTION FINANCIERE"},
-    ]);
+    const [elemsCarrousel, setElemsCarrousel] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:5000/api/carrousel', {
+            method: 'GET',
+        })
+        .then(response => response.json())
+        .then(data => {
+            let elems = [];
+            for (let i=0; i<data.length; i++) {
+                if (data[i].est_dans_carrousel) {
+                    if (!data[i].src || data[i].src === null) {
+                        data[i].src = "/";
+                    }
+                    if (data[i].image === null) {
+                        data[i].img = "/logo_bitmoji.png";
+                    } else {
+                        data[i].img = data[i].image;
+                    }
+                    elems.push(data[i]);
+                }
+            }
+            setElemsCarrousel(elems);
+            setTotalItems(elems.length);
+        });
+    }, []);
   
     const [currentIndex, setCurrentIndex] = useState(0);
     const [depassement, setDepassement] = useState(0);
@@ -118,13 +137,49 @@ function Carrousel() {
                 }
                 setElemsCarrousel(elems);
                 setTotalItems(elems.length);
+                // mettre à jour les cours du carrousel dans la base de données
+                for (let i=0; i<elems.length; i++) {
+                    const response = await fetch('http://localhost:5000/api/categories/'+elems[i].id, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('token'),
+                        },
+                        body: JSON.stringify({est_dans_carrousel: true})
+                    });
+                    console.log(response);
+                }
+                // enlever les cours non sélectionnés du carrousel dans la base de données
+                for (let i=0; i<allElems.length; i++) {
+                    const elemIndex = elems.findIndex(e => e.nom === allElems[i].nom);
+                    if (elemIndex === -1) {
+                        const response = await fetch('http://localhost:5000/api/categories/'+allElems[i].id, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': localStorage.getItem('token'),
+                            },
+                            body: JSON.stringify({est_dans_carrousel: false})
+                        });
+                        console.log(response);
+                    }
+                }
             } else {
                 // récupérer tous les cours
                 let elems = [];
-                elems = await fetch('http://localhost:5000/api/bandeau', {
+                elems = await fetch('http://localhost:5000/api/categories', {
                     method: 'GET',
                 }).then(response => response.json());
-                console.log(elems);
+                for (let i=0; i<elems.length; i++) {
+                    if (!elems[i].src || elems[i].src === null) {
+                        elems[i].src = "/";
+                    }
+                    if (elems[i].image === null) {
+                        elems[i].img = "/logo_bitmoji.png";
+                    } else {
+                        elems[i].img = elems[i].image;
+                    }
+                }
                 setAllElems(elems);
             }
         }
