@@ -105,26 +105,28 @@ function Carrousel() {
     // Fonction pour modifier les éléments du carrousel
     const [modifyElems, setModifyElems] = useState(false);
     const [allElems, setAllElems] = useState(elemsCarrousel);
-    async function handleModify() {
-        if (modifyElems) {
-            // récupérer les cours en vert
-            let elems = [];
-            let buttons = document.getElementsByClassName("cours");
-            for (let i=0; i<buttons.length; i++) {
-                if (buttons[i].style.backgroundColor === "green") {
-                    elems.push(allElems[i]);
+    async function handleModify(modify) {
+        if (modify) {
+            if (modifyElems) {
+                // récupérer les cours en vert
+                let elems = [];
+                let buttons = document.getElementsByClassName("cours");
+                for (let i=0; i<buttons.length; i++) {
+                    if (buttons[i].style.backgroundColor === "green") {
+                        elems.push(allElems[i]);
+                    }
                 }
+                setElemsCarrousel(elems);
+                setTotalItems(elems.length);
+            } else {
+                // récupérer tous les cours
+                let elems = [];
+                elems = await fetch('http://localhost:5000/api/bandeau', {
+                    method: 'GET',
+                }).then(response => response.json());
+                console.log(elems);
+                setAllElems(elems);
             }
-            setElemsCarrousel(elems);
-            setTotalItems(elems.length);
-        } else {
-            // récupérer tous les cours
-            let elems = [];
-            elems = await fetch('http://localhost:5000/api/bandeau', {
-                method: 'GET',
-            }).then(response => response.json());
-            console.log(elems);
-            setAllElems(elems);
         }
         setModifyElems(!modifyElems);
     }
@@ -179,7 +181,7 @@ function Carrousel() {
             </div>
             {isAdmin && 
                 <div id="modification_cours">
-                    {modifyElems ? <button id="valider" onClick={handleModify}>Valider les modifications</button> : <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>}
+                    {modifyElems ? <><button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button><button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button></> : <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>}
                     {modifyElems &&
                         <div id="cours_carrousel" onClick={handleModifyElem}>
                             {allElems.map((elem, index) => (
