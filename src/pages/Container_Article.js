@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useQuill } from 'react-quilljs';
+import { Quill } from 'react-quill';  // ou 'default' si tu as besoin du composant par défaut
 import 'react-quill/dist/quill.snow.css';
 
 const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => {
