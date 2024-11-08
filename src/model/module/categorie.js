@@ -1,5 +1,5 @@
 // categorie.js
-const {Categorie, SousCategorie} = require('../bd');
+const { Categorie, SousCategorie } = require('../bd');
 const { verifyToken, verifyAdmin } = require('../auth');
 const { Sequelize } = require('sequelize');
 
@@ -9,7 +9,7 @@ module.exports = (app) => {
             const categories = await Categorie.findAll();
             res.json(categories);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching categories'});
+            res.status(500).json({ error: 'An error occurred while fetching categories' });
         }
     });
 
@@ -30,7 +30,7 @@ module.exports = (app) => {
                     [Sequelize.Op.notIn]: enfantIds
                 }
             }
-        });   
+        });
 
         const resultat = [];
         for (const p of parent) {
@@ -43,7 +43,7 @@ module.exports = (app) => {
             for (const sc of sous_categories) {
                 enfants.push(await Categorie.findByPk(sc.id_enfant));
             }
-            resultat.push({ id: p.id, nom : p.nom, enfants: enfants });
+            resultat.push({ id: p.id, nom: p.nom, enfants: enfants });
         }
         res.json(resultat);
     });
@@ -54,10 +54,10 @@ module.exports = (app) => {
             if (categorie) {
                 res.json(categorie);
             } else {
-                res.status(404).json({error: 'Category not found'});
+                res.status(404).json({ error: 'Category not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching category'});
+            res.status(500).json({ error: 'An error occurred while fetching category' });
         }
     });
 
@@ -70,7 +70,7 @@ module.exports = (app) => {
             });
             res.json(categorie);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while creating category'});
+            res.status(500).json({ error: 'An error occurred while creating category' });
         }
     });
 
@@ -85,10 +85,10 @@ module.exports = (app) => {
                 });
                 res.json(categorie);
             } else {
-                res.status(404).json({error: 'Category not found'});
+                res.status(404).json({ error: 'Category not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while updating category'});
+            res.status(500).json({ error: 'An error occurred while updating category' });
         }
     });
 
@@ -99,10 +99,10 @@ module.exports = (app) => {
                 await categorie.destroy();
                 res.json(categorie);
             } else {
-                res.status(404).json({error: 'Category not found'});
+                res.status(404).json({ error: 'Category not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while deleting category'});
+            res.status(500).json({ error: 'An error occurred while deleting category' });
         }
     });
 }

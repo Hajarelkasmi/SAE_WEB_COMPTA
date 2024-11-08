@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
-import {refresh} from "./RefreshToken";
+import { refresh } from "./RefreshToken";
 
 const Create_Page = () => {
     const { id_categorie, id_page } = useParams();
@@ -13,8 +13,8 @@ const Create_Page = () => {
     const [classes, setClasses] = useState([]);
     const [classe_selected, setClasse_selected] = useState([]);
     const [estCree, setEstCree] = useState(false);
-    const navigate = useNavigate(); 
-    
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchClasses = async () => {
@@ -70,18 +70,18 @@ const Create_Page = () => {
         if (localStorage.getItem('token')) {
             refresh();
         }
-            
+
         fetchClasses();
     }
-    , [id_categorie, id_page]);
+        , [id_categorie, id_page]);
 
     const addClasseSelected = (id) => {
         const classe = classes.find((classe) => classe.id === parseInt(id));
         if (!classe_selected.includes(classe)) {
             setClasse_selected([...classe_selected, classe]);
         }
-    } 
- 
+    }
+
     const handleCreate = async () => {
         const token = localStorage.getItem('token');
         try {
@@ -129,7 +129,7 @@ const Create_Page = () => {
             setImage('');
             setImageFile(null);
             navigate(`/page/${newPage.id}`);
-                
+
             if (id_page) {
                 await modifClasses();
             } else {
@@ -291,58 +291,63 @@ const Create_Page = () => {
     }
 
     return (
-        <div className="DivCreateMain">
-            {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
-            <div className="DivCreate">
-                <label>
-                    Titre de la page :
-                </label>
-                <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Description de la page:
-                </label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Image de fond de la page:
-                </label>
-                <h3>Image actuelle</h3>
-                {image && <img src={"/static/image/"+image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
-                <input type="text" value={imageFile ? imageFile.name : ''}/>
-                <input type="file" onChange={handleImageChange} accept="image/*" />
+        <div className="div-page-all-content">
+            <div id="img-container">
                 {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
             </div>
-            <div className="DivCreate">
-                <label>
-                    Est public :
-                </label>
-                <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
+            <div className="DivCreateMain">
+                {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
+                <div className="DivCreate">
+                    <label>
+                        Titre de la page :
+                    </label>
+                    <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Description de la page:
+                    </label>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Image de fond de la page:
+                    </label>
+                    <h3>Image actuelle</h3>
+                    {image && <img src={"/static/image/" + image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
+                    <input type="text" value={imageFile ? imageFile.name : ''} />
+                    <input type="file" onChange={handleImageChange} accept="image/*" />
+                    {/* {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />} */}
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Est public :
+                    </label>
+                    <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Classe :
+                    </label>
+                    <select onChange={(e) => addClasseSelected(e.target.value)}>
+                        <option value="" hidden>Choisissez une classe</option>
+                        {classes.map((classe) => (
+                            <option value={classe.id}>{classe.nom}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Classes sélectionnées :
+                    </label>
+                    <ul>
+                        {classe_selected.map((classe) => (
+                            <li key={classe.id}>{classe.nom}<button onClick={() => setClasse_selected(classe_selected.filter((classe_selected) => classe_selected !== classe))}>Supprimer</button></li>
+                        ))}
+                    </ul>
+                </div>
+                <button onClick={handleCreate} className="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
             </div>
-            <div className="DivCreate">
-                <label>
-                    Classe :
-                </label>
-                <select onChange={(e) => addClasseSelected(e.target.value)}>
-                    <option value="" hidden>Choisissez une classe</option>
-                    {classes.map((classe) => (
-                        <option value={classe.id}>{classe.nom}</option>
-                    ))}
-                </select>
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Classes sélectionnées :
-                </label>
-                <ul>
-                    {classe_selected.map((classe) => (
-                        <li key={classe.id}>{classe.nom}<button onClick={() => setClasse_selected(classe_selected.filter((classe_selected) => classe_selected !== classe))}>Supprimer</button></li> 
-                    ))}
-                </ul>
-            </div>
-            <button onClick={handleCreate} className="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
         </div>
     );
 }
