@@ -211,8 +211,8 @@ function Carrousel() {
         if (elem.parentElement.id === "cours_carrousel_not_selected") {
             let id = elem.id.split("_")[1];
             let cours = allElems[id];
-            // Ajouter le cours à elemsSelected
             cours.place = elemsSelected.length;
+            // Ajouter le cours à elemsSelected
             setElemsSelected((prevSelected) => [...prevSelected, cours]);
             // Enlever le cours de elemsNotSelected
             setElemsNotSelected((prevNotSelected) =>
@@ -229,7 +229,7 @@ function Carrousel() {
             setElemsSelected((prevSelected) =>
                 prevSelected.filter(e => e.id !== cours.id)
             );
-            // Mettre à jour les places des autres cours
+            // Mettre à jour les places des autres cours de elemsSelected
             setElemsSelected((prevSelected) => {
                 const updatedSelected = prevSelected.filter(e => e.id !== cours.id);
                 updatedSelected.forEach((elem, index) => {
@@ -259,20 +259,27 @@ function Carrousel() {
             </div>
             {isAdmin && 
                 <div id="modification_cours">
-                    {modifyElems ? <><button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button><button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button></> : <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>}
-                    {modifyElems && <p>Categories sélectionnées</p>}
+                    {modifyElems ?
+                        <>
+                            <button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button>
+                            <button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button>
+                        </>
+                        :
+                        <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
+                    }
                     {modifyElems &&
                         <div id="cours_carrousel_selected" onClick={handleModifyElem}>
+                            <p>Categories sélectionnées</p>
                             {elemsSelected.map((elem) => (
-                                <button key={"cours"+elem.id} className="cours" id={"cours_"+elem.id}><ElemCarrousel key={elem.id} src={elem.src} img={elem.img} nom={elem.nom + " " + elem.place} /></button>
+                                <button key={elem.id} className="cours" id={"cours_"+elem.id}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom + " " + elem.place} /></button>
                             ))}
                         </div>
                     }
-                    {modifyElems && <p>Categories non sélectionnées</p>}
                     {modifyElems &&
                         <div id="cours_carrousel_not_selected" onClick={handleModifyElem}>
+                            <p>Categories non sélectionnées</p>
                             {elemsNotSelected.map((elem) => (
-                                <button key={"cours"+elem.id} className="cours" id={"cours_"+elem.id}><ElemCarrousel key={elem.id} src={elem.src} img={elem.img} nom={elem.nom + " " + elem.place} /></button>
+                                <button key={elem.id} className="cours" id={"cours_"+elem.id}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom + " " + elem.place} /></button>
                             ))}
                         </div>
                     }
