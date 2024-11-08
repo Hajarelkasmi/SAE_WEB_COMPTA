@@ -33,7 +33,7 @@ function Carrousel() {
     const [elemsCarrousel, setElemsCarrousel] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/carrousel', {
+        fetch('http://localhost:5000/api/categories', {
             method: 'GET',
         })
         .then(response => response.json())
@@ -54,7 +54,8 @@ function Carrousel() {
             }
             setElemsCarrousel(elems);
             setTotalItems(elems.length);
-        });
+        })
+        .catch(error => console.error(error));
     }, []);
   
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -146,8 +147,7 @@ function Carrousel() {
                             'Authorization': localStorage.getItem('token'),
                         },
                         body: JSON.stringify({est_dans_carrousel: true})
-                    });
-                    console.log(response);
+                    }).catch(error => console.error(error));
                 }
                 // enlever les cours non sélectionnés du carrousel dans la base de données
                 for (let i=0; i<allElems.length; i++) {
@@ -160,8 +160,7 @@ function Carrousel() {
                                 'Authorization': localStorage.getItem('token'),
                             },
                             body: JSON.stringify({est_dans_carrousel: false})
-                        });
-                        console.log(response);
+                        }).catch(error => console.error(error));
                     }
                 }
             } else {
@@ -169,7 +168,7 @@ function Carrousel() {
                 let elems = [];
                 elems = await fetch('http://localhost:5000/api/categories', {
                     method: 'GET',
-                }).then(response => response.json());
+                }).then(response => response.json()).catch(error => console.error(error));
                 for (let i=0; i<elems.length; i++) {
                     if (!elems[i].src || elems[i].src === null) {
                         elems[i].src = "/";
