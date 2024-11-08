@@ -42,7 +42,7 @@ function Carrousel() {
             for (let i=0; i<data.length; i++) {
                 if (data[i].est_dans_carrousel) {
                     if (!data[i].src || data[i].src === null) {
-                        data[i].src = "/";
+                        data[i].src = "/categories/"+data[i].id;
                     }
                     if (data[i].image === null) {
                         data[i].img = "/logo_bitmoji.png";
@@ -171,7 +171,7 @@ function Carrousel() {
                 }).then(response => response.json()).catch(error => console.error(error));
                 for (let i=0; i<elems.length; i++) {
                     if (!elems[i].src || elems[i].src === null) {
-                        elems[i].src = "/";
+                        elems[i].src = "/categories/"+elems[i].id;
                     }
                     if (elems[i].image === null) {
                         elems[i].img = "/logo_bitmoji.png";
