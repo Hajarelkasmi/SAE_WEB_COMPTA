@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Quill } from 'react-quill';  // ou 'default' si tu as besoin du composant par défaut
+import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
 
-const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => {
+const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
@@ -123,6 +123,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => 
         }
         handleEditRubrique();
         localStorage.removeItem('edit_rubrique');
+        window.location.reload();
     };
 
     const handleDelete = async () => {
@@ -181,10 +182,40 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => 
         return name;
     }
 
+    const handleDragStart = (event,position) => {
+        event.dataTransfer.setData('position', position);
+    };
+    
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+    
+    const handleDrop = async (event) => {
+        if (!isAdmin) {
+            return;
+        }
+        event.preventDefault();
+        const position = event.dataTransfer.getData('position');
+        const position1 = parseInt(position);
+        const position2 = parseInt(rubrique.position);
+        if (position1 === position2) {
+            return;
+        }
+        handleSwitchPosition(position1,position2);
+    };
+
+    if (isAdmin === null) {
+        (<div>loading . . . . . . . . .</div>)
+    }
+    console.log(isAdmin);
     return (
-        <div className="Div_Article">
+        <div className="Div_Article" 
+         id={`article-${rubrique.id}`} 
+         onDragOver={handleDragOver} 
+         onDrop={handleDrop}>
+        
             <div className="Div_Article_Title">
-                {isModifiable ? (
+                {isModifiable && isAdmin ? (
                     <input
                         type="text"
                         value={titre}
@@ -194,27 +225,33 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => 
                 ) : (
                     <h2>{titre}</h2>
                 )}
-                {isModifiable ? (
-                    <button onClick={handleSave}>Enregistrer</button>
-                ) : (
-                    <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
-                )}
-                <button onClick={handleDelete}>Supprimer</button>
+                {isAdmin ? (
+                    <div className="Div_Article_Buttons">
+                        isModifiable ? (
+                        <button onClick={handleSave}>Enregistrer</button>
+                        ) : (
+                        <button onClick={handleModify}>Modifier</button>
+                        )
+                        <button onClick={handleDelete}>Supprimer</button>
+                    </div>
+                ) : null}
             </div>
-            {isModifiable ? (
+            {isModifiable && isAdmin ? (
                 <div>
-                    <textarea
-                        value={description}
-                        onChange={(event) => setDescription(event.target.value)}
-                        placeholder='Description'
-                    />
-                    <div ref={quillRef} class="quill-editor" />
-                    <input
-                        type="file"
-                        onChange={handleImageChange}
-                        accept='image/*'
-                    />
-                    {imageFile ? <img src={image} alt={titre} /> : <img src={"/static/image/" + image} alt={titre} />}
+                    <div>
+                        <textarea
+                            value={description}
+                            onChange={(event) => setDescription(event.target.value)}
+                            placeholder='Description'
+                        />
+                        <div ref={quillRef} class="quill-editor" />
+                        <input
+                            type="file"
+                            onChange={handleImageChange}
+                            accept='image/*'
+                        />
+                        {imageFile ? <img src={image} alt={titre} /> : <img src={"/static/image/" + image} alt={titre} />}
+                    </div>
                 </div>
             ) : (
                 <div>
@@ -223,6 +260,16 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => 
                     {image ? <img src={"/static/image/" + image} alt={titre} /> : null}
                 </div>
             )}
+            {isAdmin ? (
+            <div className="Div_Position"
+                draggable={true && !isModifiable} 
+                onDragStart={(e) => handleDragStart(e, rubrique.position)} 
+                style={{cursor: 'move', 
+                    opacity: isModifiable ? 0.5 : 1, 
+                    backgroundColor: 'lightgrey',
+                    minHeight: '50px'}}>
+            </div> 
+            ) : null}
         </div>
     );
 };
