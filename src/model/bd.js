@@ -183,6 +183,10 @@ const Rubrique = sequelize.define('Rubrique', {
             type: DataTypes.STRING,
             allowNull: false
         },
+        position : {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         page_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
