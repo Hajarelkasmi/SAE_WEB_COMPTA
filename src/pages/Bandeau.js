@@ -27,7 +27,6 @@ function Bandeau({reseaux}) {
                 }
                 const data = await response.json();
                 setData(data);
-                console.log(data);
             }
             catch (error) {
                 console.error('Erreur:', error);

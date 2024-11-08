@@ -34,3 +34,28 @@
     height: 20vh;
     width: 20vh;
 }
+
+.cours {
+    padding: 2vh 1vw;
+}
+
+.cours .composant_carrousel {
+    height: 15vh;
+    width: 13vh;
+    margin: 0px;
+    border-radius: 2vh;
+}
+
+.cours .composant_carrousel img {
+    height: 10vh;
+    width: 10vh;
+    margin: 1vh 0px;
+}
+
+.cours .composant_carrousel p {
+    height: 3vh;
+}
+
+.cours .composant_carrousel a {
+    font-size: 1vh;
+}
