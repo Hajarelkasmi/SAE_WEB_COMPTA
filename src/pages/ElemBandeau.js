@@ -1,4 +1,4 @@
-function ElemBandeau({link, nom, enfants=[]}) {
+function ElemBandeau({link, nom, enfants=[]}, isAdmin) {
     if (enfants.length === 0) {
         return (
             <li>
@@ -9,7 +9,7 @@ function ElemBandeau({link, nom, enfants=[]}) {
     return (
     <li className="deroulant">
         <a href={link}>{nom}</a>
-        <ul className="sous">
+        <ul className="sous" style = {{ backgroundColor : isAdmin ? '#a63629' : '#1c3f59' }}>
             {enfants.map((enfant, index) => (
                 <ElemBandeau key={index} link={"/categories/" + enfant.id} nom={enfant.nom} enfants={enfant.enfants} />
             ))}

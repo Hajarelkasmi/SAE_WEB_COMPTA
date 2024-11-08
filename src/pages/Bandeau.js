@@ -55,7 +55,7 @@ function Bandeau({reseaux}) {
         <nav>
             <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
             <ul id="pages">
-                <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} />
+                <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} isAdmin={isAdmin} />
                 {data.map((elem, index) => (
                     <ElemBandeau key={index} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} />
                 ))}
