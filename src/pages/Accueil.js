@@ -6,8 +6,8 @@ import Carrousel from "./Carrousel";
 function Accueil() {
     return (
         <main>
-            <SectionTitre />
-            <PresentationAccueil />
+            {/* <SectionTitre />
+            <PresentationAccueil /> */}
             <Carrousel />
         </main>
     );

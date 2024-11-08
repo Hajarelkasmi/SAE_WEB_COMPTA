@@ -95,12 +95,6 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
-
-    est_dans_carrousel: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-    },
-    
 }, {
     tableName: 'Categorie',
     timestamps: false
@@ -380,6 +374,24 @@ const Connexion_Log = sequelize.define('Connexion_Log', {
     timestamps: false
 });
 
+const Carrousel = sequelize.define('Carrousel', {
+    id_categorie: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Categorie',
+            key: 'id'
+        }
+    },
+    place: {
+        type: DataTypes.INTEGER,
+        unique: true,
+    },
+}, {
+    tableName: 'Carrousel',
+    timestamps: false
+});
+
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
@@ -413,6 +425,9 @@ Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
 Categorie.hasMany(SousCategorie, {foreignKey: 'id_parent', onDelete: 'CASCADE'});
 SousCategorie.belongsTo(Categorie, {foreignKey: 'id_parent'});
 
+Categorie.hasOne(Carrousel, { foreignKey: 'id_categorie', onDelete: 'CASCADE' });
+Carrousel.belongsTo(Categorie, { foreignKey: 'id_categorie' });
+
 module.exports = {
     Classe,
     Etudiant,
@@ -427,5 +442,6 @@ module.exports = {
     Classe_Categorie,
     Classe_Page,
     Demande_Abonnement,
-    Connexion_Log
+    Connexion_Log,
+    Carrousel
 };
