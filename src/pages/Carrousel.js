@@ -134,8 +134,9 @@ function Carrousel() {
                     }
                 }).catch(error => console.error(error));
                 // ajouter les cours sélectionnés dans le carrousel
-                let newElems = [];
-                for (let i=0; i<elemsSelected.length; i++) {
+                let newElems = elemsSelected;
+                for (let i=0; i<newElems.length; i++) {
+                    console.log(newElems[i] + ";" + i + ";" + newElems[i].id);
                     let response = await fetch('http://localhost:5000/api/carrousel', {
                         method: 'POST',
                         headers: {
@@ -143,14 +144,14 @@ function Carrousel() {
                             'Authorization': localStorage.getItem('token'),
                         },
                         body: JSON.stringify({
-                            id_categorie: elemsSelected[i].id,
+                            id_categorie: newElems[i].id,
                             place: i
                         })
                     }).catch(error => console.error(error));
                     let data = await response.json();
+                    console.log(data);
                     // mettre l'element à jour dans newsElems
-                    elemsSelected[i].id_carrousel = data.id;
-                    newElems.push(elemsSelected[i]);
+                    newElems[i].place = data.place;
                 }
                 setElemsCarrousel(newElems);
                 setTotalItems(newElems.length);
@@ -169,10 +170,8 @@ function Carrousel() {
                     }
                 }
                 //  donner leur place depuis elemsCarrousel
-                console.log(elems);
-                console.log(elemsCarrousel);
                 for (let i=0; i<elemsCarrousel.length; i++) {
-                    let elemIndex = elems.findIndex(e => e.nom === elemsCarrousel[i].nom);
+                    let elemIndex = elems.findIndex(e => e.id === elemsCarrousel[i].id);
                     if (elemIndex !== -1) {
                         elems[elemIndex] = elemsCarrousel[i];
                     }
