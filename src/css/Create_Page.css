@@ -1,21 +1,23 @@
 .DivCreateMain {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px;
-    padding: 0;
     flex-direction: column;
     align-items: center;
+    background-color: black;
+    color : white;
+    padding: 20px;
+    min-height: 100vh;
+    
+  
 }
 
 .DivCreate {
-    display: flex;
-    flex-wrap: wrap;
+   
+    
     justify-content: center;
     margin: 20px;
     padding: 0;
     flex-direction: column;
-    align-items: center;
+  
 }
 
 .DivCreate img {
@@ -42,10 +44,23 @@
     border-radius: 5px;
     margin: 10px auto;
     padding: 0px 10px;
-    align-items: center;
+  
 }
 
 .ButtonCreate:hover {
     background-color: #D0D0D0;
     cursor: pointer;
 }
+
+.titre-create {
+
+    text-align: center;
+}
+
+.label-create {
+    color: #C61111;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    padding-right: 3%;
+}
+

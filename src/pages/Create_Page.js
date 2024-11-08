@@ -292,21 +292,21 @@ const Create_Page = () => {
 
     return (
         <div className="DivCreateMain">
-            {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
+            {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}
             <div className="DivCreate">
-                <label>
+                <label className="label-create">
                     Titre de la page :
                 </label>
                 <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
             </div>
             <div className="DivCreate">
-                <label>
+                <label className="label-create">
                     Description de la page:
                 </label>
                 <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
             </div>
             <div className="DivCreate">
-                <label>
+                <label className="label-create">
                     Image de fond de la page:
                 </label>
                 <h3>Image actuelle</h3>
@@ -316,13 +316,13 @@ const Create_Page = () => {
                 {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
             </div>
             <div className="DivCreate">
-                <label>
+                <label className="label-create">
                     Est public :
                 </label>
                 <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
             </div>
             <div className="DivCreate">
-                <label>
+                <label className="label-create">
                     Classe :
                 </label>
                 <select onChange={(e) => addClasseSelected(e.target.value)}>
@@ -333,9 +333,9 @@ const Create_Page = () => {
                 </select>
             </div>
             <div className="DivCreate">
-                <label>
+                <label className="label-create">
                     Classes sélectionnées :
-                </label>
+                </label >
                 <ul>
                     {classe_selected.map((classe) => (
                         <li key={classe.id}>{classe.nom}<button onClick={() => setClasse_selected(classe_selected.filter((classe_selected) => classe_selected !== classe))}>Supprimer</button></li> 
