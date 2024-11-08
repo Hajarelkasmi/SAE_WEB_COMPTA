@@ -10,6 +10,15 @@
   
 }
 
+.titre-create {
+
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin : 20px 0; 
+}
+
 .DivCreate {
    
     
@@ -52,10 +61,7 @@
     cursor: pointer;
 }
 
-.titre-create {
 
-    text-align: center;
-}
 
 .label-create {
     color: #C61111;
