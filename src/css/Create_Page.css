@@ -3,70 +3,107 @@
     flex-direction: column;
     align-items: center;
     background-color: black;
-    color : white;
     padding: 20px;
     min-height: 100vh;
-    
-  
 }
 
 .titre-create {
-
     text-align: center;
     color: white;
     font-size: 2rem;
     font-weight: bold;
-    margin : 20px 0; 
+    margin: 20px 0;
 }
 
 .DivCreate {
-   
-    
-    justify-content: center;
-    margin: 20px;
-    padding: 0;
+    display: flex;
     flex-direction: column;
-  
-}
-
-.DivCreate img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-
-.DivCreate input {
-    border: none;
-    border-radius: 5px;
+    align-items: flex-start;
+    width: 45%;
     margin: 10px 0;
-    width: 20vw;
 }
-
-.ButtonCreate {
-    width: auto;
-    height: 30px;
-    background-color: #F0F0F0;
-    color: black;
-    border: none;
-    border-radius: 5px;
-    margin: 10px auto;
-    padding: 0px 10px;
-  
-}
-
-.ButtonCreate:hover {
-    background-color: #D0D0D0;
-    cursor: pointer;
-}
-
-
 
 .label-create {
     color: #C61111;
     font-weight: bold;
     font-family: "Open Sans", sans-serif;
-    padding-right: 3%;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
 }
 
+.DivCreate input[type="file"] {
+    width: 100%;
+    background-color: #F0F0F0;
+    color: #C61111;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.DivCreate input[type="text"] {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.DivCreate input[type="checkbox"] {
+    accent-color: #C61111;
+    transform: scale(1.5);
+    margin-left: 10px;
+}
+
+.ButtonCreate {
+    width: auto;
+    height: 40px;
+    background-color: #F0F0F0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 0 20px;
+    margin: 20px auto;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.ButtonCreate:hover {
+    background-color: #D0D0D0;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+ul li button {
+    background-color: #C61111;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+ul li button:hover {
+    background-color: #A00000;
+}
