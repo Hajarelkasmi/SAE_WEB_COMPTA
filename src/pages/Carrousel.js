@@ -222,13 +222,21 @@ function Carrousel() {
         else if (elem.parentElement.id === "cours_carrousel_selected") {
             let id = elem.id.split("_")[1];
             let cours = allElems[id];
-            cours.place = null;
+            cours.place = undefined;
             // Ajouter le cours à elemsNotSelected
             setElemsNotSelected((prevNotSelected) => [...prevNotSelected, cours]);
             // Enlever le cours de elemsSelected
             setElemsSelected((prevSelected) =>
                 prevSelected.filter(e => e.id !== cours.id)
             );
+            // Mettre à jour les places des autres cours
+            setElemsSelected((prevSelected) => {
+                const updatedSelected = prevSelected.filter(e => e.id !== cours.id);
+                updatedSelected.forEach((elem, index) => {
+                    elem.place = index;
+                });
+                return [...updatedSelected];
+            });
         }
     }
 
