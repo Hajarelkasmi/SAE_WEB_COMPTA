@@ -40,7 +40,7 @@ function Carrousel() {
         .then(data => {
             let elems = [];
             for (let i=0; i<data.length; i++) {
-                data[i].src = "/categories/"+data[i].id_categorie;
+                data[i].src = "/categories/"+data[i].id;
                 if (data[i].image === null) {
                     data[i].img = "/logo_bitmoji.png";
                 } else {
