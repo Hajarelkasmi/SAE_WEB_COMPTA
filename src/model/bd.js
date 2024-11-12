@@ -95,6 +95,12 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
+
+    est_dans_carrousel: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    
 }, {
     tableName: 'Categorie',
     timestamps: false
@@ -175,6 +181,10 @@ const Rubrique = sequelize.define('Rubrique', {
         },
         description: {
             type: DataTypes.STRING,
+            allowNull: false
+        },
+        position : {
+            type: DataTypes.INTEGER,
             allowNull: false
         },
         page_id: {

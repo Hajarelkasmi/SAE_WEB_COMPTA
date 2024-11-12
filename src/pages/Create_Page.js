@@ -292,22 +292,15 @@ const Create_Page = () => {
 
     return (
         <div className="div-page-all-content">
-
-            {/* {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />} */}
-            {/* {image ? (
-                    <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />
-                ) : (
-                    <p>Aperçu de l'image</p>
-                )} */}
             {image ? (
                 <div id="img-container" style={{ backgroundImage: `url(${image})` }}></div>
             ) : (
                 <div id="img-container"><p>Aperçu de l'image</p></div>
             )}
             <div className="DivCreateMain">
-                {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
+                {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}
                 <div className="DivCreate">
-                    <label>
+                    <label className="label-create">
                         Titre de la page :
                     </label>
                     <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
@@ -329,13 +322,13 @@ const Create_Page = () => {
                     {image && <img src={image} alt="Aperçu de l'image" style={{ display: 'none' }} />}
                 </div>
                 <div className="DivCreate">
-                    <label>
+                    <label className="label-create">
                         Est public :
                     </label>
                     <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
                 </div>
                 <div className="DivCreate">
-                    <label>
+                    <label className="label-create">
                         Classe :
                     </label>
                     <select onChange={(e) => addClasseSelected(e.target.value)}>
@@ -346,9 +339,9 @@ const Create_Page = () => {
                     </select>
                 </div>
                 <div className="DivCreate">
-                    <label>
+                    <label className="label-create">
                         Classes sélectionnées :
-                    </label>
+                    </label >
                     <ul>
                         {classe_selected.map((classe) => (
                             <li key={classe.id}>{classe.nom}<button onClick={() => setClasse_selected(classe_selected.filter((classe_selected) => classe_selected !== classe))}>Supprimer</button></li>
