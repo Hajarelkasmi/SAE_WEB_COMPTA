@@ -227,11 +227,12 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                 )}
                 {isAdmin ? (
                     <div className="Div_Article_Buttons">
-                        isModifiable ? (
+                        { isModifiable ? (
                         <button onClick={handleSave}>Enregistrer</button>
                         ) : (
                         <button onClick={handleModify}>Modifier</button>
                         )
+                        }
                         <button onClick={handleDelete}>Supprimer</button>
                     </div>
                 ) : null}
