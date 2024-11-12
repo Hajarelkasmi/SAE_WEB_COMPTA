@@ -31,7 +31,8 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/pages', verifyToken, verifyAdmin, async (req, res) => {
+    // app.post('/api/pages', verifyToken, verifyAdmin, async (req, res) => {
+    app.post('/api/pages', async (req, res) => {
         try {
             const page = await Page.create({
                 nom: req.body.nom,

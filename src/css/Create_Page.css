@@ -53,7 +53,23 @@
 #img-container {
     height: 25vh;
     overflow: hidden;
-    border: black dashed;
+    border: black dashed medium;
     background-color: lightgray;
+    align-content: center;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-container>img {
     width: 100%;
+}
+
+#img-container>p {
+    color: black;
+    text-align: center;
+    opacity: 50%;
+    font-size: 4vh;
+    font-weight: bold;
 }

@@ -292,9 +292,18 @@ const Create_Page = () => {
 
     return (
         <div className="div-page-all-content">
-            <div id="img-container">
-                {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
-            </div>
+
+            {/* {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />} */}
+            {/* {image ? (
+                    <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />
+                ) : (
+                    <p>Aperçu de l'image</p>
+                )} */}
+            {image ? (
+                <div id="img-container" style={{ backgroundImage: `url(${image})` }}></div>
+            ) : (
+                <div id="img-container"><p>Aperçu de l'image</p></div>
+            )}
             <div className="DivCreateMain">
                 {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
                 <div className="DivCreate">
@@ -311,13 +320,13 @@ const Create_Page = () => {
                 </div>
                 <div className="DivCreate">
                     <label>
-                        Image de fond de la page:
+                        Image d'en-tête:
                     </label>
                     <h3>Image actuelle</h3>
                     {image && <img src={"/static/image/" + image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
                     <input type="text" value={imageFile ? imageFile.name : ''} />
                     <input type="file" onChange={handleImageChange} accept="image/*" />
-                    {/* {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />} */}
+                    {image && <img src={image} alt="Aperçu de l'image" style={{ display: 'none' }} />}
                 </div>
                 <div className="DivCreate">
                     <label>
@@ -348,7 +357,7 @@ const Create_Page = () => {
                 </div>
                 <button onClick={handleCreate} className="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
             </div>
-        </div>
+        </div >
     );
 }
 
