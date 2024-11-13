@@ -2,14 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../css/Categorie.css';
 import {Button} from "react-bootstrap";
+import {checkAdmin} from "./CheckAdmin";
 
 const Categorie = () => {
     const { id_categorie } = useParams();
     const [categorie, setCategorie] = useState(null);
     const [pages, setPages] = useState([]);
     const [sousCategories, setSousCategories] = useState([]);
+    const [isAdmin, setisAdmin] = useState(null);
 
     useEffect(() => {
+
+        const fetchAdminStatus = async () => {
+            const adminStatus = await checkAdmin();
+            setisAdmin(adminStatus);
+        }
+        fetchAdminStatus();
+
         const fetchData = async () => {
             try {
                 const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`);
@@ -47,7 +56,8 @@ const Categorie = () => {
 
     return (
         <div className="categorie">
-            <Button href={`/categories/${id_categorie}/edit`}>Modifier</Button>
+            {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
+            {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier</Button>}
             <h1>{categorie?.nom}</h1>
             <p>{categorie?.description}</p>
             <h2>Sous-catégories :</h2>
@@ -55,21 +65,21 @@ const Categorie = () => {
             <ul>
                 {sousCategories.map(sc => (
                     <li key={sc.id}>
-                        <Link to={`/categories/${sc.id}`}>{sc.nom}</Link>
+                        <Link className={"cat_link"} to={`/categories/${sc.id}`}>{sc.nom}</Link>
                     </li>
                 ))}
             </ul>
-            <a href={`/categories/${id_categorie}/create`}>Créer une nouvelle sous-catégorie</a>
+            {isAdmin && <a className={"cat_link"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</a>}
             <h2>Pages :</h2>
             {pages.length === 0 && <p>Aucune page trouvée</p>}
             <ul>
                 {pages.map(page => (
                     <li key={page.id}>
-                        <Link to={`/page/${page.id}`}>{page.nom}</Link>
+                        <Link className={"cat_link"} to={`/page/${page.id}`}>{page.nom}</Link>
                     </li>
                 ))}
             </ul>
-            <a href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</a>
+            {isAdmin && <a className={"cat_link"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</a>}
         </div>
     );
 }

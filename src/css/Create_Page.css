@@ -74,7 +74,7 @@
     background-color: #D0D0D0;
 }
 
-select {
+.DivCreateMain select {
     width: 100%;
     padding: 10px;
     border: none;
@@ -82,19 +82,19 @@ select {
     margin: 10px 0;
 }
 
-ul {
+.DivCreateMain ul {
     list-style: none;
     padding: 0;
 }
 
-ul li {
+.DivCreateMain ul li {
     color: white;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
 
-ul li button {
+.DivCreateMain ul li button {
     background-color: #C61111;
     color: white;
     border: none;
@@ -104,7 +104,7 @@ ul li button {
     cursor: pointer;
 }
 
-ul li button:hover {
+.DivCreateMain ul li button:hover {
     background-color: #A00000;
 }
 
@@ -113,7 +113,7 @@ ul li button:hover {
     
 }
 
-textarea {
+.DivCreateMain textarea {
     width: 662px;
     height: 131px;
  }

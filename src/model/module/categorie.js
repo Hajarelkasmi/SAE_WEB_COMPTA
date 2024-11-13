@@ -112,7 +112,6 @@ module.exports = (app) => {
                 await categorie.update({
                     nom: req.body.nom,
                     description: req.body.description,
-                    est_dans_carrousel: req.body.est_dans_carrousel,
                     image: req.body.image,
                     est_public: req.body.est_public
                 });
