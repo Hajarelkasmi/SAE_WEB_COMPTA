@@ -10,6 +10,7 @@ const Categorie = () => {
     const [pages, setPages] = useState([]);
     const [sousCategories, setSousCategories] = useState([]);
     const [isAdmin, setisAdmin] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
 
@@ -23,6 +24,7 @@ const Categorie = () => {
             try {
                 const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`);
                 if (!response.ok) {
+                    setError('Erreur lors de la récupération de la catégorie : ' + response.statusText);
                     throw new Error('Erreur lors de la récupération de la catégorie');
                 }
                 const data = await response.json();
@@ -53,6 +55,10 @@ const Categorie = () => {
         fetchData();
     }
     , [id_categorie]);
+
+    if (error) {
+        return <div style={{color: 'red'}}>{error}</div>;
+    }
 
     return (
         <div className="categorie">
