@@ -37,7 +37,7 @@ module.exports = (app) => {
             where: { page_id: req.body.page_id },
             order: [['position', 'DESC']]
         });
-        const position = max_position_rubrique ? max_position_rubrique.position + 1 : 1;
+        const position = max_position_rubrique ? max_position_rubrique.position + 1 : 0;
         const rubrique = await Rubrique.create({
             nom: req.body.nom, 
             description: req.body.description,
@@ -47,6 +47,7 @@ module.exports = (app) => {
         const article = await Article.create({ 
             texte: req.body.texte, 
             image: req.body.image,
+            alt_image: req.body.alt_image,
             rubrique_id: rubrique.id
         });
         res.json(article);

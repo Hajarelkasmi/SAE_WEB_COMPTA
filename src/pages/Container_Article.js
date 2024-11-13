@@ -207,10 +207,10 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
     if (isAdmin === null) {
         (<div>loading . . . . . . . . .</div>)
     }
-    console.log(isAdmin);
+    
     return (
         <div className="Div_Article" 
-         id={`article-${rubrique.id}`} 
+         id={`article-${rubrique.rubrique_id}`}
          onDragOver={handleDragOver} 
          onDrop={handleDrop}>
         
