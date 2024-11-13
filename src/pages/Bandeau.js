@@ -48,6 +48,7 @@ function Bandeau({ reseaux }) {
                         <ElemBandeau key={index} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} isAdmin={isAdmin} />
                     ))}
                     <ElemBandeau link="/blog" nom="Blog" enfants={[]} isAdmin={isAdmin} />
+                    {isAdmin ? <ElemBandeau link="/admin" nom="Admin" enfants={[ {nom: 'Catégories', link: '/admin/categories'}]} isAdmin={isAdmin} /> : ''}
                     {localStorage.getItem('token') ? <ElemBandeau link="/deconnexion" nom="Déconnexion" enfants={[]} isAdmin={isAdmin} /> : <ElemBandeau link="/connexion" nom="Connexion" enfants={[]} isAdmin={isAdmin} />}
                 </ul>
                 <ul id="reseaux">

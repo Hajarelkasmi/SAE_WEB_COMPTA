@@ -11,7 +11,9 @@ function ElemBandeau({ link, nom, enfants = [], isAdmin = false }) {
             <a href={link}>{nom}</a>
             <ul className="sous" style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
                 {enfants.map((enfant, index) => (
-                    <ElemBandeau key={index} link={"/categories/" + enfant.id} nom={enfant.nom} enfants={enfant.enfants} isAdmin={isAdmin} />
+                    (enfant.link) ? 
+                        <ElemBandeau key={index} link={enfant.link} nom={enfant.nom} enfants={enfant.enfants} isAdmin={isAdmin} /> 
+                    :  <ElemBandeau key={index} link={"/categories/" + enfant.id} nom={enfant.nom} enfants={enfant.enfants} isAdmin={isAdmin} />
                 ))}
             </ul>
         </li>
