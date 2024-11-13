@@ -375,6 +375,11 @@ const Connexion_Log = sequelize.define('Connexion_Log', {
 });
 
 const Carrousel = sequelize.define('Carrousel', {
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: false
+    },
     id_categorie: {
         type: DataTypes.INTEGER,
         allowNull: false,
