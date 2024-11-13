@@ -41,7 +41,8 @@ const Main_Page = () => {
                     lien: lien.lien,
                     type: "lien",
                     rubrique_id: lien.rubrique_id,
-                    page_id : lien.Rubrique.page_id
+                    page_id : lien.Rubrique.page_id,
+                    position : lien.Rubrique.position
                 }));
 
                 const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`);
@@ -73,7 +74,8 @@ const Main_Page = () => {
                     lien: video.lien,
                     type: "video",
                     rubrique_id: video.rubrique_id,
-                    page_id : video.Rubrique.page_id
+                    page_id : video.Rubrique.page_id,
+                    position : video.Rubrique.position
                 }));
 
                 const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
@@ -89,14 +91,14 @@ const Main_Page = () => {
                     lien_fichier: exercice.lien_fichier,
                     type: "exercice",
                     rubrique_id: exercice.rubrique_id,
-                    page_id : exercice.Rubrique.page_id
+                    page_id : exercice.Rubrique.page_id,
+                    position : exercice.Rubrique.position
                 }));
 
                 const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouvelles_videos, ...nouveaux_exercices];
                 setRubriques(nouvelles_rubriques);
                 const rubriques_triees = nouvelles_rubriques.sort((a, b) => a.position - b.position);
                 setRubriques(rubriques_triees);
-                
                 const admin = await checkAdmin();
                 setIsAdmin(admin);
             } catch (error) {
@@ -169,7 +171,8 @@ const Main_Page = () => {
                     description: '',
                     texte: '',
                     image: '',
-                    page_id: id
+                    alt_image: '',
+                    page_id: id,
                 }),
             });
 
@@ -190,9 +193,11 @@ const Main_Page = () => {
                 type: "article",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                position: result.position
             }]);
             setActiveRubrique(result.rubrique_id);
+            setIsChoosingRubrique(false);
 
             
         } catch (error) {
@@ -321,7 +326,6 @@ const Main_Page = () => {
     const handleSauvegarderPosition = async (rubriques) => {
         const token = localStorage.getItem('token');
         try {
-            console.log("sauvegarde");
             for (let i = 0; i < rubriques.length; i++) {
                 const rubrique = rubriques[i];
                 if (rubrique.positionModifiee) {
