@@ -53,7 +53,6 @@ const Create_Categorie = () => {
             const formData = new FormData();
             formData.append('nom', titre);
             formData.append('description', description);
-            formData.append('image', images);
             formData.append('est_public', estPublic);
 
             const response = await fetch(url, {
@@ -181,7 +180,7 @@ const Create_Categorie = () => {
                     <h3>Image actuelle</h3>
                     {image && <img src={"/static/image/"+image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
                     <input type="text" value={imageFile ? imageFile.name : ''}/>
-                    <input type="file" onChange={handleImageChange} accept="image/*" />
+                    <input type="file" onChange={handleImageChange} accept="image/*" required />
                     {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
                 </label>
                 <label>
