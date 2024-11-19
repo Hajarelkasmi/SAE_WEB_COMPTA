@@ -1,5 +1,6 @@
 const { Etudiant, Classe } = require('../bd');
 const { verifyToken, verifyAdmin, authenticate } = require('../auth');
+const { Cryptage } = require('../cryptage');
 
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
@@ -61,11 +62,12 @@ module.exports = (app) => {
 
     app.post('/api/register', async (req, res) => {
         try {
+            const crypted_password = await Cryptage(req.body.mot_de_passe);
             const etudiant = await Etudiant.create({
                 nom: req.body.nom,
                 prenom: req.body.prenom,
                 mail: req.body.mail,
-                mot_de_passe: req.body.mot_de_passe,
+                mot_de_passe: crypted_password,
                 classe_id: req.body.classe_id,
                 est_abonne: 0,
                 est_admin: 0
