@@ -268,12 +268,12 @@ function Carrousel() {
                 {elemsCarrousel
                   .slice(currentIndex, currentIndex + visibleItemsCount)
                   .map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
                   ))}
                 {elemsCarrousel
                   .slice(0, depassement)
                   .map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
                   ))}
                 <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
             </div>
