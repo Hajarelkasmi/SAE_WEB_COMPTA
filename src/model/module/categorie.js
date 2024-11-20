@@ -61,7 +61,8 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
+    // app.post('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
+    app.post('/api/categories', async (req, res) => {
         try {
             const categorie = await Categorie.create({
                 nom: req.body.nom,
