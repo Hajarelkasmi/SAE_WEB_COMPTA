@@ -132,9 +132,6 @@ ul li button:hover {
     background-color: #A00000;
 }
 
-
-@media screen and (min-width:1000px) and (max-width: 1400px) {}
-
 textarea {
     width: 662px;
     height: 131px;
