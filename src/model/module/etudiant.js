@@ -7,6 +7,7 @@ module.exports = (app) => {
         try {
         const etudiants = await Etudiant.findAll(
             {
+                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin'],
                 include: {
                     model: Classe,
                     attributes: ['nom']
@@ -85,12 +86,14 @@ module.exports = (app) => {
     app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
+            const crypted_password = await Cryptage(req.body.mot_de_passe);
             if (etudiant) {
+                console.log(req.crypted_password);
                 await etudiant.update({
                     nom: req.body.nom,
                     prenom: req.body.prenom,
                     mail: req.body.mail,
-                    mot_de_passe: req.body.mot_de_passe,
+                    mot_de_passe: crypted_password,
                     classe_id: req.body.classe_id,
                     est_abonne: req.body.est_abonne,
                     est_admin: req.body.est_admin
