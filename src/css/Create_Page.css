@@ -82,19 +82,19 @@ select {
     margin: 10px 0;
 }
 
-ul {
+.DivCreate ul {
     list-style: none;
     padding: 0;
 }
 
-ul li {
+.DivCreate ul li {
     color: white;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
 
-ul li button {
+.DivCreate ul li button {
     background-color: #C61111;
     color: white;
     border: none;
@@ -104,13 +104,8 @@ ul li button {
     cursor: pointer;
 }
 
-ul li button:hover {
+.DivCreate ul li button:hover {
     background-color: #A00000;
-}
-
-
-@media screen and (min-width:1000px) and (max-width: 1400px) {
-    
 }
 
 textarea {
