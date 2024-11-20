@@ -39,14 +39,14 @@ function Carrousel() {
         .then(response => response.json())
         .then(data => {
             let elems = [];
-            for (let i=0; i<data.length; i++) {
-                data[i].src = "/categories/"+data[i].id;
-                if (data[i].image === null) {
-                    data[i].img = "/logo_bitmoji.png";
+            for (const element of data) {
+                element.src = "/categories/"+element.id;
+                if (element.image === null) {
+                    element.img = "/logo_bitmoji.png";
                 } else {
-                    data[i].img = data[i].image;
+                    element.img = element.image;
                 }
-                elems.push(data[i]);
+                elems.push(element);
             }
             setElemsCarrousel(elems);
             setTotalItems(elems.length);
@@ -159,19 +159,19 @@ function Carrousel() {
                 elems = await fetch('http://localhost:5000/api/categories', {
                     method: 'GET',
                 }).then(response => response.json()).catch(error => console.error(error));
-                for (let i=0; i<elems.length; i++) {
-                    elems[i].src = "/categories/"+elems[i].id;
-                    if (elems[i].image === null) {
-                        elems[i].img = "/logo_bitmoji.png";
+                for (const element of elems) {
+                    element.src = "/categories/"+element.id;
+                    if (element.image === null) {
+                        element.img = "/logo_bitmoji.png";
                     } else {
-                        elems[i].img = elems[i].image;
+                        element.img = element.image;
                     }
                 }
                 //  donner leur place depuis elemsCarrousel
-                for (let i=0; i<elemsCarrousel.length; i++) {
-                    let elemIndex = elems.findIndex(e => e.id === elemsCarrousel[i].id);
+                for (const element of elemsCarrousel) {
+                    let elemIndex = elems.findIndex(e => e.id === element.id);
                     if (elemIndex !== -1) {
-                        elems[elemIndex] = elemsCarrousel[i];
+                        elems[elemIndex] = element;
                     }
                 }
                 setAllElems(elems);
@@ -184,12 +184,12 @@ function Carrousel() {
         // mettre dans elemsSelected et elemsNotSelected les cours déjà dans le carrousel et ceux qui ne le sont pas
         let selected = [];
         let notSelected = [];
-        for (let i=0; i<allElems.length; i++) {
-            let elemIndex = elemsCarrousel.findIndex(e => e.nom === allElems[i].nom);
+        for (const element of allElems) {
+            let elemIndex = elemsCarrousel.findIndex(e => e.id === element.id);
             if (elemIndex !== -1) {
-                selected.push(allElems[i]);
+                selected.push(element);
             } else {
-                notSelected.push(allElems[i]);
+                notSelected.push(element);
             }
         }
         // trier les éléments selectionnés par place
@@ -198,7 +198,7 @@ function Carrousel() {
         setElemsNotSelected(notSelected);
     }, [allElems]);
 
-    function handleModifyElem(event) {
+    async function handleModifyElem(event) {
         // trouver le bouton cliqué
         let elem = event.target;
         while (elem.tagName !== "BUTTON") {
@@ -208,7 +208,7 @@ function Carrousel() {
         // si la div est elems_carrousel_not_selected
         if (elem.parentElement.id === "cours_carrousel_not_selected") {
             let id = elem.id.split("_")[1];
-            let cours = allElems[id];
+            let cours = allElems.find(e => e.id === parseInt(id));
             if (cours === undefined) {return;}
             cours.place = elemsSelected.length;
             // Ajouter le cours à elemsSelected
@@ -220,7 +220,7 @@ function Carrousel() {
         }
         else if (elem.parentElement.id === "cours_carrousel_selected") {
             let id = elem.id.split("_")[1];
-            let cours = allElems[id];
+            let cours = allElems.find(e => e.id === parseInt(id));
             if (cours === undefined) {return;}
             cours.place = undefined;
             // Ajouter le cours à elemsNotSelected
@@ -268,12 +268,12 @@ function Carrousel() {
                 {elemsCarrousel
                   .slice(currentIndex, currentIndex + visibleItemsCount)
                   .map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
                   ))}
                 {elemsCarrousel
                   .slice(0, depassement)
                   .map((elem, index) => (
-                    <ElemCarrousel key={index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
                   ))}
                 <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
             </div>
@@ -288,13 +288,13 @@ function Carrousel() {
                         <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
                     }
                     {modifyElems &&
-                        <div id="cours_carrousel_selected" onClick={handleModifyElem}>
+                        <div id="cours_carrousel_selected">
                             <p>Categories sélectionnées</p>
                             {elemsSelected.map((elem) => (
                                 <>
                                 {elem.place !== 0 && 
                                     <button onClick={() => handleMoveElem(elem.id, 'left')}>←</button>}
-                                <button key={elem.id} className="cours" id={"cours_"+elem.id}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
+                                <button key={elem.id} className="cours" id={"cours_"+elem.id} onClick={handleModifyElem}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
                                 {elem.place !== elemsSelected.length-1 &&
                                     <button onClick={() => handleMoveElem(elem.id, 'right')}>→</button>}
                                 </>
@@ -302,10 +302,10 @@ function Carrousel() {
                         </div>
                     }
                     {modifyElems &&
-                        <div id="cours_carrousel_not_selected" onClick={handleModifyElem}>
+                        <div id="cours_carrousel_not_selected">
                             <p>Categories non sélectionnées</p>
                             {elemsNotSelected.map((elem) => (
-                                <button key={elem.id} className="cours" id={"cours_"+elem.id}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
+                                <button key={elem.id} className="cours" id={"cours_"+elem.id} onClick={handleModifyElem}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
                             ))}
                         </div>
                     }
