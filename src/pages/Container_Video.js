@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique }) => {
+const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
@@ -77,10 +77,39 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique }) => {
         }
     }
 
+    const handleDragStart = (event,position) => {
+        event.dataTransfer.setData('position', position);
+    };
+    
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+    
+    const handleDrop = async (event) => {
+        if (!isAdmin) {
+            return;
+        }
+        event.preventDefault();
+        const position = event.dataTransfer.getData('position');
+        const position1 = parseInt(position);
+        const position2 = parseInt(rubrique.position);
+        if (position1 === position2) {
+            return;
+        }
+        handleSwitchPosition(position1,position2);
+    };
+
+    if (isAdmin === null) {
+        (<div>loading . . . . . . . . .</div>)
+    }
+
     return (
-            <div className="Div_Video">
+            <div className="Div_Video"
+         id={`article-${rubrique.rubrique_id}`}
+         onDragOver={handleDragOver} 
+         onDrop={handleDrop}>
                 <div className="Div_Video_Title">
-                    {isModifiable ? (
+                    {isModifiable && isAdmin ? (
                         <input
                             type="text"
                             value={titre}
@@ -90,15 +119,19 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique }) => {
                     ) : (
                         <h2>{titre}</h2>
                     )}
-                    {isModifiable ? (
-                        <button onClick={handleSave}>Enregistrer</button>
-                    ) : (
-                        <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
-                    )}
-                    <button onClick={handleDelete}>Supprimer</button>
+                    { isAdmin ? (
+                    <div className="Div_Video_Buttons">
+                        {isModifiable ? (
+                            <button onClick={handleSave}>Enregistrer</button>
+                        ) : (
+                            <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
+                        )}
+                        <button onClick={handleDelete}>Supprimer</button>
+                    </div>
+                    ) : null}
                 </div>    
             <div className="Div_Video_Content">
-            {isModifiable ? (
+            {isModifiable && isAdmin ? (
                 <input
                     type="text"
                     value={lien}
@@ -116,7 +149,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique }) => {
                     allowFullScreen
                 ></iframe>
             )}
-            {isModifiable ? (
+            {isModifiable && isAdmin ? (
                 <textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
@@ -127,6 +160,17 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique }) => {
             )}
 
         </div>
+            {isAdmin ? (
+            <div className="Div_Position"
+                draggable={true && !isModifiable} 
+                onDragStart={(e) => handleDragStart(e, rubrique.position)} 
+                style={{cursor: 'move', 
+                    opacity: isModifiable ? 0.5 : 1, 
+                    backgroundColor: 'lightgrey',
+                    minHeight: '50px'}}>
+            </div> 
+            ) : null}
+
         </div>
     );
 };

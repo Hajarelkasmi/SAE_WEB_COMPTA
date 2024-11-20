@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique }) => {
+const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
@@ -66,10 +66,39 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique }) => {
         }
     }
 
+    const handleDragStart = (event,position) => {
+        event.dataTransfer.setData('position', position);
+    };
+    
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+    
+    const handleDrop = async (event) => {
+        if (!isAdmin) {
+            return;
+        }
+        event.preventDefault();
+        const position = event.dataTransfer.getData('position');
+        const position1 = parseInt(position);
+        const position2 = parseInt(rubrique.position);
+        if (position1 === position2) {
+            return;
+        }
+        handleSwitchPosition(position1,position2);
+    };
+
+    if (isAdmin === null) {
+        (<div>loading . . . . . . . . .</div>)
+    }
+
     return (
-            <div className="Div_Lien">
+        <div className="Div_Lien"
+         id={`article-${rubrique.rubrique_id}`}
+         onDragOver={handleDragOver} 
+         onDrop={handleDrop}>
                 <div className="Div_Lien_Title">
-                    {isModifiable ? (
+                    {isModifiable && isAdmin ? (
                         <input
                             type="text"
                             value={titre}
@@ -79,14 +108,18 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique }) => {
                     ) : (
                         <h2>{titre}</h2>
                     )}
-                    {isModifiable ? (
-                        <button onClick={handleSave}>Enregistrer</button>
-                    ) : (
-                        <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
-                    )}
-                    <button onClick={handleDelete}>Supprimer</button>
+                    {isAdmin ? (
+                    <div className="Div_Liens_Buttons">
+                        {isModifiable ? (
+                            <button onClick={handleSave}>Enregistrer</button>
+                        ) : (
+                            <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
+                        )}
+                        <button onClick={handleDelete}>Supprimer</button>
+                    </div>
+                    ) : null}
                 </div>            
-            {isModifiable ? (
+            {isModifiable && isAdmin ? (
                 <textarea
                     value={description}
                     onChange={(event) => setDescription(event.target.value)}
@@ -95,7 +128,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique }) => {
             ) : (
                 <p>{description}</p>
             )}
-            {isModifiable ? (
+            {isModifiable && isAdmin ? (
                 <input
                     type="text"
                     value={lien}
@@ -105,6 +138,16 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique }) => {
             ) : (
                 <a href={lien}>{lien}</a>
             )}
+            {isAdmin ? (
+            <div className="Div_Position"
+                draggable={true && !isModifiable} 
+                onDragStart={(e) => handleDragStart(e, rubrique.position)} 
+                style={{cursor: 'move', 
+                    opacity: isModifiable ? 0.5 : 1, 
+                    backgroundColor: 'lightgrey',
+                    minHeight: '50px'}}>
+            </div> 
+            ) : null}
         </div> 
     );
     
