@@ -2,7 +2,7 @@ import '../css/Bandeau.css';
 import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
 import { useEffect, useState } from 'react';
-import {checkAdmin} from "./CheckAdmin";
+import { checkAdmin } from "./CheckAdmin";
 
 function Bandeau() {
     const [data, setData] = useState([]);
@@ -18,8 +18,6 @@ function Bandeau() {
         };
 
         fetchAdminStatus();
-
-        console.log(isAdmin);
 
         const fetchData = async () => {
             try {
@@ -67,15 +65,25 @@ function Bandeau() {
             }
         });
     };
+    useEffect(() => {
+        const sousMenus = document.querySelectorAll('.sous');
+        console.log(sousMenus);
+        sousMenus.forEach(sousMenu => {
+            sousMenu.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
+        });
+        const header = document.querySelector('header');
+        header.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
+        console.log(isAdmin);
+    }, [isAdmin, data]);
     return (
-        <header style = {{ backgroundColor : isAdmin ? '#a63629' : '#1c3f59' }}>
+        <header>
             <button className='menu-toggle'>☰</button>
             <nav>
                 <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
                 <ul id="pages">
                     {/* <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} /> */}
                     {data.map((elem) => (
-                        <ElemBandeau key={elem} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} />
+                        <ElemBandeau key={elem.id} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} />
                     ))}
                 </ul>
                 <ul id="auths">

@@ -10,8 +10,8 @@ function ElemBandeau({link, nom, enfants=[]}) {
     <li className="deroulant">
         <a href={link}>{nom}</a>
         <ul className="sous">
-            {enfants.map((enfant, index) => (
-                <ElemBandeau key={index} link={"/categories/" + enfant.id} nom={enfant.nom} enfants={enfant.enfants} />
+            {enfants.map((enfant) => (
+                <ElemBandeau key={enfant.id} link={"/categories/" + enfant.id} nom={enfant.nom} enfants={enfant.enfants} />
             ))}
         </ul>
     </li>
