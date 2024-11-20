@@ -110,19 +110,14 @@ module.exports = (app) => {
         }
     });
 
-    // app.post('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
-    app.post('/api/categories', async (req, res) => {
+    app.post('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categorie = await Categorie.create({
                 nom: req.body.nom,
                 description: req.body.description,
-                est_public: req.body.est_public,
-                // est_dans_carrousel: req.body.est_dans_carrousel
+                est_public: req.body.est_public
             });
             res.json(categorie);
-            // } catch (error) {
-            // res.status(500).json({ error: 'An error occurred while creating category' });
-            // }
         } catch (error) {
             console.error('Error creating category:', error);
             res.status(500).json({ error: 'An error occurred while creating category', details: error.message });
