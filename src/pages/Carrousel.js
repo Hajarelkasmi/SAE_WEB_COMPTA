@@ -208,7 +208,7 @@ function Carrousel() {
         // si la div est elems_carrousel_not_selected
         if (elem.parentElement.id === "cours_carrousel_not_selected") {
             let id = elem.id.split("_")[1];
-            let cours = allElems.find(e => e.id == id);
+            let cours = allElems.find(e => e.id === parseInt(id));
             if (cours === undefined) {return;}
             cours.place = elemsSelected.length;
             // Ajouter le cours à elemsSelected
@@ -220,7 +220,7 @@ function Carrousel() {
         }
         else if (elem.parentElement.id === "cours_carrousel_selected") {
             let id = elem.id.split("_")[1];
-            let cours = allElems.find(e => e.id == id);
+            let cours = allElems.find(e => e.id === parseInt(id));
             if (cours === undefined) {return;}
             cours.place = undefined;
             // Ajouter le cours à elemsNotSelected
