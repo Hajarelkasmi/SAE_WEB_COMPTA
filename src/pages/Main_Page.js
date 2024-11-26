@@ -6,7 +6,7 @@ import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
 import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
-import { checkAdmin } from './CheckAdmin';
+import { checkInfos } from '../CheckInfos';
 
 const Main_Page = () => {
     const { id } = useParams();
@@ -99,7 +99,7 @@ const Main_Page = () => {
                 setRubriques(nouvelles_rubriques);
                 const rubriques_triees = nouvelles_rubriques.sort((a, b) => a.position - b.position);
                 setRubriques(rubriques_triees);
-                const admin = await checkAdmin();
+                const admin = await checkInfos();
                 setIsAdmin(admin);
             } catch (error) {
                 setError(error);

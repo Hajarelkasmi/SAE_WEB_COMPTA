@@ -41,8 +41,13 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/isAdmin', verifyToken, async (req, res) => {
-        res.json({ isAdmin: req.isAdmin });
+    app.get('/api/infos', verifyToken, async (req, res) => {
+        const etudiant = await Etudiant.findByPk(req.userId);
+        if (etudiant) {
+            res.json({ isAdmin: etudiant.est_admin, isAbonne: etudiant.est_abonne });
+        } else {
+            res.status(404).json({ error: 'Etudiant not found' });
+        }
     });
 
     app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {

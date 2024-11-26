@@ -1,26 +1,15 @@
 import '../css/Bandeau.css';
 import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
-import {useEffect, useState} from 'react';
-import {checkAdmin} from "./CheckAdmin";
+import {useContext, useEffect, useState} from 'react';
+import {InfosContext} from "../InfosContext";
 
 function Bandeau() {
     const [data, setData] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(null);
+    const {isAdmin, isAbonne} = useContext(InfosContext);
     const [auths, setAuths] = useState([]);
 
     useEffect(() => {
-        const fetchAdminStatus = async () => {
-            try {
-                const adminStatus = await checkAdmin();
-                setIsAdmin(adminStatus);
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        };
-
-        fetchAdminStatus();
-
         const fetchData = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/bandeau');
@@ -31,16 +20,21 @@ function Bandeau() {
                 }
                 const data = await response.json();
                 setData(data);
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Erreur:', error);
             }
         };
         fetchData();
     }, []);
 
+
     // return (
     //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
 
+    window.onload = function () {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const header = document.querySelector('header');
 
     useEffect(() => {
         if (localStorage.getItem('token')) {
@@ -60,6 +54,44 @@ function Bandeau() {
         const menuToggle = document.querySelector('.menu-toggle');
         const header = document.querySelector('header');
 
+        menuToggle.addEventListener('click', function () {
+            header.classList.toggle('menu-open');
+            if (header.classList.contains('menu-open')) {
+                menuToggle.innerHTML = '✖';
+            } else {
+                menuToggle.innerHTML = '☰';
+            }
+        });
+    };
+
+    if (isAdmin === null || isAbonne === null) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <header style={{backgroundColor: isAdmin ? '#a63629' : '#1c3f59'}}>
+            <button className='menu-toggle'>☰</button>
+            <nav>
+                <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo'/></a>
+                <ul id="pages">
+                    <ElemBandeau link="/accueil" nom="Accueil" enfants={[]}/>
+                    {data.map((elem, index) => (
+                        <ElemBandeau key={index} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants}/>
+                    ))}
+                    <ElemBandeau link="/blog" nom="Blog" enfants={[]}/>
+                    {localStorage.getItem('token') ? <ElemBandeau link="/deconnexion" nom="Déconnexion" enfants={[]}/> :
+                        <ElemBandeau link="/connexion" nom="Connexion" enfants={[]}/>
+
+                    }
+                </ul>
+                <ul id="reseaux">
+                    {reseaux.map((elem, index) => (
+                        <ElemReseau key={index} img={elem.img} link={elem.link}/>
+                    ))}
+                </ul>
+            </nav>
+        </header>
+    );
         if(!menuToggle){
             return;
         }
