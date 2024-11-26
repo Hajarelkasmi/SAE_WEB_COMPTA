@@ -1,5 +1,5 @@
 // page.js
-const {Page} = require('../bd');
+const { Page } = require('../bd');
 const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
@@ -7,14 +7,14 @@ module.exports = (app) => {
         try {
             const categorie_id = req.query.categorie_id;
             if (categorie_id) {
-                const pages = await Page.findAll({where: {categorie_id: categorie_id}});
+                const pages = await Page.findAll({ where: { categorie_id: categorie_id } });
                 res.json(pages);
             } else {
                 const pages = await Page.findAll();
                 res.json(pages);
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching pages'});
+            res.status(500).json({ error: 'An error occurred while fetching pages' });
         }
     });
 
@@ -24,10 +24,10 @@ module.exports = (app) => {
             if (page) {
                 res.json(page);
             } else {
-                res.status(404).json({error: 'Page not found'});
+                res.status(404).json({ error: 'Page not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching page'});
+            res.status(500).json({ error: 'An error occurred while fetching page' });
         }
     });
 
@@ -42,7 +42,7 @@ module.exports = (app) => {
             });
             res.json(page);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while creating page'});
+            res.status(500).json({ error: 'An error occurred while creating page' });
         }
     });
 
@@ -59,10 +59,10 @@ module.exports = (app) => {
                 });
                 res.json(page);
             } else {
-                res.status(404).json({error: 'Page not found'});
+                res.status(404).json({ error: 'Page not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while updating page'});
+            res.status(500).json({ error: 'An error occurred while updating page' });
         }
     });
 
@@ -73,10 +73,10 @@ module.exports = (app) => {
                 await page.destroy();
                 res.json(page);
             } else {
-                res.status(404).json({error: 'Page not found'});
+                res.status(404).json({ error: 'Page not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while deleting page'});
+            res.status(500).json({ error: 'An error occurred while deleting page' });
         }
     });
 }
