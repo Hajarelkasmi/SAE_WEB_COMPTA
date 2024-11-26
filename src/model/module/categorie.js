@@ -1,5 +1,5 @@
 // categorie.js
-const {Categorie, SousCategorie} = require('../bd');
+const { Categorie, SousCategorie, Carrousel } = require('../bd');
 const { verifyToken, verifyAdmin } = require('../auth');
 const { Sequelize } = require('sequelize');
 
@@ -9,7 +9,7 @@ module.exports = (app) => {
             const categories = await Categorie.findAll();
             res.json(categories);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching categories'});
+            res.status(500).json({ error: 'An error occurred while fetching categories' });
         }
     });
 
@@ -30,7 +30,7 @@ module.exports = (app) => {
                     [Sequelize.Op.notIn]: enfantIds
                 }
             }
-        });   
+        });
 
         const resultat = [];
         for (const p of parent) {
@@ -43,9 +43,58 @@ module.exports = (app) => {
             for (const sc of sous_categories) {
                 enfants.push(await Categorie.findByPk(sc.id_enfant));
             }
-            resultat.push({ id: p.id, nom : p.nom, enfants: enfants });
+            resultat.push({ id: p.id, nom: p.nom, enfants: enfants });
         }
         res.json(resultat);
+    });
+
+    app.get('/api/carrousel', async (req, res) => {
+        try {
+            const carrousel = await Carrousel.findAll();
+            // récupérer les infos des catégories
+            const resultat = [];
+            for (const c of carrousel) {
+                const categorie = await Categorie.findByPk(c.id_categorie);
+                resultat.push({
+                    id_carrousel: c.id,
+                    id: c.id_categorie,
+                    place: c.place,
+                    nom: categorie.nom,
+                    description: categorie.description,
+                    est_public: categorie.est_public,
+                    image: categorie.image,
+                    alt_image: categorie.alt_image
+                });
+            }
+            res.json(resultat);
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while fetching carrousel' });
+        }
+    });
+
+    app.delete('/api/carrousel', verifyToken, verifyAdmin, async (req, res) => {
+        try {
+            await Carrousel.destroy({
+                where: {},
+                truncate: true
+            });
+            res.json({ message: 'Carrousel deleted' });
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    });
+
+
+    app.post('/api/carrousel', verifyToken, verifyAdmin, async (req, res) => {
+        try {
+            const carrousel = await Carrousel.create({
+                id_categorie: req.body.id_categorie,
+                place: req.body.place
+            });
+            res.json(carrousel);
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while creating carrousel' });
+        }
     });
 
     app.get('/api/categories/:id', async (req, res) => {
@@ -54,10 +103,10 @@ module.exports = (app) => {
             if (categorie) {
                 res.json(categorie);
             } else {
-                res.status(404).json({error: 'Category not found'});
+                res.status(404).json({ error: 'Category not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching category'});
+            res.status(500).json({ error: 'An error occurred while fetching category' });
         }
     });
 
@@ -88,7 +137,8 @@ module.exports = (app) => {
             });
             res.json(categorie);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while creating category'});
+            console.error('Error creating category:', error);
+            res.status(500).json({ error: 'An error occurred while creating category', details: error.message });
         }
     });
 
@@ -117,10 +167,10 @@ module.exports = (app) => {
                 });
                 res.json(categorie);
             } else {
-                res.status(404).json({error: 'Category not found'});
+                res.status(404).json({ error: 'Category not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while updating category'});
+            res.status(500).json({ error: 'An error occurred while updating category' });
         }
     });
 
@@ -131,10 +181,10 @@ module.exports = (app) => {
                 await categorie.destroy();
                 res.json(categorie);
             } else {
-                res.status(404).json({error: 'Category not found'});
+                res.status(404).json({ error: 'Category not found' });
             }
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while deleting category'});
+            res.status(500).json({ error: 'An error occurred while deleting category' });
         }
     });
 }

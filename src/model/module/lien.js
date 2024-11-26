@@ -8,7 +8,7 @@ module.exports = (app) => {
             const liens = await Lien.findAll({
                 include: {
                     model: Rubrique,
-                    attributes: ['id', 'nom', 'description', 'page_id'],
+                    attributes: ['id', 'nom', 'description', 'page_id', 'position'],
                     where: page_id ? { page_id } : {},
                 },
             });
@@ -33,10 +33,16 @@ module.exports = (app) => {
     
     app.post('/api/liens', verifyToken, verifyAdmin, async (req, res) => {
         try {
+        const max_position_rubrique = await Rubrique.findOne({
+            where: { page_id: req.body.page_id },
+            order: [['position', 'DESC']]
+        });
+        const position = max_position_rubrique ? max_position_rubrique.position + 1 : 0;
         const rubrique = await Rubrique.create({
             nom: req.body.nom, 
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            position: position
         });
         const lien = await Lien.create({ 
             lien: req.body.lien, 
@@ -56,7 +62,8 @@ module.exports = (app) => {
             await rubrique.update({
             nom: req.body.nom,
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            position: req.body.position
             });
             await lien.update({ 
             lien: req.body.lien,

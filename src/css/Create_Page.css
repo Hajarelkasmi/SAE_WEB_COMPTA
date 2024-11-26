@@ -82,19 +82,21 @@
     margin: 10px 0;
 }
 
-.DivCreateMain ul {
+
+.DivCreate ul {
     list-style: none;
     padding: 0;
 }
 
-.DivCreateMain ul li {
+
+.DivCreate ul li {
     color: white;
     display: flex;
     align-items: center;
     margin-bottom: 5px;
 }
 
-.DivCreateMain ul li button {
+.DivCreate ul li button {
     background-color: #C61111;
     color: white;
     border: none;
@@ -108,12 +110,35 @@
     background-color: #A00000;
 }
 
+#img-container {
+    height: 25vh;
+    overflow: hidden;
+    border: black dashed medium;
+    background-color: lightgray;
+    align-content: center;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+}
 
-@media screen and (min-width:1000px) and (max-width: 1400px) {
-    
+#img-container>img {
+    width: 100%;
+}
+
+#img-container>p {
+    color: black;
+    text-align: center;
+    opacity: 50%;
+    font-size: 4vh;
+    font-weight: bold;
+}
+
+ul li button:hover {
+    background-color: #A00000;
 }
 
 .DivCreateMain textarea {
     width: 662px;
     height: 131px;
- }
+}

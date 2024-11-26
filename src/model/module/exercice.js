@@ -8,7 +8,7 @@ module.exports = (app) => {
         const exercices = await Exercice.findAll({
             include: {
                 model: Rubrique,
-                attributes: ['id', 'nom', 'description', 'page_id'],
+                attributes: ['id', 'nom', 'description', 'page_id', 'position'],
                 where: page_id ? { page_id } : {},
             },
         });

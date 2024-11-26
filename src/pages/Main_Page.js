@@ -6,10 +6,10 @@ import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
 import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
+import { checkAdmin } from './CheckAdmin';
 
 const Main_Page = () => {
     const { id } = useParams();
-    const isAdmin = true;
     const [isChoosingRubrique, setIsChoosingRubrique] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -17,6 +17,7 @@ const Main_Page = () => {
     const [rubriques, setRubriques] = useState([]);
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +41,8 @@ const Main_Page = () => {
                     lien: lien.lien,
                     type: "lien",
                     rubrique_id: lien.rubrique_id,
-                    page_id : lien.Rubrique.page_id
+                    page_id : lien.Rubrique.page_id,
+                    position : lien.Rubrique.position
                 }));
 
                 const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`);
@@ -56,7 +58,8 @@ const Main_Page = () => {
                     image: article.image,
                     type: "article",
                     rubrique_id: article.rubrique_id,
-                    page_id : article.Rubrique.page_id
+                    page_id : article.Rubrique.page_id,
+                    position : article.Rubrique.position
                 }));
                 
                 const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`);
@@ -71,7 +74,8 @@ const Main_Page = () => {
                     lien: video.lien,
                     type: "video",
                     rubrique_id: video.rubrique_id,
-                    page_id : video.Rubrique.page_id
+                    page_id : video.Rubrique.page_id,
+                    position : video.Rubrique.position
                 }));
 
                 const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
@@ -87,11 +91,16 @@ const Main_Page = () => {
                     lien_fichier: exercice.lien_fichier,
                     type: "exercice",
                     rubrique_id: exercice.rubrique_id,
-                    page_id : exercice.Rubrique.page_id
+                    page_id : exercice.Rubrique.page_id,
+                    position : exercice.Rubrique.position
                 }));
 
                 const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouvelles_videos, ...nouveaux_exercices];
                 setRubriques(nouvelles_rubriques);
+                const rubriques_triees = nouvelles_rubriques.sort((a, b) => a.position - b.position);
+                setRubriques(rubriques_triees);
+                const admin = await checkAdmin();
+                setIsAdmin(admin);
             } catch (error) {
                 setError(error);
             } finally {
@@ -141,6 +150,7 @@ const Main_Page = () => {
                 page_id: id,
                 rubrique_id: result.rubrique_id
             }]);
+            setActiveRubrique(result.rubrique_id);
             
         } catch (error) {
             console.error('Erreur:', error);
@@ -161,7 +171,8 @@ const Main_Page = () => {
                     description: '',
                     texte: '',
                     image: '',
-                    page_id: id
+                    alt_image: '',
+                    page_id: id,
                 }),
             });
 
@@ -182,8 +193,11 @@ const Main_Page = () => {
                 type: "article",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                position: result.position
             }]);
+            setActiveRubrique(result.rubrique_id);
+            setIsChoosingRubrique(false);
 
             
         } catch (error) {
@@ -226,6 +240,7 @@ const Main_Page = () => {
                 page_id: id,
                 rubrique_id: result.rubrique_id
             }]);
+            setActiveRubrique(result.rubrique_id);
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -268,6 +283,7 @@ const Main_Page = () => {
                 page_id: id,
                 rubrique_id: result.rubrique_id
             }]);
+            setActiveRubrique(result.rubrique_id);
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -275,6 +291,66 @@ const Main_Page = () => {
 
     const handleEditRubrique = (id) => {
         setActiveRubrique(id);
+    }
+
+    const handleSwitchPosition = (position1, position2) => {
+        if (position1 < position2) {
+            const rubriques_triees = [...rubriques];
+            let oldRubriques = rubriques_triees[position1];
+            for (let i = position1 + 1; i <= position2; i++) {
+                rubriques_triees[i].position--;
+                rubriques_triees[i].positionModifiee = true;
+                rubriques_triees[i - 1] = rubriques_triees[i];
+                rubriques_triees[i] = oldRubriques;
+                oldRubriques = rubriques_triees[i];
+            }
+            oldRubriques.position = position2;
+            oldRubriques.positionModifiee = true;
+            setRubriques(() => rubriques_triees);
+        } else {
+            const rubriques_triees = [...rubriques];
+            let oldRubriques = rubriques_triees[position1];
+            for (let i = position1 - 1; i >= position2; i--) {
+                rubriques_triees[i].position++;
+                rubriques_triees[i].positionModifiee = true;
+                rubriques_triees[i + 1] = rubriques_triees[i];
+                rubriques_triees[i] = oldRubriques;
+                oldRubriques = rubriques_triees[i];
+            }
+            oldRubriques.position = position2;
+            oldRubriques.positionModifiee = true;
+            setRubriques(() => rubriques_triees);
+        }
+    };
+
+    const handleSauvegarderPosition = async (rubriques) => {
+        const token = localStorage.getItem('token');
+        try {
+            for (let i = 0; i < rubriques.length; i++) {
+                const rubrique = rubriques[i];
+                if (rubrique.positionModifiee) {
+                    const response = await fetch(`http://localhost:5000/api/${rubrique.type}s/${rubrique.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `${token}`
+                        },
+                        body: JSON.stringify({
+                            rubrique_id: rubrique.rubrique_id,
+                            position: rubrique.position
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        const errorText = await response.text();
+                        console.error('Réponse de l\'API:', errorText);
+                        throw new Error('Erreur lors de la sauvegarde de la position');
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+        }
     }
     
     if (loading) {
@@ -303,13 +379,13 @@ const Main_Page = () => {
                 {
                     rubriques.map((rubrique) => (
                         rubrique.type === "lien" ? (
-                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
+                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
                         ) : rubrique.type === "article" ? (
-                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
+                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
                         ) : rubrique.type === "video" ? (
-                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
+                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
                         ) :  rubrique.type === "exercice" ? (
-                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} />
+                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} /> 
                         ) : null
                     ))
                 }
@@ -325,7 +401,10 @@ const Main_Page = () => {
                             <button onClick={handleAddRubriqueExercice}>Exercice</button>
                         </div>
                     ) : (
-                        <button onClick={() => setIsChoosingRubrique(true)} disabled={activeRubrique !== null}>Ajouter une rubrique</button>
+                        <div>
+                            <button onClick={() => setIsChoosingRubrique(true)} disabled={activeRubrique !== null}>Ajouter une rubrique</button>
+                            <button onClick={() => handleSauvegarderPosition(rubriques)}>Sauvegarder la position</button>
+                        </div>
                     )}
                 </div>
             )}
