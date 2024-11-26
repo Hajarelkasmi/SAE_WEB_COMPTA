@@ -1,11 +1,13 @@
 import '../css/Bandeau.css';
 import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
-import { useEffect, useState } from 'react';
-import { checkAdmin } from "./CheckAdmin";
+import {useEffect, useState} from 'react';
+import {checkAdmin} from "./CheckAdmin";
+
 function Bandeau() {
     const [data, setData] = useState([]);
     const [isAdmin, setIsAdmin] = useState(null);
+    const [auths, setAuths] = useState([]);
 
     useEffect(() => {
         const fetchAdminStatus = async () => {
@@ -36,14 +38,10 @@ function Bandeau() {
         fetchData();
     }, []);
 
-    if (isAdmin === null) {
-        return <div>Loading...</div>;
-    }
-
     // return (
-        //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
-    
-    const [auths, setAuths] = useState([]);
+    //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
+
+
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setAuths([
@@ -58,11 +56,15 @@ function Bandeau() {
         }
     }, []);
 
-    window.onload = function() {
+    window.onload = function () {
         const menuToggle = document.querySelector('.menu-toggle');
         const header = document.querySelector('header');
 
-        menuToggle.addEventListener('click', function() {
+        if(!menuToggle){
+            return;
+        }
+
+        menuToggle.addEventListener('click', function () {
             header.classList.toggle('menu-open');
             if (header.classList.contains('menu-open')) {
                 menuToggle.innerHTML = '✖';
@@ -78,23 +80,31 @@ function Bandeau() {
             sousMenu.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         });
         const header = document.querySelector('header');
-        header.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
+        if(header) {
+            header.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
+        }
         console.log(isAdmin);
     }, [isAdmin, data]);
+
+    if (isAdmin === null) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <header>
             <button className='menu-toggle'>☰</button>
             <nav>
-                <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo' /></a>
+                <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo'/></a>
                 <ul id="pages">
                     {/* <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} /> */}
                     {data.map((elem) => (
-                        <ElemBandeau key={elem.id} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants} />
+                        <ElemBandeau key={elem.id} link={"/categories/" + elem.id} nom={elem.nom}
+                                     enfants={elem.enfants}/>
                     ))}
                 </ul>
                 <ul id="auths">
-                {auths.map((elem) => (
-                        <ElemReseau key={elem.id} img={elem.img} link={elem.link} />
+                    {auths.map((elem) => (
+                        <ElemReseau key={elem.id} img={elem.img} link={elem.link}/>
                     ))}
                 </ul>
             </nav>
