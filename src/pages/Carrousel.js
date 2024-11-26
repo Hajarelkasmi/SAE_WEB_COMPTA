@@ -1,6 +1,7 @@
 import "../css/Carrousel.css";
 import ElemCarrousel from "./ElemCarrousel";
 import React, { useState, useEffect } from 'react';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 function Carrousel() {
     // Vérifier si l'utilisateur est admin
@@ -206,7 +207,7 @@ function Carrousel() {
             if (elem === null) {return;}
         }
         // si la div est elems_carrousel_not_selected
-        if (elem.parentElement.id === "cours_carrousel_not_selected") {
+        if (elem.parentElement.id === "cours_carrousel_not_selected" || elem.parentElement.parentElement.id === "cours_carrousel_not_selected") {
             let id = elem.id.split("_")[1];
             let cours = allElems.find(e => e.id === parseInt(id));
             if (cours === undefined) {return;}
@@ -258,7 +259,22 @@ function Carrousel() {
             }
             return newSelected;
         });
-    }    
+    }
+
+    const handleDragEnd = (result) => {
+        if (!result.destination) return; // Si pas de destination (élément lâché hors de la zone), on annule
+
+        setElemsSelected((prevSelected) => {
+            const updatedSelected = Array.from(prevSelected);
+            const [movedItem] = updatedSelected.splice(result.source.index, 1);
+            updatedSelected.splice(result.destination.index, 0, movedItem);
+
+            // Mise à jour des places
+            updatedSelected.forEach((elem, index) => (elem.place = index));
+
+            return updatedSelected;
+        });
+    };
 
     return (
         <section id="cours">
@@ -287,7 +303,72 @@ function Carrousel() {
                         :
                         <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
                     }
-                    {modifyElems &&
+
+                    {modifyElems && (
+                        <DragDropContext onDragEnd={handleDragEnd}>
+                            <Droppable droppableId="cours_carrousel_selected">
+                                {(provided) => (
+                                    <div
+                                        id="cours_carrousel_selected"
+                                        ref={provided.innerRef}
+                                        {...provided.droppableProps}
+                                    >
+                                        <p>Categories sélectionnées</p>
+                                        {elemsSelected.map((elem, index) => (
+                                            <Draggable
+                                                key={elem.id}
+                                                draggableId={String(elem.id)}
+                                                index={index}
+                                            >
+                                                {(provided) => (
+                                                    <div
+                                                        ref={provided.innerRef}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                    >
+                                                        <button
+                                                            key={elem.id}
+                                                            className="cours"
+                                                            id={"cours_" + elem.id}
+                                                            onClick={handleModifyElem}
+                                                        >
+                                                            <ElemCarrousel
+                                                                src={elem.src}
+                                                                img={elem.img}
+                                                                nom={elem.nom}
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        ))}
+                                        {provided.placeholder}
+                                    </div>
+                                )}
+                            </Droppable>
+                        </DragDropContext>
+                    )}
+                    {modifyElems && (
+                        <div id="cours_carrousel_not_selected">
+                            <p>Categories non sélectionnées</p>
+                            {elemsNotSelected.map((elem) => (
+                                <button
+                                    key={elem.id}
+                                    className="cours"
+                                    id={"cours_" + elem.id}
+                                    onClick={handleModifyElem}
+                                >
+                                    <ElemCarrousel
+                                        src={elem.src}
+                                        img={elem.img}
+                                        nom={elem.nom}
+                                    />
+                                </button>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* {modifyElems &&
                         <div id="cours_carrousel_selected">
                             <p>Categories sélectionnées</p>
                             {elemsSelected.map((elem) => (
@@ -308,7 +389,7 @@ function Carrousel() {
                                 <button key={elem.id} className="cours" id={"cours_"+elem.id} onClick={handleModifyElem}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
                             ))}
                         </div>
-                    }
+                    } */}
                 </div>
             }
         </section>
