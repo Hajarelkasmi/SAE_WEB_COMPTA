@@ -3,10 +3,10 @@ import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
 import { useEffect, useState } from 'react';
 import { checkAdmin } from "./CheckAdmin";
-
 function Bandeau() {
     const [data, setData] = useState([]);
     const [isAdmin, setIsAdmin] = useState(null);
+
     useEffect(() => {
         const fetchAdminStatus = async () => {
             try {
@@ -29,13 +29,19 @@ function Bandeau() {
                 }
                 const data = await response.json();
                 setData(data);
-            }
-            catch (error) {
+            } catch (error) {
                 console.error('Erreur:', error);
             }
         };
         fetchData();
     }, []);
+
+    if (isAdmin === null) {
+        return <div>Loading...</div>;
+    }
+
+    // return (
+        //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
     
     const [auths, setAuths] = useState([]);
     useEffect(() => {

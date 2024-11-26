@@ -65,7 +65,6 @@ nav li {
 
 .sous {
     display: none;
-    background-color: #1c3f59;
     position: absolute;
     width: 100%;
     z-index: 1000;

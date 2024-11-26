@@ -12,6 +12,8 @@ import Admin from "./pages/Admin";
 import Categorie from "./pages/Categorie";
 import Disconnect from "./pages/Disconnect";
 import InactivityTimer from "./InactivityTimer";
+import Create_Categorie from "./pages/Create_Categorie";
+import Gestion_Categorie from "./pages/Gestion_Categorie";
 
 function App() {
     let reseaux = [
@@ -34,7 +36,11 @@ function App() {
                         <Route exact path='/deconnexion' element={<Disconnect/>}></Route>
                         {/* Routes pour les pages */}
                         <Route exact path='/admin' element={<Admin/>}></Route>
+                        <Route exact path='/admin/categories' element={<Gestion_Categorie/>}></Route>
                         <Route exact path='/page/:id' element={<Main_Page/>}></Route>
+                        <Route exact path='/categories/create' element={<Create_Categorie/>}></Route>
+                        <Route exact path='/categories/:id_categorie/edit' element={<Create_Categorie/>}></Route>
+                        <Route exact path='/categories/:id_parent/create' element={<Create_Categorie/>}></Route>
                         <Route exact path='/categories/:id_categorie' element={<Categorie/>}></Route>
                         <Route exact path='/categories/:id_categorie/pages/:id_page' element={<Create_Page/>}></Route>
                         <Route exact path='/categories/:id_categorie/pages' element={<Create_Page/>}></Route>

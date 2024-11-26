@@ -1,6 +1,6 @@
 const checkAdmin = async () => {
     const token = localStorage.getItem('token');
-    if (token === null) {
+    if (!token) {
         return false;
     }
 
@@ -8,22 +8,21 @@ const checkAdmin = async () => {
         const response = await fetch('http://localhost:5000/api/isAdmin', {
             method: 'GET',
             headers: {
-                'Authorization': `${token}`
+                'Authorization': token
             }
         });
 
         if (!response.ok) {
-            const errorText = await response.text();
-            console.error('API response:', errorText);
-            throw new Error('Error verifying token');
+            console.error('API response:', await response.text());
+            return false;
         }
 
         const data = await response.json();
-        return(data.isAdmin === true);
+        return data.isAdmin === true;
     } catch (error) {
         console.error('Error verifying token:', error);
-        throw new Error('Error verifying token');
+        return false;
     }
 };
 
-export {checkAdmin};
+export { checkAdmin };
