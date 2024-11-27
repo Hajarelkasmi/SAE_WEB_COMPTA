@@ -164,7 +164,7 @@ function Carrousel() {
                     if (element.image === null) {
                         element.img = "/logo_bitmoji.png";
                     } else {
-                        element.img = element.image;
+                        element.img = "/static/image/"+element.image;
                     }
                 }
                 //  donner leur place depuis elemsCarrousel
