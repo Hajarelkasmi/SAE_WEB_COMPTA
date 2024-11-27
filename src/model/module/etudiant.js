@@ -7,7 +7,7 @@ module.exports = (app) => {
         try {
         const etudiants = await Etudiant.findAll(
             {
-                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin'],
+                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
                 include: {
                     model: Classe,
                     attributes: ['nom']
