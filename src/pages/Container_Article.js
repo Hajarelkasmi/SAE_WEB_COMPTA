@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';  // ou 'default' si tu as besoin du composant par défaut
 import 'react-quill/dist/quill.snow.css';
+import '../css/Container_Article.css';
 
 const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -195,11 +196,11 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique }) => 
                     <h2>{titre}</h2>
                 )}
                 {isModifiable ? (
-                    <button onClick={handleSave}>Enregistrer</button>
+                    <button className="butonES" onClick={handleSave}>Enregistrer</button>
                 ) : (
-                    <button onClick={handleModify} disabled={activeRubrique}>Modifier</button>
+                    <button lassName="butonES" onClick={handleModify} disabled={activeRubrique}>Modifier</button>
                 )}
-                <button onClick={handleDelete}>Supprimer</button>
+                <button lassName="butonES" onClick={handleDelete}>Supprimer</button>
             </div>
             {isModifiable ? (
                 <div>
