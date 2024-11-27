@@ -38,10 +38,6 @@ function Bandeau() {
         fetchData();
     }, []);
 
-    // return (
-    //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
-
-
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setAuths([
