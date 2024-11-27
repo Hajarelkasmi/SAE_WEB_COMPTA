@@ -326,18 +326,18 @@ function Carrousel() {
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
                                                     >
-                                                        <button
+                                                        {/* <button
                                                             key={elem.id}
                                                             className="cours"
                                                             id={"cours_" + elem.id}
                                                             onClick={handleModifyElem}
-                                                        >
+                                                        > */}
                                                             <ElemCarrousel
                                                                 src={elem.src}
                                                                 img={elem.img}
                                                                 nom={elem.nom}
                                                             />
-                                                        </button>
+                                                        {/* </button> */}
                                                     </div>
                                                 )}
                                             </Draggable>
