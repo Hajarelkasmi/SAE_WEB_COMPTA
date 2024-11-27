@@ -92,6 +92,7 @@ ul li {
     display: flex;
     align-items: center;
     margin-bottom: 5px;
+    font-family: "Open Sans", sans-serif;
 }
 
 ul li button {
