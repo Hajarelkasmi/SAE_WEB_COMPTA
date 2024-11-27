@@ -5,16 +5,16 @@ const { Cryptage } = require('../cryptage');
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
-        const etudiants = await Etudiant.findAll(
-            {
-                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
-                include: {
-                    model: Classe,
-                    attributes: ['nom']
+            const etudiants = await Etudiant.findAll(
+                {
+                    attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
+                    include: {
+                        model: Classe,
+                        attributes: ['nom']
+                    }
                 }
-            }
-        );
-        res.json(etudiants);
+            );
+            res.json(etudiants);
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while fetching etudiants' });
         }
@@ -46,6 +46,7 @@ module.exports = (app) => {
     });
 
     app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
+        // app.post('/api/etudiants', async (req, res) => {
         try {
             const etudiant = await Etudiant.create({
                 nom: req.body.nom,
