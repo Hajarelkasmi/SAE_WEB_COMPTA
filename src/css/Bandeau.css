@@ -1,6 +1,5 @@
 /* Styles par défaut */
 header {
-    background-color: #1c3f59;
     height: 7vh;
     font-size: 2vh;
 }
@@ -66,7 +65,6 @@ nav li {
 
 .sous {
     display: none;
-    background-color: #1c3f59;
     position: absolute;
     width: 100%;
     z-index: 1000;
@@ -150,6 +148,7 @@ nav ul>li:hover>.sous {
 
     #pages {
         width: 100%;
+        padding: 10px 0px;
     }
 
     .sous {
@@ -158,10 +157,6 @@ nav ul>li:hover>.sous {
 
     .sous a {
         padding: 0px;
-    }
-
-    #pages {
-        padding: 10px 0px;
     }
 
     #reseaux .logo {

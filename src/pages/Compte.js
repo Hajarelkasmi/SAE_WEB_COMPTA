@@ -5,6 +5,7 @@ function Compte() {
     const [classes, setClasses] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
+    const [filtres, setFiltres] = useState({classes: null, est_abonne: null});
 
     async function fetchComptes() {
         try {
@@ -31,15 +32,21 @@ function Compte() {
         fetchClasses().catch(r => console.error("Erreur", r));
     }, []);
 
+    useEffect(() => {
+        filtrerComptes().catch(r => console.error("Erreur", r));
+    }, [filtres]);
+
     async function deleteCompte(id) {
         const confirmed = window.confirm("Êtes-vous sûr de vouloir supprimer ce compte ?");
         if (!confirmed) {
             return;
         }
 
+        const token = localStorage.getItem('token');
         await fetch(`http://localhost:5000/api/etudiants/${id}`, {
             method: 'DELETE',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             }
         }).catch(r => console.error("Erreur", r));
@@ -53,9 +60,11 @@ function Compte() {
     }
 
     async function updateCompte(id) {
+        const token = localStorage.getItem('token');
         await fetch(`http://localhost:5000/api/etudiants/${id}`, {
             method: 'PUT',
             headers: {
+                'Authorization': `${token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
@@ -73,6 +82,24 @@ function Compte() {
         }));
     }
 
+    const filtrerComptes = async () => {
+        let url = 'http://localhost:5000/api/etudiants';
+        if (filtres.classes) {
+            url += `?classe_id=${filtres.classes}`;
+        }
+        if (filtres.est_abonne) {
+            url += `${filtres.classes ? '&' : '?'}est_abonne=1`;
+        }
+        console.log(url);
+        const response = await fetch(url);
+        const data = await response.json();
+        setComptes(data);
+    };
+
+    const CopierMail = () => {
+        navigator.clipboard.writeText(comptes.map(compte => compte.mail).join(', '));
+    }
+
     return (
         <div className="table-container">
             <h2>Gestion des comptes</h2>
@@ -81,10 +108,34 @@ function Compte() {
                 <tr>
                     <th>Nom</th>
                     <th>Prénom</th>
-                    <th>Mail</th>
+                    <th><a href={`mailto:${comptes.map(compte => compte.mail).join(',')}`}>Mail</a><button onClick={CopierMail}>Copier</button></th>
                     <th>Mot de passe</th>
-                    <th>Classe</th>
-                    <th>Abonné</th>
+                    <th>
+                        <label htmlFor="classe">Classe</label>
+                        <select id="classe" multiple value={filtres.classes} onChange={e => {
+                            const classes = filtres.classes ? [...filtres.classes] : [];
+                            if (e.target.value === '') {
+                                setFiltres({...filtres, classes: null});
+                            } else {
+                                if (classes.includes(e.target.value)) {
+                                    classes.splice(classes.indexOf(e.target.value), 1);
+                                } else {
+                                    classes.push(e.target.value);
+                                }
+                                setFiltres({...filtres, classes});
+                            }
+                        }}>
+                            <option value="" hidden>Choisir une classe</option>
+                            {classes.map(classe => (
+                                <option key={classe.id} value={classe.id} selected={filtres.classes && filtres.classes.includes(classe.id)}>{classe.nom}</option>
+                            ))}
+                        </select>
+                        <button onClick={() => setFiltres({...filtres, classes: null})}><img src={"/static/cross.png"} alt="Bouton annuler"/></button>
+                    </th>
+                    <th>
+                        <label htmlFor="est_abonne">Abonné</label>
+                        <input type="checkbox" id="est_abonne" onChange={e => setFiltres({...filtres, est_abonne: e.target.checked})}/>
+                    </th>
                     <th>Admin</th>
                     <th>Actions</th>
                 </tr>

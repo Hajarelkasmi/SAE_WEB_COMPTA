@@ -1,4 +1,4 @@
-h1 {
+#titre h1 {
     margin: 0px;
     text-shadow: white 0px 0px 5px;
     max-width: 100%;
@@ -19,7 +19,7 @@ h1 {
 }
 
 @media screen and (max-width: 768px) {
-    h1 {
+    #titre h1 {
         font-size: 4vh;
     }
 }

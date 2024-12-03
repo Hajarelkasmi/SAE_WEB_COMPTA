@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Bar, Pie } from 'react-chartjs-2';
+import React, {useState, useEffect} from 'react';
+import {Bar, Pie} from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const Container_Admin_Stat = () => {
@@ -11,12 +11,13 @@ const Container_Admin_Stat = () => {
     });
     const [classesData, setClassesData] = useState({});
     const [EtudiantParClasse, setEtudiantParClasse] = useState({});
-    const [active_data , setActive_data] = useState('daily');
+    const [active_data, setActive_data] = useState('daily');
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/log/connexion');
+                const response = await fetch('http://localhost:5000/api/log/connexion',
+                    {headers: {'Authorization': localStorage.getItem('token')}});
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -35,7 +36,7 @@ const Container_Admin_Stat = () => {
                 const EtudiantclassesData = {};
                 const ClassDataTrier = groupDataByClasse(data.logs);
                 const ClassesData = {};
-                
+
                 for (const classe_id in classes) {
                     const nom_classe = data2.find(classe => classe.id === parseInt(classe_id)).Classe.nom;
                     EtudiantclassesData[nom_classe] = classes[classe_id];
@@ -46,8 +47,7 @@ const Container_Admin_Stat = () => {
                 setClassesData(ClassesData);
 
                 setEtudiantParClasse(EtudiantclassesData);
-            }
-            catch (error) {
+            } catch (error) {
                 console.error('Erreur:', error);
             }
         }
@@ -65,32 +65,32 @@ const Container_Admin_Stat = () => {
 
         data.forEach(log => {
             const date = new Date(log.date);
-            const day = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
-            const week = `${date.getFullYear()}-S${Math.ceil(date.getDate() / 7)}`; 
-            const month = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(date);
-            const year = date.getFullYear(); 
+            const day = new Intl.DateTimeFormat('fr-FR', {day: '2-digit', month: 'long', year: 'numeric'}).format(date);
+            const week = `${date.getFullYear()}-S${Math.ceil(date.getDate() / 7)}`;
+            const month = new Intl.DateTimeFormat('fr-FR', {month: 'long', year: 'numeric'}).format(date);
+            const year = date.getFullYear();
 
             if (!groupedData.daily[day]) {
                 groupedData.daily[day] = 0;
             }
-            groupedData.daily[day] ++;
+            groupedData.daily[day]++;
 
             if (!groupedData.weekly[week]) {
                 groupedData.weekly[week] = 0;
             }
-            groupedData.weekly[week] ++;
+            groupedData.weekly[week]++;
 
             if (!groupedData.monthly[month]) {
                 groupedData.monthly[month] = 0;
             }
-            groupedData.monthly[month] ++;
+            groupedData.monthly[month]++;
 
             if (!groupedData.yearly[year]) {
                 groupedData.yearly[year] = 0;
             }
-            groupedData.yearly[year] ++;
+            groupedData.yearly[year]++;
         });
-        
+
         return groupedData;
     };
 
@@ -101,7 +101,7 @@ const Container_Admin_Stat = () => {
             if (!groupedData[log.classe_id]) {
                 groupedData[log.classe_id] = 0;
             }
-            groupedData[log.classe_id] ++;
+            groupedData[log.classe_id]++;
         });
 
         return groupedData;
@@ -121,18 +121,31 @@ const Container_Admin_Stat = () => {
     });
 
     return (
-        <div>
+        <div className="stats">
             <h2>Statistiques de Connexion</h2>
-            <button onClick={() => setActive_data('daily')}>Jour</button>
-            <button onClick={() => setActive_data('weekly')}>Semaine</button>
-            <button onClick={() => setActive_data('monthly')}>Mois</button>
-            <button onClick={() => setActive_data('yearly')}>Année</button>
-            <Bar data={chartData(globalData[active_data], 'Nombre de connexions')} />
-
-            <Pie data={chartData(classesData, 'Nombre de connexions par classe')} />
-            <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')} />
+            <div className="button-container">
+                <button onClick={() => setActive_data('daily')}>Jour</button>
+                <button onClick={() => setActive_data('weekly')}>Semaine</button>
+                <button onClick={() => setActive_data('monthly')}>Mois</button>
+                <button onClick={() => setActive_data('yearly')}>Année</button>
+            </div>
+            <div className="chart-row">
+                <div className="first-chart-container">
+                    <label>Nombre de connexions :</label>
+                    <Bar data={chartData(globalData[active_data], 'Nombre de connexions')}/>
+                </div>
+                <div className="chart-container">
+                    <label>Nombre de connexion totale par classe :</label>
+                    <Pie data={chartData(classesData, 'Nombre de connexions par classe')}/>
+                </div>
+                <div className="chart-container">
+                    <label>Nombre d'étudiants par classe :</label>
+                    <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')}/>
+                </div>
+            </div>
         </div>
-    );
+    )
+        ;
 }
 
 export default Container_Admin_Stat;

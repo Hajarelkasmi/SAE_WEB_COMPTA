@@ -1,0 +1,22 @@
+.gestion_categorie .categories li {
+    margin: 20px;
+    padding: 0;
+    list-style: disc;
+}
+
+.gestion_categorie .categories li li {
+    margin: 0;
+    padding: 0;
+    list-style: disc;
+}
+
+.gestion_categorie .categories li a {
+    color: #FFFFFF; 
+    margin: 10px;
+}
+
+.gestion_categorie .categories li input {
+    margin: 10px;
+    padding: 3px;
+    cursor: pointer;
+}

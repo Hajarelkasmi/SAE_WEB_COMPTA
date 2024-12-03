@@ -21,6 +21,36 @@
     border: none;
 }
 
+#modifier {
+    padding: 1vh 2vh;
+    font-size: 1.5vh;
+    background-color: #2196F3; /* Couleur de fond pour le bouton */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#valider {
+    padding: 1vh 2vh;
+    font-size: 1.5vh;
+    background-color: #4CAF50; /* Couleur de fond pour le bouton */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#annuler {
+    padding: 1vh 2vh;
+    font-size: 1.5vh;
+    background-color: #f44336; /* Couleur de fond pour le bouton */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 @media screen and (max-width: 768px) {
     #cours h2 {
         font-size: 4vh;

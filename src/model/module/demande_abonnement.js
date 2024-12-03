@@ -2,7 +2,7 @@ const { Demande_Abonnement, Etudiant, Classe} = require('../bd');
 const { verifyToken, verifyAdmin } = require('../auth');
 
 module.exports = (app) => {
-    app.get('/api/demande_abonnements', async (req, res) => {
+    app.get('/api/demande_abonnements', verifyToken, verifyAdmin, async (req, res) => {
         try {
         const demande_abonnements = await Demande_Abonnement.findAll({
             include: {

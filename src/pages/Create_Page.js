@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import '../Create_Page.css';
+import '../css/Create_Page.css';
+import { refresh } from "./RefreshToken";
 
 const Create_Page = () => {
     const { id_categorie, id_page } = useParams();
@@ -12,7 +13,7 @@ const Create_Page = () => {
     const [classes, setClasses] = useState([]);
     const [classe_selected, setClasse_selected] = useState([]);
     const [estCree, setEstCree] = useState(false);
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -66,24 +67,30 @@ const Create_Page = () => {
                 console.error('Erreur:', error);
             }
         };
+        if (localStorage.getItem('token')) {
+            refresh();
+        }
+
         fetchClasses();
     }
-    , []);
+        , [id_categorie, id_page]);
 
     const addClasseSelected = (id) => {
         const classe = classes.find((classe) => classe.id === parseInt(id));
         if (!classe_selected.includes(classe)) {
             setClasse_selected([...classe_selected, classe]);
         }
-    } 
- 
+    }
+
     const handleCreate = async () => {
+        const token = localStorage.getItem('token');
         try {
             let response;
             if (id_page) {
                 response = await fetch('http://localhost:5000/api/pages/' + id_page, {
                     method: 'PUT',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -97,6 +104,7 @@ const Create_Page = () => {
                 response = await fetch('http://localhost:5000/api/pages', {
                     method: 'POST',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -120,8 +128,8 @@ const Create_Page = () => {
             setDescription('');
             setImage('');
             setImageFile(null);
-            navigate(`/main/${newPage.id}`);
-                
+            navigate(`/page/${newPage.id}`);
+
             if (id_page) {
                 await modifClasses();
             } else {
@@ -133,6 +141,7 @@ const Create_Page = () => {
             if (image_name) {
                 if (newPage.image) {
                     const deleteImage = await fetch('http://localhost:5000/api/images/' + newPage.image, {
+                        'Authorization': token,
                         method: 'DELETE',
                     });
                     if (!deleteImage.ok) {
@@ -144,6 +153,7 @@ const Create_Page = () => {
                 const responseImage = await fetch('http://localhost:5000/api/pages/' + newPage.id || id_page, {
                     method: 'PUT',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -172,11 +182,13 @@ const Create_Page = () => {
     };
 
     const createClasses = async (id_page) => {
+        const token = localStorage.getItem('token');
         if (classe_selected.length > 0) {
             classe_selected.forEach(async (classe) => {
                 const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
                     method: 'POST',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -196,6 +208,7 @@ const Create_Page = () => {
     }
 
     const modifClasses = async () => {
+        const token = localStorage.getItem('token');
         const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page, {
             method: 'GET',
             headers: {
@@ -216,6 +229,7 @@ const Create_Page = () => {
                 const responseDelete = await fetch('http://localhost:5000/api/classe_pages/' + classePage.classe_id + '/' + id_page, {
                     method: 'DELETE',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -234,6 +248,7 @@ const Create_Page = () => {
                 const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
                     method: 'POST',
                     headers: {
+                        'Authorization': token,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
@@ -251,6 +266,7 @@ const Create_Page = () => {
     }
 
     const imageSave = async (id) => {
+        const token = localStorage.getItem('token');
         if (!imageFile) {
             return;
         }
@@ -259,6 +275,9 @@ const Create_Page = () => {
         formData.append('image', imageFile);
         formData.append('name', name);
         const response = await fetch('http://localhost:5000/api/images', {
+            headers: {
+                'Authorization': token,
+            },
             method: 'POST',
             body: formData,
         });
@@ -272,59 +291,66 @@ const Create_Page = () => {
     }
 
     return (
-        <div className="DivCreateMain">
-            {estCree && <h1>Modifier la page</h1> || <h1>Créer une page</h1>}
-            <div className="DivCreate">
-                <label>
-                    Titre de la page :
-                </label>
-                <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
+        <div className="div-page-all-content">
+            {image ? (
+                <div id="img-container" style={{ backgroundImage: `url(${image})` }}></div>
+            ) : (
+                <div id="img-container"><p>Aperçu de l'image</p></div>
+            )}
+            <div className="DivCreateMain">
+                {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}
+                <div className="DivCreate">
+                    <label className="label-create">
+                        Titre de la page :
+                    </label>
+                    <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Description de la page:
+                    </label>
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                </div>
+                <div className="DivCreate">
+                    <label>
+                        Image d'en-tête:
+                    </label>
+                    <h3>Image actuelle</h3>
+                    {image && <img src={"/static/image/" + image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
+                    <input type="text" value={imageFile ? imageFile.name : ''} />
+                    <input type="file" onChange={handleImageChange} accept="image/*" />
+                    {image && <img src={image} alt="Aperçu de l'image" style={{ display: 'none' }} />}
+                </div>
+                <div className="DivCreate">
+                    <label className="label-create">
+                        Est public :
+                    </label>
+                    <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
+                </div>
+                <div className="DivCreate">
+                    <label className="label-create">
+                        Classe :
+                    </label>
+                    <select onChange={(e) => addClasseSelected(e.target.value)}>
+                        <option value="" hidden>Choisissez une classe</option>
+                        {classes.map((classe) => (
+                            <option value={classe.id}>{classe.nom}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="DivCreate">
+                    <label className="label-create">
+                        Classes sélectionnées :
+                    </label >
+                    <ul>
+                        {classe_selected.map((classe) => (
+                            <li key={classe.id}>{classe.nom}<button onClick={() => setClasse_selected(classe_selected.filter((classe_selected) => classe_selected !== classe))}>Supprimer</button></li>
+                        ))}
+                    </ul>
+                </div>
+                <button onClick={handleCreate} className="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
             </div>
-            <div className="DivCreate">
-                <label>
-                    Description de la page:
-                </label>
-                <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Image de fond de la page:
-                </label>
-                <h3>Image actuelle</h3>
-                {image && <img src={"/static/image/"+image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
-                <input type="text" value={imageFile ? imageFile.name : ''}/>
-                <input type="file" onChange={handleImageChange} accept="image/*" />
-                {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Est public :
-                </label>
-                <input type="checkbox" checked={estPublic} onChange={(e) => setEstPublic(e.target.checked)} />
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Classe :
-                </label>
-                <select onChange={(e) => addClasseSelected(e.target.value)}>
-                    <option value="" hidden>Choisissez une classe</option>
-                    {classes.map((classe) => (
-                        <option value={classe.id}>{classe.nom}</option>
-                    ))}
-                </select>
-            </div>
-            <div className="DivCreate">
-                <label>
-                    Classes sélectionnées :
-                </label>
-                <ul>
-                    {classe_selected.map((classe) => (
-                        <li key={classe.id}>{classe.nom}<button onClick={() => setClasse_selected(classe_selected.filter((classe_selected) => classe_selected !== classe))}>Supprimer</button></li> 
-                    ))}
-                </ul>
-            </div>
-            <button onClick={handleCreate} className="ButtonCreate">{estCree && 'Modifier' || 'Créer'}</button>
-        </div>
+        </div >
     );
 }
 

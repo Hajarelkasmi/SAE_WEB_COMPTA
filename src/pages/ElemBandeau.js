@@ -1,4 +1,4 @@
-function ElemBandeau({link, nom, enfants=[]}) {
+function ElemBandeau({ link, nom, enfants = [], isAdmin = false }) {
     if (enfants.length === 0) {
         return (
             <li>
@@ -7,14 +7,18 @@ function ElemBandeau({link, nom, enfants=[]}) {
         );
     }
     return (
+
     <li className="deroulant">
         <a href={link}>{nom}</a>
         <ul className="sous">
             {enfants.map((enfant, index) => (
-                <ElemBandeau key={index} link={enfant.link} nom={enfant.nom} />
+                (enfant.link) ? 
+                    <ElemBandeau key={index} link={enfant.link} nom={enfant.nom} enfants={enfant.enfants} isAdmin={isAdmin} /> 
+                :  <ElemBandeau key={index} link={"/categories/" + enfant.id} nom={enfant.nom} enfants={enfant.enfants} isAdmin={isAdmin} />
             ))}
         </ul>
     </li>
+
     );
 }
 

@@ -5,49 +5,49 @@
     justify-content: center;
     min-height: 100vh;
     color: #fff;
-  }
+}
 
 
-  body {
+.login-container body {
     background-color: #000;
-  }
-  
-  h1 {
+}
+
+.login-container h1 {
     margin-bottom: 10px;
     font-size: 36px;
     font-family: Open Sans, sans-serif;
-  }
-  
-  #login-form {
+}
+
+#login-form {
     background-color: #2f415d;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 400px;
     width: 100%;
-  }
-  
-  h2 {
+}
+
+.login-container h2 {
     margin-bottom: 15px;
     font-family: Open Sans, sans-serif;
     text-align: center;
-  }
-  
-  p {
+}
+
+.login-container p {
     font-size: 14px;
     margin-bottom: 20px;
     text-align: center;
     font-family: Open Sans, sans-serif;
-  }
-  
-  #login-label {
+}
+
+#login-label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     font-family: Open Sans, sans-serif;
-  }
-  
-  input {
+}
+
+.login-container input {
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -55,9 +55,9 @@
     border-radius: 5px;
     border: none;
     font-size: 16px;
-  }
-  
-  button {
+}
+
+.login-container button {
     width: 100%;
     padding: 10px;
     background-color: #000;
@@ -66,22 +66,22 @@
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
-  }
-  
-  button:hover {
+}
+
+.login-container button:hover {
     background-color: #333;
-  }
-  
-  a {
+}
+
+.login-container a {
     color: #4ba7f5;
     text-decoration: none;
-  }
-  
-  a:hover {
-    text-decoration: underline;
-  }
+}
 
-  #login-logo {
+.login-container a:hover {
+    text-decoration: underline;
+}
+
+#login-logo {
     width: 10em;
-  }
+}
   

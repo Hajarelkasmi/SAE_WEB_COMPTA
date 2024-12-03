@@ -1,0 +1,144 @@
+.DivCreateMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: black;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.titre-create {
+    text-align: center;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.DivCreate {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 45%;
+    margin: 10px 0;
+}
+
+.label-create {
+    color: #C61111;
+    font-weight: bold;
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.DivCreate input[type="file"] {
+    width: 100%;
+    background-color: #F0F0F0;
+    color: #C61111;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.DivCreate input[type="text"] {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.DivCreate input[type="checkbox"] {
+    accent-color: #C61111;
+    transform: scale(1.5);
+    margin-left: 10px;
+}
+
+.ButtonCreate {
+    width: auto;
+    height: 40px;
+    background-color: #F0F0F0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 0 20px;
+    margin: 20px auto;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.ButtonCreate:hover {
+    background-color: #D0D0D0;
+}
+
+.DivCreateMain select {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+
+.DivCreate ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+.DivCreate ul li {
+    color: white;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.DivCreate ul li button {
+    background-color: #C61111;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-left: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.DivCreateMain ul li button:hover {
+    background-color: #A00000;
+}
+
+#img-container {
+    height: 25vh;
+    overflow: hidden;
+    border: black dashed medium;
+    background-color: lightgray;
+    align-content: center;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-container>img {
+    width: 100%;
+}
+
+#img-container>p {
+    color: black;
+    text-align: center;
+    opacity: 50%;
+    font-size: 4vh;
+    font-weight: bold;
+}
+
+ul li button:hover {
+    background-color: #A00000;
+}
+
+.DivCreateMain textarea {
+    width: 662px;
+    height: 131px;
+}
