@@ -1,7 +1,6 @@
 import "../css/Carrousel.css";
 import ElemCarrousel from "./ElemCarrousel";
 import React, { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 function Carrousel() {
     // Vérifier si l'utilisateur est admin
@@ -124,6 +123,7 @@ function Carrousel() {
     const [allElems, setAllElems] = useState(elemsCarrousel);
     const [elemsSelected, setElemsSelected] = useState([]);
     const [elemsNotSelected, setElemsNotSelected] = useState([]);
+    const [draggedItem, setDraggedItem] = useState(null);
     async function handleModify(modify) {
         if (modify) {
             if (modifyElems) {
@@ -199,38 +199,42 @@ function Carrousel() {
         setElemsNotSelected(notSelected);
     }, [allElems]);
 
-    const handleDragStart = (e, item, source) => {
-        e.dataTransfer.setData("item", JSON.stringify(item));
-        e.dataTransfer.setData("source", source);
+    // Gestion du drag
+    const handleDragStart = (item, source) => {
+        setDraggedItem({ item, source });
     };
 
-    const handleDrop = (e, targetList) => {
-        e.preventDefault();
+    const handleDragOver = (e) => {
+        e.preventDefault(); // Nécessaire pour autoriser le drop
+    };
 
-        const item = JSON.parse(e.dataTransfer.getData("item"));
-        const source = e.dataTransfer.getData("source");
+    const handleDrop = (targetList) => {
+        if (!draggedItem) return;
 
-        if (source === targetList) return;
+        const { item, source } = draggedItem;
+        if (source === targetList) return; // Si on dépose dans la même liste, rien ne se passe
 
         if (targetList === "selected") {
-            setElemsNotSelected((prev) => prev.filter((elem) => elem.id !== item.id));
-            setElemsSelected((prev) => [
-                ...prev,
-                { ...item, place: prev.length },
-            ]);
+            setElemsNotSelected((prev) =>
+                prev.filter((elem) => elem.id !== item.id)
+            );
+            setElemsSelected((prev) => {
+                const updated = [...prev, { ...item, place: prev.length }];
+                return updated.sort((a, b) => a.place - b.place); // Tri par place
+            });
         } else if (targetList === "notSelected") {
-            setElemsSelected((prev) => prev.filter((elem) => elem.id !== item.id));
-            setElemsNotSelected((prev) => [...prev, item]);
+            setElemsSelected((prev) =>
+                prev.filter((elem) => elem.id !== item.id)
+            );
+            setElemsNotSelected((prev) => [...prev, { ...item }]);
         }
+
+        setDraggedItem(null); // Réinitialiser l'élément draggué
     };
 
-    const handleReorder = (e, targetId) => {
-        e.preventDefault();
-
-        const draggedItem = JSON.parse(e.dataTransfer.getData("item"));
-
+    const handleReorder = (draggedId, targetId) => {
         setElemsSelected((prev) => {
-            const draggedIndex = prev.findIndex((e) => e.id === draggedItem.id);
+            const draggedIndex = prev.findIndex((e) => e.id === draggedId);
             const targetIndex = prev.findIndex((e) => e.id === targetId);
 
             const updated = [...prev];
@@ -272,46 +276,50 @@ function Carrousel() {
 
                     {modifyElems && (
                         <div className="carrousel-container">
-                        {/* Liste des éléments sélectionnés */}
-                        <div
-                            className="carrousel-list selected"
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={(e) => handleDrop(e, "selected")}
-                        >
-                            <h3>Éléments sélectionnés</h3>
-                            {elemsSelected.map((elem) => (
-                                <div
-                                    key={elem.id}
-                                    draggable
-                                    onDragStart={(e) => handleDragStart(e, elem, "selected")}
-                                    onDragOver={(e) => e.preventDefault()}
-                                    onDrop={(e) => handleReorder(e, elem.id)}
-                                    className="carrousel-item"
-                                >
-                                    {elem.nom}
+                            {/* Liste des éléments sélectionnés */}
+                            <div
+                                className="carrousel-list selected"
+                                onDragOver={handleDragOver}
+                                onDrop={() => handleDrop("selected")}
+                            >
+                                <h3>Éléments sélectionnés</h3>
+                                <div className="carrousel-items selected">
+                                    {elemsSelected.map((elem) => (
+                                        <div
+                                            key={elem.id}
+                                            draggable
+                                            onDragStart={() => handleDragStart(elem, "selected")}
+                                            onDragOver={(e) => e.preventDefault()}
+                                            onDrop={() => handleReorder(draggedItem.item.id, elem.id)}
+                                            className="carrousel-item"
+                                        >
+                                            <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-            
-                        {/* Liste des éléments non sélectionnés */}
-                        <div
-                            className="carrousel-list not-selected"
-                            onDragOver={(e) => e.preventDefault()}
-                            onDrop={(e) => handleDrop(e, "notSelected")}
-                        >
-                            <h3>Éléments non sélectionnés</h3>
-                            {elemsNotSelected.map((elem) => (
-                                <div
-                                    key={elem.id}
-                                    draggable
-                                    onDragStart={(e) => handleDragStart(e, elem, "notSelected")}
-                                    className="carrousel-item"
-                                >
-                                    {elem.nom}
+                            </div>
+                
+                            {/* Liste des éléments non sélectionnés */}
+                            <div
+                                className="carrousel-list not-selected"
+                                onDragOver={handleDragOver}
+                                onDrop={() => handleDrop("notSelected")}
+                            >
+                                <h3>Éléments non sélectionnés</h3>
+                                <div className="carrousel-items selected">
+                                    {elemsNotSelected.map((elem) => (
+                                        <div
+                                            key={elem.id}
+                                            draggable
+                                            onDragStart={() => handleDragStart(elem, "notSelected")}
+                                            className="carrousel-item"
+                                        >
+                                            <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
                         </div>
-                    </div>
                     )}
                 </div>
             }
