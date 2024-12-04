@@ -1,10 +1,10 @@
 // categorie.js
-const { Categorie, SousCategorie, Carrousel } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { Categorie, SousCategorie, Carrousel, Etudiant } = require('../bd');
+const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 const { Sequelize } = require('sequelize');
 
 module.exports = (app) => {
-    app.get('/api/categories', async (req, res) => {
+    app.get('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categories = await Categorie.findAll();
             res.json(categories);
@@ -14,6 +14,14 @@ module.exports = (app) => {
     });
 
     app.get('/api/bandeau', async (req, res) => {
+        const id_user = await checkUserFromToken(req);
+        let est_abonne;
+        if (id_user) {
+            const etudiant = await Etudiant.findByPk(id_user);
+            if (etudiant.est_abonne || etudiant.est_admin) {
+                est_abonne = true;
+            }
+        }
         const enfant = await SousCategorie.findAll(
             {
                 attributes: ['id_enfant'],
@@ -23,13 +31,20 @@ module.exports = (app) => {
 
         const enfantIds = enfant.map(e => e.id_enfant);
 
+        const condition_where = {
+            id: {
+                [Sequelize.Op.notIn]: enfantIds
+            },
+            est_public: true
+        };
+
+        if (est_abonne) {
+            delete condition_where.est_public;
+        }
+
         const parent = await Categorie.findAll({
             attributes: ['id', 'nom'],
-            where: {
-                id: {
-                    [Sequelize.Op.notIn]: enfantIds
-                }
-            }
+            where: condition_where
         });
 
         const resultat = [];
@@ -110,7 +125,7 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/sous_categories/:id', async (req, res) => {
+    app.get('/api/sous_categories/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const sous_categories = await SousCategorie.findAll({
                 where: {
