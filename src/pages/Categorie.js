@@ -64,10 +64,12 @@ const Categorie = () => {
         <div className="categorie">
             {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
             {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
-            <h1 class="title-cat">{categorie?.nom}</h1>
-            <p>{categorie?.description}</p>
-            <div class="maindiv-cat">
-                <div class="divblock-cat">
+            <div class="general-div-cat">
+                <div class="main-div-cat">
+                    <h1 class="title-cat">{categorie?.nom}</h1>
+                    <p>{categorie?.description}</p>
+                </div>
+                <div class="second-div-cat">
                     <h2 class="title-cat">Sous-catégories :</h2>
                     {sousCategories.length === 0 && <p>Aucune sous-catégorie trouvée</p>}
                     <ul>
@@ -77,10 +79,9 @@ const Categorie = () => {
                             </li>
                         ))}
                     </ul>
-                    {/* {isAdmin && <a className={"cat_link"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</a>} */}
                     {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</Button>}
                 </div>
-                <div class="divblock-cat">
+                <div class="second-div-cat">
                     <h2 class="title-cat">Pages :</h2>
                     {pages.length === 0 && <p>Aucune page trouvée</p>}
                     <ul>
@@ -90,7 +91,6 @@ const Categorie = () => {
                             </li>
                         ))}
                     </ul>
-                    {/* {isAdmin && <a className={"cat_link"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</a>} */}
                     {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
                 </div>
             </div>

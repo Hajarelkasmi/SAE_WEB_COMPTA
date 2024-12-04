@@ -1,21 +1,23 @@
-.categorie a {
-    text-decoration: none;
-}
-
 .cat_button {
+    display: inline-block;
     color: black;
     border: none;
     border-radius: 5px;
     padding: 5px 10px;
-    margin: 5px;
+    margin: 0.3em;
     cursor: pointer;
     background-color: #F0F0F0;
     font-weight: bold;
-    height: 15px;
+    text-decoration: none;
+}
+
+.cat_button:hover {
+    background-color: #D0D0D0;
 }
 
 .cat_link {
     color: #FFFFFF;
+    text-decoration: underline;
 }
 
 .cat_link:hover {
@@ -23,35 +25,52 @@
 }
 
 .categorie {
-    margin: 5px;
-    padding: 5px;
+    margin: 1em;
+    padding: 1px;
     text-align: center;
+}
+
+.general-div-cat {
+    display: flex;
+    flex-wrap: wrap;
+    width: 70%;
+    margin: auto;
+    height: fit-content;
+}
+
+.second-div-cat {
+    flex-basis: 49.9%;
+    flex-grow: 0;
+}
+
+.second-div-cat ul {
+    text-align: left;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 0.6em;
+    margin-bottom: 1.2em;
+}
+
+.second-div-cat ul li {
+    margin-bottom: 0.3em;
+}
+
+.second-div-cat+.second-div-cat {
+    border-left: white thin solid;
+}
+
+.main-div-cat {
+    flex-basis: 100%;
+    flex-grow: 1;
+    margin-bottom: 2em;
 }
 
 .title-cat {
     color: #C61111;
 }
 
-.maindiv-cat {
-    display: flex;
-    flex-wrap: nowrap;
-    width: 60%;
-    margin: auto;
-    padding: 10px;
-}
-
-.divblock-cat {
-    flex-basis: 50%;
-    flex-grow: 1;
-}
-
-.divblock-cat ul {
-    text-align: left;
-    width: 30%;
-    margin-left: auto;
-    /* margin-right: auto; */
-}
-
-.divblock-cat+.divblock-cat {
-    border-left: white medium dotted;
+.second-div-cat>.title-cat {
+    margin-bottom: 0.3em;
+    margin-top: 0.3em;
 }
