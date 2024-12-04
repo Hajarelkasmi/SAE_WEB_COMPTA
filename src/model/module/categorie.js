@@ -102,13 +102,20 @@ module.exports = (app) => {
 
     app.post('/api/carrousel', verifyToken, verifyAdmin, async (req, res) => {
         try {
+            const categorie = await Categorie.findByPk(req.body.id_categorie);
+            if (!categorie) {
+                return res.status(404).json({ error: 'Categorie non trouvée' });
+            }
+            if (!categorie.est_public) {
+                return res.status(403).json({ error: 'Categorie non publique' });
+            }
             const carrousel = await Carrousel.create({
                 id_categorie: req.body.id_categorie,
                 place: req.body.place
             });
             res.json(carrousel);
         } catch (error) {
-            res.status(500).json({ error: 'An error occurred while creating carrousel' });
+            res.status(500).json({ error: 'Une erreur est survenue lors de la création du carrousel', details: error.message });
         }
     });
 
