@@ -35,7 +35,8 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
                     description: description,
                     lien: lien,
                     rubrique_id: rubrique.rubrique_id,
-                    page_id: rubrique.page_id
+                    page_id: rubrique.page_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 
@@ -147,6 +148,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
+                    loading='lazy'
                 ></iframe>
             )}
             {isModifiable && isAdmin ? (

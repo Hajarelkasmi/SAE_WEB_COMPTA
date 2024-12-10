@@ -74,7 +74,8 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                     description: description,
                     texte: document.querySelector('.ql-editor').innerHTML,
                     page_id: rubrique.page_id,
-                    rubrique_id: rubrique.rubrique_id
+                    rubrique_id: rubrique.rubrique_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 

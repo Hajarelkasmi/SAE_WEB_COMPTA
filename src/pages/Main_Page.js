@@ -42,7 +42,8 @@ const Main_Page = () => {
                     type: "lien",
                     rubrique_id: lien.rubrique_id,
                     page_id : lien.Rubrique.page_id,
-                    position : lien.Rubrique.position
+                    position : lien.Rubrique.position,
+                    est_public: lien.Rubrique.est_public
                 }));
 
                 const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`);
@@ -59,7 +60,8 @@ const Main_Page = () => {
                     type: "article",
                     rubrique_id: article.rubrique_id,
                     page_id : article.Rubrique.page_id,
-                    position : article.Rubrique.position
+                    position : article.Rubrique.position,
+                    est_public: article.Rubrique.est_public
                 }));
                 
                 const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`);
@@ -75,7 +77,8 @@ const Main_Page = () => {
                     type: "video",
                     rubrique_id: video.rubrique_id,
                     page_id : video.Rubrique.page_id,
-                    position : video.Rubrique.position
+                    position : video.Rubrique.position,
+                    est_public: video.Rubrique.est_public
                 }));
 
                 const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
@@ -92,7 +95,8 @@ const Main_Page = () => {
                     type: "exercice",
                     rubrique_id: exercice.rubrique_id,
                     page_id : exercice.Rubrique.page_id,
-                    position : exercice.Rubrique.position
+                    position : exercice.Rubrique.position,
+                    est_public: exercice.Rubrique.est_public
                 }));
 
                 const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouvelles_videos, ...nouveaux_exercices];
@@ -128,7 +132,8 @@ const Main_Page = () => {
                     nom: '',
                     description: '',
                     lien: '',
-                    page_id: id
+                    page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -148,7 +153,8 @@ const Main_Page = () => {
                 type: "lien",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                est_public: result.est_public,
             }]);
             setActiveRubrique(result.rubrique_id);
             
@@ -173,6 +179,7 @@ const Main_Page = () => {
                     image: '',
                     alt_image: '',
                     page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -194,7 +201,8 @@ const Main_Page = () => {
                 isModifiable: true,
                 page_id: id,
                 rubrique_id: result.rubrique_id,
-                position: result.position
+                position: result.position,
+                est_public: true
             }]);
             setActiveRubrique(result.rubrique_id);
             setIsChoosingRubrique(false);
@@ -218,7 +226,8 @@ const Main_Page = () => {
                     nom: '',
                     description: '',
                     lien: '',
-                    page_id: id
+                    page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -238,7 +247,8 @@ const Main_Page = () => {
                 type: "video",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                est_public: true
             }]);
             setActiveRubrique(result.rubrique_id);
         } catch (error) {
@@ -260,7 +270,8 @@ const Main_Page = () => {
                     description: '',
                     texte: '',
                     lien_fichier: '',
-                    page_id: id
+                    page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -281,7 +292,8 @@ const Main_Page = () => {
                 type: "exercice",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                est_public: true
             }]);
             setActiveRubrique(result.rubrique_id);
         } catch (error) {

@@ -25,7 +25,8 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                     description: description,
                     lien: lien,
                     rubrique_id: rubrique.rubrique_id,
-                    page_id: rubrique.page_id
+                    page_id: rubrique.page_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 
