@@ -130,6 +130,13 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
                         <button onClick={handleDelete}>Supprimer</button>
                     </div>
                     ) : null}
+                    {isAdmin ? (
+                        isModifiable ? (
+                            <input checked={rubrique.est_public} type="checkbox" onChange={(event) => {rubrique.est_public = event.target.checked;}} /> 
+                        ) : (
+                            <p>{rubrique.est_public ? 'Public' : 'Privé'}</p>
+                        )
+                    ) : null}
                 </div>    
             <div className="Div_Video_Content">
             {isModifiable && isAdmin ? (

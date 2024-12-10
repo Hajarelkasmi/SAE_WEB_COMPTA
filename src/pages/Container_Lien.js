@@ -119,6 +119,13 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                         <button onClick={handleDelete}>Supprimer</button>
                     </div>
                     ) : null}
+                    {isAdmin ? (
+                        isModifiable ? (
+                            <input checked={rubrique.est_public} type="checkbox" onChange={(event) => {rubrique.est_public = event.target.checked;}} /> 
+                        ) : (
+                            <p>{rubrique.est_public ? 'Public' : 'Privé'}</p>
+                        )
+                    ) : null}
                 </div>            
             {isModifiable && isAdmin ? (
                 <textarea
