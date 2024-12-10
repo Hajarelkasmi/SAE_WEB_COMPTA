@@ -1,15 +1,27 @@
 const { Exercice, Rubrique } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/exercices', async (req, res) => {
+        const id_user = await checkUserFromToken(req);
+        let est_abonne;
+        if (id_user) {
+            const etudiant = await Etudiant.findByPk(id_user);
+            if (etudiant.est_abonne || etudiant.est_admin) {
+                est_abonne = true;
+            }
+        }
         const { page_id } = req.query; 
         try {
+        const condition_where = page_id ? { page_id } : {};
+        if (!est_abonne) {
+            condition_where.est_public = true;
+        }
         const exercices = await Exercice.findAll({
             include: {
                 model: Rubrique,
                 attributes: ['id', 'nom', 'description', 'page_id', 'position'],
-                where: page_id ? { page_id } : {},
+                where: condition_where
             },
         });
         res.json(exercices);
@@ -36,7 +48,8 @@ module.exports = (app) => {
         const rubrique = await Rubrique.create({
             nom: req.body.nom, 
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            est_public: req.body.est_public
         });
         const exercice = await Exercice.create({ 
             texte: req.body.texte,
