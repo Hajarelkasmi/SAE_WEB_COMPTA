@@ -323,7 +323,6 @@ function Carrousel() {
                                     <div ref={provided.innerRef} {...provided.droppableProps}>
                                         <h3>Éléments sélectionnés</h3>
                                         <div id="in-carrousel-items" className="scrollable-content">
-                                            <div className="scroll-hint">Faites défiler →</div>
                                             {elemsSelected.map((elem, index) => (
                                                 <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                     {(provided) => (
@@ -343,7 +342,6 @@ function Carrousel() {
                                     <div ref={provided.innerRef} {...provided.droppableProps}>
                                         <h3>Éléments non sélectionnés</h3>
                                         <div id="not-in-carrousel-items" className="scrollable-content">
-                                            <div className="scroll-hint">Faites défiler →</div>
                                             {elemsNotSelected.map((elem, index) => (
                                                 <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                     {(provided) => (
