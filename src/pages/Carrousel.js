@@ -274,7 +274,7 @@ function Carrousel() {
                         <DragDropContext>
                             <Droppable droppableId="selected" direction="horizontal">
                                 {(provided) => (
-                                    <div ref={provided.innerRef} {...provided.droppableProps} className="carrousel-list selected">
+                                    <div ref={provided.innerRef} {...provided.droppableProps}>
                                         <h3>Éléments sélectionnés</h3>
                                         <div id="in-carrousel-items">
                                             {elemsSelected.map((elem, index) => (
@@ -293,7 +293,7 @@ function Carrousel() {
                             </Droppable>
                             <Droppable droppableId="notSelected" direction="horizontal vertical">
                                 {(provided) => (
-                                    <div ref={provided.innerRef} {...provided.droppableProps} className="carrousel-list not-selected">
+                                    <div ref={provided.innerRef} {...provided.droppableProps}>
                                         <h3>Éléments non sélectionnés</h3>
                                         <div id="not-in-carrousel-items">
                                             {elemsNotSelected.map((elem, index) => (

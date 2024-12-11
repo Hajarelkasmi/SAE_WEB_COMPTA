@@ -84,7 +84,8 @@
 
 #in-carrousel-items, #not-in-carrousel-items {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
 }
 
 @media screen and (max-width: 768px) {
