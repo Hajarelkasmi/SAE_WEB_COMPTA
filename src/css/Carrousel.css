@@ -88,6 +88,7 @@
     overflow-x: scroll;
     scrollbar-color: #2196F3 white;
     padding-bottom: 1.5vh;
+    pointer-events: auto;
 }
 
 @media screen and (max-width: 768px) {
