@@ -199,47 +199,93 @@ function Carrousel() {
         setElemsNotSelected(notSelected);
     }, [allElems]);
 
-    const handleDragStart = (e, item, source) => {
-        e.dataTransfer.setData("item", JSON.stringify(item));
-        e.dataTransfer.setData("source", source);
-    };
+    // const handleDragStart = (e, item, source) => {
+    //     e.dataTransfer.setData("item", JSON.stringify(item));
+    //     e.dataTransfer.setData("source", source);
+    // };
 
-    const handleDrop = (e, targetList) => {
-        e.preventDefault();
+    // const handleDrop = (e, targetList) => {
+    //     e.preventDefault();
 
-        const item = JSON.parse(e.dataTransfer.getData("item"));
-        const source = e.dataTransfer.getData("source");
+    //     const item = JSON.parse(e.dataTransfer.getData("item"));
+    //     const source = e.dataTransfer.getData("source");
 
-        if (source === targetList) return;
+    //     if (source === targetList) return;
 
-        if (targetList === "selected") {
-            setElemsNotSelected((prev) => prev.filter((elem) => elem.id !== item.id));
-            setElemsSelected((prev) => [
-                ...prev,
-                { ...item, place: prev.length },
-            ]);
-        } else if (targetList === "notSelected") {
-            setElemsSelected((prev) => prev.filter((elem) => elem.id !== item.id));
-            setElemsNotSelected((prev) => [...prev, item]);
+    //     if (targetList === "selected") {
+    //         setElemsNotSelected((prev) => prev.filter((elem) => elem.id !== item.id));
+    //         setElemsSelected((prev) => [
+    //             ...prev,
+    //             { ...item, place: prev.length },
+    //         ]);
+    //     } else if (targetList === "notSelected") {
+    //         setElemsSelected((prev) => prev.filter((elem) => elem.id !== item.id));
+    //         setElemsNotSelected((prev) => [...prev, item]);
+    //     }
+    // };
+
+    // const handleReorder = (e, targetId) => {
+    //     e.preventDefault();
+
+    //     const draggedItem = JSON.parse(e.dataTransfer.getData("item"));
+
+    //     setElemsSelected((prev) => {
+    //         const draggedIndex = prev.findIndex((e) => e.id === draggedItem.id);
+    //         const targetIndex = prev.findIndex((e) => e.id === targetId);
+
+    //         const updated = [...prev];
+    //         const [removed] = updated.splice(draggedIndex, 1);
+    //         updated.splice(targetIndex, 0, removed);
+
+    //         // Mise à jour des places
+    //         return updated.map((elem, index) => ({ ...elem, place: index }));
+    //     });
+    // };
+
+    const onDragEnd = (result) => {
+        const { source, destination } = result;
+    
+        // Si aucune destination (élément lâché en dehors), ne rien faire
+        if (!destination) return;
+    
+        // Si l'élément est déposé dans la même position, ne rien faire
+        if (
+            source.droppableId === destination.droppableId &&
+            source.index === destination.index
+        ) {
+            return;
         }
-    };
-
-    const handleReorder = (e, targetId) => {
-        e.preventDefault();
-
-        const draggedItem = JSON.parse(e.dataTransfer.getData("item"));
-
-        setElemsSelected((prev) => {
-            const draggedIndex = prev.findIndex((e) => e.id === draggedItem.id);
-            const targetIndex = prev.findIndex((e) => e.id === targetId);
-
-            const updated = [...prev];
-            const [removed] = updated.splice(draggedIndex, 1);
-            updated.splice(targetIndex, 0, removed);
-
-            // Mise à jour des places
-            return updated.map((elem, index) => ({ ...elem, place: index }));
-        });
+    
+        // Déplacer l'élément dans la liste correspondante
+        if (source.droppableId === destination.droppableId) {
+            // Réorganisation dans la même liste
+            const list = source.droppableId === "selected" ? [...elemsSelected] : [...elemsNotSelected];
+            const [movedItem] = list.splice(source.index, 1);
+            list.splice(destination.index, 0, movedItem);
+    
+            if (source.droppableId === "selected") {
+                setElemsSelected(list.map((elem, index) => ({ ...elem, place: index })));
+            } else {
+                setElemsNotSelected(list);
+            }
+        } else {
+            // Déplacement entre deux listes
+            const sourceList =
+                source.droppableId === "selected" ? [...elemsSelected] : [...elemsNotSelected];
+            const destList =
+                destination.droppableId === "selected" ? [...elemsSelected] : [...elemsNotSelected];
+    
+            const [movedItem] = sourceList.splice(source.index, 1);
+            if (destination.droppableId === "selected") {
+                destList.splice(destination.index, 0, { ...movedItem, place: destList.length });
+                setElemsSelected(destList.map((elem, index) => ({ ...elem, place: index })));
+                setElemsNotSelected(sourceList);
+            } else {
+                destList.splice(destination.index, 0, movedItem);
+                setElemsNotSelected(destList);
+                setElemsSelected(sourceList.map((elem, index) => ({ ...elem, place: index })));
+            }
+        }
     };
 
     return (
@@ -271,12 +317,13 @@ function Carrousel() {
                     }
 
                     {modifyElems && (
-                        <DragDropContext>
+                        <DragDropContext onDragEnd={onDragEnd}>
                             <Droppable droppableId="selected" direction="horizontal">
                                 {(provided) => (
                                     <div ref={provided.innerRef} {...provided.droppableProps}>
                                         <h3>Éléments sélectionnés</h3>
-                                        <div id="in-carrousel-items">
+                                        <div id="in-carrousel-items" className="scrollable-content">
+                                            <div className="scroll-hint">Faites défiler →</div>
                                             {elemsSelected.map((elem, index) => (
                                                 <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                     {(provided) => (
@@ -295,7 +342,8 @@ function Carrousel() {
                                 {(provided) => (
                                     <div ref={provided.innerRef} {...provided.droppableProps}>
                                         <h3>Éléments non sélectionnés</h3>
-                                        <div id="not-in-carrousel-items">
+                                        <div id="not-in-carrousel-items" className="scrollable-content">
+                                            <div className="scroll-hint">Faites défiler →</div>
                                             {elemsNotSelected.map((elem, index) => (
                                                 <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                     {(provided) => (

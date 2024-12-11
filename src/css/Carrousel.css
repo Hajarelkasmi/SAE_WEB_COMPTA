@@ -86,6 +86,26 @@
     display: flex;
     flex-wrap: nowrap;
     overflow-x: scroll;
+    scrollbar-color: #2196F3 white;
+    padding-bottom: 1.5vh;
+}
+
+.scrollable-content {
+    position: relative;
+}
+
+.scroll-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+    color: #2196F3;
+    animation: fadeInOut 3s infinite;
+}
+
+@keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
 }
 
 @media screen and (max-width: 768px) {
