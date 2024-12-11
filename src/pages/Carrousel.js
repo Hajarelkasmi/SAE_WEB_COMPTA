@@ -272,7 +272,7 @@ function Carrousel() {
 
                     {modifyElems && (
                         <DragDropContext>
-                            <Droppable droppableId="selected">
+                            <Droppable droppableId="selected" direction="horizontal">
                                 {(provided) => (
                                     <div ref={provided.innerRef} {...provided.droppableProps} className="carrousel-list selected">
                                         <h3>Éléments sélectionnés</h3>
@@ -291,7 +291,7 @@ function Carrousel() {
                                     </div>
                                 )}
                             </Droppable>
-                            <Droppable droppableId="notSelected">
+                            <Droppable droppableId="notSelected" direction="horizontal vertical">
                                 {(provided) => (
                                     <div ref={provided.innerRef} {...provided.droppableProps} className="carrousel-list not-selected">
                                         <h3>Éléments non sélectionnés</h3>
