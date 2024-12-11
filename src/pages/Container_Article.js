@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
+import "../css/Container.Article.css";
 
 const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -228,12 +229,12 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                 {isAdmin ? (
                     <div className="Div_Article_Buttons">
                         { isModifiable ? (
-                        <button onClick={handleSave}>Enregistrer</button>
+                        <button className='buttonMS' onClick={handleSave}>Enregistrer</button>
                         ) : (
-                        <button onClick={handleModify}>Modifier</button>
+                        <button className='buttonMS' onClick={handleModify}>Modifier</button>
                         )
                         }
-                        <button onClick={handleDelete}>Supprimer</button>
+                        <button className='buttonMS' onClick={handleDelete}>Supprimer</button>
                     </div>
                 ) : null}
             </div>
