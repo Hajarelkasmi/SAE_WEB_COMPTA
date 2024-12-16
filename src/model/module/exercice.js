@@ -1,4 +1,4 @@
-const { Exercice, Rubrique } = require('../bd');
+const { Exercice, Rubrique, Etudiant } = require('../bd');
 const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
@@ -72,7 +72,8 @@ module.exports = (app) => {
             await rubrique.update({
             nom: req.body.nom,
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            est_public: req.body.est_public
             });
             await exercice.update({ 
             texte: req.body.texte,

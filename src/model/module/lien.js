@@ -1,9 +1,8 @@
-const { Lien, Rubrique } = require('../bd');
+const { Lien, Rubrique, Etudiant } = require('../bd');
 const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/liens', async (req, res) => {
-        const { page_id } = req.query; 
         try {
             const id_user = await checkUserFromToken(req);
             let est_abonne;
@@ -77,7 +76,8 @@ module.exports = (app) => {
             nom: req.body.nom,
             description: req.body.description,
             page_id: req.body.page_id,
-            position: req.body.position
+            position: req.body.position,
+            est_public: req.body.est_public
             });
             await lien.update({ 
             lien: req.body.lien,

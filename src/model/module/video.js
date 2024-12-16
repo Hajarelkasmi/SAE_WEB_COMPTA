@@ -1,4 +1,4 @@
-const { Video, Rubrique } = require('../bd');
+const { Video, Rubrique, Etudiant } = require('../bd');
 const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
@@ -75,7 +75,9 @@ module.exports = (app) => {
             await rubrique.update({
             nom: req.body.nom,
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            position: req.body.position,
+            est_public: req.body.est_public
             });
             await video.update({ 
             lien: req.body.lien,
