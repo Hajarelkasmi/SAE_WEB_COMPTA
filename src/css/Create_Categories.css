@@ -1,0 +1,123 @@
+.form-create-cat {
+    width: 50%;
+    margin: auto;
+}
+
+.title-create-cat {
+    text-align: center;
+}
+
+.title-create-cat,
+.label-create-cat {
+    color: #C61111;
+}
+
+.create-cat-div {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.label-create-cat {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.create-cat-div input[type="file"] {
+    width: 100%;
+    background-color: #F0F0F0;
+    color: #C61111;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+#ta-create-cat {
+    height: 131px;
+}
+
+.create-cat-div input[type="text"],
+#ta-create-cat {
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.create-cat-div input[type="checkbox"] {
+    accent-color: #C61111;
+    transform: scale(1.5);
+    margin-left: 10px;
+}
+
+.ButtonCreate {
+    width: auto;
+    height: 40px;
+    background-color: #F0F0F0;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 0 20px;
+    margin: 20px auto;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.ButtonCreate:hover {
+    background-color: #D0D0D0;
+}
+
+.create-cat-div ul {
+    list-style: none;
+    padding: 0;
+}
+
+#img-container {
+    height: 25vh;
+    overflow: hidden;
+    border: black dashed medium;
+    background-color: lightgray;
+    align-content: center;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#img-container>img {
+    width: 100%;
+}
+
+#img-container>p {
+    color: black;
+    text-align: center;
+    opacity: 50%;
+    font-size: 4vh;
+    font-weight: bold;
+}
+
+ul li button:hover {
+    background-color: #A00000;
+}
+
+.create_cat_button {
+    display: block;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #F0F0F0;
+    font-weight: bold;
+    text-decoration: none;
+    margin: auto;
+}
+
+.create_cat_button:hover {
+    background-color: #D0D0D0;
+}
