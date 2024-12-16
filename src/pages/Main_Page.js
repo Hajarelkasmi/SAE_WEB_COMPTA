@@ -35,7 +35,13 @@ const Main_Page = () => {
                 const result = await response.json();
                 setData(result);
 
-                const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`);
+                const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!liens_response.ok) {
                     throw new Error(`HTTP error! status: ${liens_response.status}`);
                 }
@@ -52,7 +58,13 @@ const Main_Page = () => {
                     est_public: lien.Rubrique.est_public
                 }));
 
-                const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`);
+                const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!articles_response.ok) {
                     throw new Error(`HTTP error! status: ${articles_response.status}`);
                 }
@@ -70,7 +82,13 @@ const Main_Page = () => {
                     est_public: article.Rubrique.est_public
                 }));
                 
-                const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`);
+                const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!videos_response.ok) {
                     throw new Error(`HTTP error! status: ${videos_response.status}`);
                 }
@@ -87,7 +105,13 @@ const Main_Page = () => {
                     est_public: video.Rubrique.est_public
                 }));
 
-                const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
+                const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!exercices_response.ok) {
                     throw new Error(`HTTP error! status: ${exercices_response.status}`);
                 }
