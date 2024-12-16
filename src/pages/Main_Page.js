@@ -184,7 +184,7 @@ const Main_Page = () => {
                 isModifiable: true,
                 page_id: id,
                 rubrique_id: result.rubrique_id,
-                est_public: result.est_public,
+                est_public: true,
             }]);
             setActiveRubrique(result.rubrique_id);
             
