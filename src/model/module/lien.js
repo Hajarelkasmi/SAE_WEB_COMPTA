@@ -20,7 +20,7 @@ module.exports = (app) => {
             const liens = await Lien.findAll({
                 include: {
                     model: Rubrique,
-                    attributes: ['id', 'nom', 'description', 'page_id', 'position'],
+                    attributes: ['id', 'nom', 'description', 'page_id', 'position', 'est_public'],
                     where: condition_where
                 },
             });

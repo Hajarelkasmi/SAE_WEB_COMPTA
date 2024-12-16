@@ -5,12 +5,14 @@ module.exports = (app) => {
     app.get('/api/articles', async (req, res) => {
         const id_user = await checkUserFromToken(req);
         let est_abonne;
+        console.log('id_user', id_user);
         if (id_user) {
             const etudiant = await Etudiant.findByPk(id_user);
             if (etudiant.est_abonne || etudiant.est_admin) {
                 est_abonne = true;
             }
         }
+        console.log('est_abonne', est_abonne);
         const { page_id } = req.query; 
         try {
         const condition_where = page_id ? { page_id } : {};
@@ -20,7 +22,7 @@ module.exports = (app) => {
         const articles = await Article.findAll({
             include: {
                 model: Rubrique,
-                attributes: ['id', 'nom', 'description', 'page_id', 'position'],
+                attributes: ['id', 'nom', 'description', 'page_id', 'position', 'est_public'],
                 where: condition_where
             },
         });
