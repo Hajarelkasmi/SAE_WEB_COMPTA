@@ -50,6 +50,7 @@
     height: 10vh;
     width: 10vh;
     margin: 1vh 0px;
+    object-fit: cover;
 }
 
 .cours .composant_carrousel p {
