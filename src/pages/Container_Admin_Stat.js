@@ -38,7 +38,7 @@ const Container_Admin_Stat = () => {
                 const ClassesData = {};
 
                 for (const classe_id in classes) {
-                    const nom_classe = data2.find(classe => classe.id === parseInt(classe_id)).Classe.nom;
+                    const nom_classe = data2.find(classe => classe.classe_id === parseInt(classe_id)).Classe.nom;
                     EtudiantclassesData[nom_classe] = classes[classe_id];
                     ClassesData[nom_classe] = ClassDataTrier[classe_id];
                 }
