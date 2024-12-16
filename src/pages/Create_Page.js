@@ -293,9 +293,14 @@ const Create_Page = () => {
     return (
         <div className="div-page-all-content">
             {image ? (
-                <div id="img-container" style={{ backgroundImage: `url(${image})` }}></div>
+                <div id="img-container">
+                    <img src={image} alt="Aperçu de l'image" />
+                    <img src={"/static/image/" + image} alt="Aperçu de l'image" />
+                </div>
             ) : (
-                <div id="img-container"><p>Aperçu de l'image</p></div>
+                <div id="img-container">
+                    <p>Aperçu de l'image</p>
+                </div>
             )}
             <div className="DivCreateMain">
                 {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}

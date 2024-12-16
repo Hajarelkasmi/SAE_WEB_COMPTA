@@ -120,10 +120,13 @@
     background-position: center;
     justify-content: center;
     align-items: center;
+    font-size: 0em;
 }
 
 #img-container>img {
+    max-width: 100%;
     width: 100%;
+    object-fit: contain;
 }
 
 #img-container>p {
