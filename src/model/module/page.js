@@ -1,6 +1,6 @@
 // page.js
-const { Page } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { Page, Etudiant } = require('../bd');
+const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/pages', async (req, res) => {
