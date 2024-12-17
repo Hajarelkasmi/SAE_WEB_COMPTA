@@ -158,6 +158,9 @@ function Carrousel() {
                 let elems = [];
                 elems = await fetch('http://localhost:5000/api/categories', {
                     method: 'GET',
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                    }
                 }).then(response => response.json()).catch(error => console.error(error));
                 for (const element of elems) {
                     element.src = "/categories/"+element.id;
