@@ -109,6 +109,15 @@ function Register() {
         }
     };
 
+    const checkPassword = () => {
+        const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        if (!passwordRegex.test(mot_de_passe)) {
+            setErrorMessage('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+        } else {
+            setErrorMessage('');
+        }
+    };
+
     const verifyPassword = () => {
         if (mot_de_passe !== confirmPassword) {
             setErrorMessage('Les mots de passe ne correspondent pas.');
@@ -136,7 +145,7 @@ function Register() {
                             <option key={classe.id} value={classe.id}>{classe.nom}</option>
                         ))}
                     </select>
-                    <input className="input-register" type="password" name="mot_de_passe" id="password" placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} required />
+                    <input className="input-register" type="password" name="mot_de_passe" id="password" placeholder="Mot de passe" onChange={(e) => setPassword(e.target.value)} onBlur={checkPassword} required />
                     <input className="input-register" type="password" name="confirm_password" id="confirm_password" placeholder="Confirmer le mot de passe" onChange={(e) => setConfirmPassword(e.target.value)} onBlur={verifyPassword} required />
                     <div id="checkbox-register">
                         <input className="input-register" type="checkbox" name="est_abonne" id="access" checked={demandeAbonnement} onChange={(e) => setDemandeAbonnement(e.target.checked)} />
