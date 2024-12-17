@@ -44,7 +44,7 @@ function Carrousel() {
                 if (element.image === null) {
                     element.img = "/logo_bitmoji.png";
                 } else {
-                    element.img = element.image;
+                    element.img = "/static/image/"+element.image;
                 }
                 elems.push(element);
             }
@@ -158,13 +158,16 @@ function Carrousel() {
                 let elems = [];
                 elems = await fetch('http://localhost:5000/api/categories', {
                     method: 'GET',
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                    }
                 }).then(response => response.json()).catch(error => console.error(error));
                 for (const element of elems) {
                     element.src = "/categories/"+element.id;
                     if (element.image === null) {
                         element.img = "/logo_bitmoji.png";
                     } else {
-                        element.img = element.image;
+                        element.img = "/static/image/"+element.image;
                     }
                 }
                 //  donner leur place depuis elemsCarrousel

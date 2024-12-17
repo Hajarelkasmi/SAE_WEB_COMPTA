@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
 import "../css/Container.Article.css";
+import Popup from './Popup';
 
 const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -74,7 +75,8 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                     description: description,
                     texte: document.querySelector('.ql-editor').innerHTML,
                     page_id: rubrique.page_id,
-                    rubrique_id: rubrique.rubrique_id
+                    rubrique_id: rubrique.rubrique_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 
@@ -123,6 +125,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
             console.error('Erreur:', error);
         }
         handleEditRubrique();
+        Popup('Sauvegarde de la rubrique réussie', 2000, 'success');
         localStorage.removeItem('edit_rubrique');
         window.location.reload();
     };
@@ -236,6 +239,13 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                         }
                         <button className='buttonMS' onClick={handleDelete}>Supprimer</button>
                     </div>
+                ) : null}
+                {isAdmin ? (
+                    isModifiable ? (
+                        <input checked={rubrique.est_public} type="checkbox" onChange={(event) => {rubrique.est_public = event.target.checked;}} /> 
+                    ) : (
+                        <p>{rubrique.est_public ? 'Public' : 'Privé'}</p>
+                    )
                 ) : null}
             </div>
             {isModifiable && isAdmin ? (

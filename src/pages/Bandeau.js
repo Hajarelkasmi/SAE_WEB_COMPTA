@@ -23,7 +23,14 @@ function Bandeau() {
 
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/bandeau');
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/bandeau',
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: token
+                        }
+                    });
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -101,6 +108,7 @@ function Bandeau() {
                         <ElemBandeau key={elem.id} link={"/categories/" + elem.id} nom={elem.nom}
                                      enfants={elem.enfants}/>
                     ))}
+                    {isAdmin ? <ElemBandeau link="/admin" nom="Admin" enfants={[ {nom: 'Catégories', link: '/admin/categories'}]} isAdmin={isAdmin} /> : ''}
                 </ul>
                 <ul id="auths">
                     {auths.map((elem) => (

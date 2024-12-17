@@ -89,4 +89,19 @@ function refreshToken(req, res) {
     });
 }
 
-module.exports = { authenticate, verifyToken, verifyAdmin, refreshToken };
+async function checkUserFromToken(req) {
+    const token = req.headers['authorization'];
+    if (!token) {
+        return
+    }
+    let id;
+    jwt.verify(token, secretKey, async (err, decoded) => {
+        if (err) {
+            return;
+        }
+        id = decoded.id; 
+    });
+    return id;
+}
+
+module.exports = { authenticate, verifyToken, verifyAdmin, refreshToken, checkUserFromToken };

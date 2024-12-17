@@ -14,6 +14,8 @@ import Disconnect from "./pages/Disconnect";
 import InactivityTimer from "./InactivityTimer";
 import Create_Categorie from "./pages/Create_Categorie";
 import Gestion_Categorie from "./pages/Gestion_Categorie";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
     let reseaux = [
@@ -45,6 +47,7 @@ function App() {
                         <Route exact path='/categories/:id_categorie/pages/:id_page' element={<Create_Page/>}></Route>
                         <Route exact path='/categories/:id_categorie/pages' element={<Create_Page/>}></Route>
                     </Routes>
+                    <ToastContainer />
                 </BrowserRouter>
             </div>
             <Footer/>

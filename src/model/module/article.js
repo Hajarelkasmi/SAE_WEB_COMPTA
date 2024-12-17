@@ -1,15 +1,29 @@
-const { Article, Rubrique } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { Article, Rubrique, Etudiant } = require('../bd');
+const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/articles', async (req, res) => {
+        const id_user = await checkUserFromToken(req);
+        let est_abonne;
+        console.log('id_user', id_user);
+        if (id_user) {
+            const etudiant = await Etudiant.findByPk(id_user);
+            if (etudiant.est_abonne || etudiant.est_admin) {
+                est_abonne = true;
+            }
+        }
+        console.log('est_abonne', est_abonne);
         const { page_id } = req.query; 
         try {
+        const condition_where = page_id ? { page_id } : {};
+        if (!est_abonne) {
+            condition_where.est_public = true;
+        }
         const articles = await Article.findAll({
             include: {
                 model: Rubrique,
-                attributes: ['id', 'nom', 'description', 'page_id', 'position'],
-                where: page_id ? { page_id } : {},
+                attributes: ['id', 'nom', 'description', 'page_id', 'position', 'est_public'],
+                where: condition_where
             },
         });
         res.json(articles);
@@ -42,6 +56,7 @@ module.exports = (app) => {
             nom: req.body.nom, 
             description: req.body.description,
             page_id: req.body.page_id,
+            est_public: req.body.est_public,
             position: position
         });
         const article = await Article.create({ 
@@ -65,7 +80,8 @@ module.exports = (app) => {
             nom: req.body.nom,
             description: req.body.description,
             page_id: req.body.page_id,
-            position: req.body.position
+            position: req.body.position,
+            est_public: req.body.est_public
             });
             await article.update({ 
             texte: req.body.texte,

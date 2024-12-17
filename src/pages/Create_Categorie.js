@@ -1,5 +1,8 @@
-import React, {useState, useEffect} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import Popup from "./Popup";
+import '../css/Create_Categories.css';
 
 const Create_Categorie = () => {
     const [titre, setTitre] = useState('');
@@ -124,7 +127,9 @@ const Create_Categorie = () => {
                 console.log('Sous-catégorie créée:', data_sous_categorie);
             }
             navigate(`/categories/${data.id}`);
-            window.location.reload();
+            const message = categorieId ? 'Catégorie modifiée' : 'Catégorie créée';
+            Popup(message, 2000, 'success');
+            // window.location.reload();
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -165,29 +170,40 @@ const Create_Categorie = () => {
     }
 
     return (
-        <div className="categorie">
-            <h1>{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Titre :
+        <div className="create-cat-main-div">
+            {image ? (
+                <div id="img-container">
+                    <img src={image} alt="Aperçu de l'image" />
+                    <img src={"/static/image/" + image} alt="Aperçu de l'image" />
+                </div>
+            ) : (
+                <div id="img-container">
+                    <p>Aperçu de l'image</p>
+                </div>
+            )}
+
+            <h1 class="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
+            <form class="form-create-cat" onSubmit={handleSubmit}>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Titre :</label>
                     <input type="text" value={titre} onChange={event => setTitre(event.target.value)} required />
-                </label>
-                <label>
-                    Description :
-                    <textarea value={description} onChange={event => setDescription(event.target.value)} required />
-                </label>
-                <label>
-                    <h3>Image actuelle</h3>
-                    {image && <img src={"/static/image/"+image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
-                    <input type="text" value={imageFile ? imageFile.name : ''}/>
+                </div>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Description :</label>
+                    <textarea id="ta-create-cat" value={description} onChange={event => setDescription(event.target.value)} required />
+                </div>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Image actuelle :</label>
+                    {image && <img src={"/static/image/" + image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
+                    <input type="text" value={imageFile ? imageFile.name : ''} />
                     <input type="file" onChange={handleImageChange} accept="image/*" required={categorieId ? false : true} />
-                    {image && <img src={image} alt="Aperçu de l'image" style={{ maxWidth: '100%', height: 'auto' }} />}
-                </label>
-                <label>
-                    Est public :
+                    {image && <img src={image} alt="Aperçu de l'image" style={{ display: 'none' }} />}
+                </div>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Est public :</label>
                     <input type="checkbox" checked={estPublic} onChange={event => setEstPublic(event.target.checked)} />
-                </label>
-                <button type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
+                </div>
+                <button class="create_cat_button" type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
             </form>
         </div>
     );
