@@ -98,6 +98,7 @@ function Bandeau() {
                         <ElemBandeau key={elem.id} link={"/categories/" + elem.id} nom={elem.nom}
                                      enfants={elem.enfants}/>
                     ))}
+                    {isAdmin ? <ElemBandeau link="/admin" nom="Admin" enfants={[ {nom: 'Catégories', link: '/admin/categories'}]} isAdmin={isAdmin} /> : ''}
                 </ul>
                 <ul id="auths">
                     {auths.map((elem) => (

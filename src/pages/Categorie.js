@@ -75,7 +75,7 @@ const Categorie = () => {
                     </li>
                 ))}
             </ul>
-            {isAdmin && <a className={"cat_link"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</a>}
+            {isAdmin && <a className={"cat_link"} href={`/categories/${id_categorie}/create`}>Créer une nouvelle sous-catégorie</a>}
             <h2>Pages :</h2>
             {pages.length === 0 && <p>Aucune page trouvée</p>}
             <ul>

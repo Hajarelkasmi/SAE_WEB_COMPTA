@@ -45,7 +45,7 @@ function Carrousel() {
                 if (element.image === null) {
                     element.img = "/logo_bitmoji.png";
                 } else {
-                    element.img = element.image;
+                    element.img = "/static/image/"+element.image;
                 }
                 elems.push(element);
             }
@@ -176,7 +176,7 @@ function Carrousel() {
             if (element.image === null) {
                 element.img = "/logo_bitmoji.png";
             } else {
-                element.img = element.image;
+                element.img = "/static/image/"+element.image;
             }
         }
         for (const element of elemsCarrousel) {
