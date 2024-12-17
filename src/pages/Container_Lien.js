@@ -164,8 +164,9 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
             </div> 
             ) : null}
         </div> 
-
-    );
-};
-
-export default Container_Lien;
+        </div> // Add this closing tag
+        
+        );
+        };
+        
+        export default Container_Lien;
