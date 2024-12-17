@@ -5,6 +5,7 @@ const { Cryptage } = require('../cryptage');
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
+<<<<<<< HEAD
             const etudiants = await Etudiant.findAll(
                 {
                     attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
@@ -15,6 +16,28 @@ module.exports = (app) => {
                 }
             );
             res.json(etudiants);
+=======
+            const classe_id = req.query.classe_id;
+            const est_abonne = req.query.est_abonne;
+            const where = {};
+            if (classe_id) {
+                where.classe_id = classe_id;
+            }
+            if (est_abonne) {
+                where.est_abonne = est_abonne;
+            }
+        const etudiants = await Etudiant.findAll(
+            {
+                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
+                include: {
+                    model: Classe,
+                    attributes: ['nom']
+                },
+                where: where
+            }
+        );
+        res.json(etudiants);
+>>>>>>> 2509d90601e408587d30ff3914663a031c6320d7
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while fetching etudiants' });
         }
@@ -87,9 +110,11 @@ module.exports = (app) => {
     app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
-            const crypted_password = await Cryptage(req.body.mot_de_passe);
+            let crypted_password;
+            if (req.body.mot_de_passe) {
+                crypted_password = await Cryptage(req.body.mot_de_passe);
+            }
             if (etudiant) {
-                console.log(req.crypted_password);
                 await etudiant.update({
                     nom: req.body.nom,
                     prenom: req.body.prenom,

@@ -22,7 +22,8 @@ const Categorie = () => {
 
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`);
+                const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`,
+                    {headers: {'Authorization': localStorage.getItem('token')}});
                 if (!response.ok) {
                     setError('Erreur lors de la récupération de la catégorie : ' + response.statusText);
                     throw new Error('Erreur lors de la récupération de la catégorie');
@@ -30,14 +31,16 @@ const Categorie = () => {
                 const data = await response.json();
                 setCategorie(data);
 
-                const responsePages = await fetch(`http://localhost:5000/api/pages?categorie_id=${id_categorie}`);
+                const responsePages = await fetch(`http://localhost:5000/api/pages?categorie_id=${id_categorie}`,
+                    {headers: {'Authorization': localStorage.getItem('token')}});
                 if (!responsePages.ok) {
                     throw new Error('Erreur lors de la récupération des pages');
                 }
                 const dataPages = await responsePages.json();
                 setPages(dataPages);
 
-                const reponseSousCategories = await fetch(`http://localhost:5000/api/sous_categories/${id_categorie}`);
+                const reponseSousCategories = await fetch(`http://localhost:5000/api/sous_categories/${id_categorie}`, 
+                    {headers: {'Authorization': localStorage.getItem('token')}});
                 if (!reponseSousCategories.ok) {
                     throw new Error('Erreur lors de la récupération des sous-catégories');
                 }
