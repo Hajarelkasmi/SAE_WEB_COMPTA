@@ -23,7 +23,14 @@ function Bandeau() {
 
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/bandeau');
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/bandeau',
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: token
+                        }
+                    });
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);

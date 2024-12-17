@@ -30,7 +30,13 @@ const Create_Page = () => {
                 setClasses(classes);
 
                 if (id_page) {
-                    const page = await fetch('http://localhost:5000/api/pages/' + id_page);
+                    const page = await fetch('http://localhost:5000/api/pages/' + id_page, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('token'),
+                        },
+                    });
                     if (!page.ok) {
                         const errorText = await page.text();
                         console.error('Réponse de l\'API:', errorText);

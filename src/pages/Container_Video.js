@@ -36,7 +36,8 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
                     description: description,
                     lien: lien,
                     rubrique_id: rubrique.rubrique_id,
-                    page_id: rubrique.page_id
+                    page_id: rubrique.page_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 
@@ -131,6 +132,13 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
                         <button onClick={handleDelete}>Supprimer</button>
                     </div>
                     ) : null}
+                    {isAdmin ? (
+                        isModifiable ? (
+                            <input checked={rubrique.est_public} type="checkbox" onChange={(event) => {rubrique.est_public = event.target.checked;}} /> 
+                        ) : (
+                            <p>{rubrique.est_public ? 'Public' : 'Privé'}</p>
+                        )
+                    ) : null}
                 </div>    
             <div className="Div_Video_Content">
             {isModifiable && isAdmin ? (
@@ -149,6 +157,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
+                    loading='lazy'
                 ></iframe>
             )}
             {isModifiable && isAdmin ? (
