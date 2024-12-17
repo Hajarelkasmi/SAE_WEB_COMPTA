@@ -99,7 +99,7 @@ function Compte() {
 
     const CopierMail = () => {
         navigator.clipboard.writeText(comptes.map(compte => compte.mail).join(', '));
-        Popup("Mails copié", 2000, "success");
+        Popup("Mails copiés", 2000, "success");
     }
 
     return (
