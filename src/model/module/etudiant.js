@@ -5,18 +5,6 @@ const { Cryptage } = require('../cryptage');
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
-<<<<<<< HEAD
-            const etudiants = await Etudiant.findAll(
-                {
-                    attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
-                    include: {
-                        model: Classe,
-                        attributes: ['nom']
-                    }
-                }
-            );
-            res.json(etudiants);
-=======
             const classe_id = req.query.classe_id;
             const est_abonne = req.query.est_abonne;
             const where = {};
@@ -26,18 +14,17 @@ module.exports = (app) => {
             if (est_abonne) {
                 where.est_abonne = est_abonne;
             }
-        const etudiants = await Etudiant.findAll(
-            {
-                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
-                include: {
-                    model: Classe,
-                    attributes: ['nom']
-                },
-                where: where
-            }
-        );
-        res.json(etudiants);
->>>>>>> 2509d90601e408587d30ff3914663a031c6320d7
+            const etudiants = await Etudiant.findAll(
+                {
+                    attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
+                    include: {
+                        model: Classe,
+                        attributes: ['nom']
+                    },
+                    where: where
+                }
+            );
+            res.json(etudiants);
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while fetching etudiants' });
         }
