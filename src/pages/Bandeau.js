@@ -45,10 +45,6 @@ function Bandeau() {
         fetchData();
     }, []);
 
-    // return (
-    //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
-
-
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setAuths([
@@ -80,6 +76,7 @@ function Bandeau() {
             }
         });
     };
+
     useEffect(() => {
         const sousMenus = document.querySelectorAll('.sous');
         console.log(sousMenus);
