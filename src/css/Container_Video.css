@@ -1,4 +1,5 @@
-.Div_Article {
+/* Conteneur principal */
+.Div_Video {
     background-color: #000000;
     color: #ffffff;
     border-radius: 10px;
@@ -8,20 +9,26 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.Div_Article_Title {
+/* Titre et Boutons */
+.Div_Video_Title {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
 }
 
-.Div_Article_Title h2 {
+
+.Div_Video_Title h2 {
     font-size: 1.8rem;
     color: #ffffff;
     flex-grow: 1;
 }
 
-.Div_Article_Title button {
+
+
+
+
+.Div_Video_Buttons button {
     background-color: #b71c1c;
     color: #ffffff;
     border: none;
@@ -32,16 +39,15 @@
     transition: background-color 0.3s ease;
 }
 
-.Div_Article_Title button:disabled {
+.Div_Video_Title button:disabled {
     background-color: #444;
     cursor: not-allowed;
 }
-
-.Div_Article_Title button:hover:not(:disabled) {
+.Div_Viedo_Title button:hover:not(:disabled) {
     background-color: #d32f2f;
 }
 
-.Div_Article textarea {
+.Div_Video_Content textarea {
     width: 100%;
     background-color: #212121;
     color: #ffffff;
@@ -53,12 +59,14 @@
     resize: none;
 }
 
-.Div_Article textarea::placeholder,
-.Div_Article input::placeholder {
+
+
+.Div_Video textarea::placeholder,
+.Div_Video input::placeholder {
     color: #aaa;
 }
 
-.Div_Article input[type="text"] {
+.Div_Video input[type="text"] {
     width: 100%;
     background-color: #212121;
     color: #ffffff;
@@ -69,27 +77,21 @@
     font-size: 1rem;
 }
 
-.Div_Article input[type="file"] {
+.Div_Video input[type="file"] {
     margin-top: 10px;
 }
 
-.Div_Article img {
-    display: block;
-    max-width: 30%;
-    max-height: 30%;
-    height: auto;
-    margin-top: 10px;
-    border-radius: 5px;
-}
 
-.Div_Article button {
+
+
+.Div_Video button {
     font-weight: bold;
    
 }
 
 
 
-.Div_Article .quill-editor {
+.Div_Video .quill-editor {
     background-color: #212121;
     border: 1px solid #444;
     border-radius: 5px;
@@ -97,30 +99,26 @@
     margin-bottom: 10px;
 }
 
-.Div_Article .quill-editor .ql-editor {
+.Div_Video .quill-editor .ql-editor {
     background-color: #212121;
     color: #ffffff;
     min-height: 200px;
 }
 
-.Div_Article p {
-    font-size: 1.1rem;
-    line-height: 1.5;
-    margin-bottom: 10px;
-}
+
 .butonES {
     height: 50px;
     
 }
 
 
-.Div_Article_Buttons {
+.Div_Video_Buttons {
     display: flex;
     justify-content: center; /* Centrer les boutons horizontalement */
     gap: 10px; /* Espacement entre les boutons */
 }
 
-.Div_Article_Buttons button {
+.Div_Video_Buttons button {
     background-color: #990000;
     color: white;
     border: none;
@@ -130,6 +128,6 @@
     transition: background-color 0.3s ease;
 }
 
-.Div_Article_Buttons button:hover {
+.Div_Video_Buttons button:hover {
     background-color: #cc0000;
 }
