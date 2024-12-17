@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import "../css/Container_Video.css";
 
 const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);

@@ -1,0 +1,86 @@
+/* Conteneur principal */
+.Div_Video {
+    background-color: black; /* Fond noir */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 1200px; /* Pour limiter la largeur */
+    margin: 0 auto; /* Centrage horizontal */
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Titre et Boutons */
+.Div_Video_Title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.Div_Video_Title input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.Div_Video_Buttons button {
+    background-color: #8b1d1d; /* Rouge sombre */
+    color: white;
+    border: none;
+    border-radius: 20px; /* Bords arrondis */
+    padding: 10px 20px;
+    margin-left: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.Div_Video_Buttons button:hover {
+    background-color: #a52d2d; /* Rouge clair au survol */
+}
+
+.Div_Video_Buttons button:focus {
+    outline: 2px solid purple; /* Contour violet au focus */
+}
+
+/* Contenu vidéo */
+.Div_Video_Content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.Div_Video_Content input,
+.Div_Video_Content textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.Div_Video_Content textarea {
+    min-height: 80px;
+    resize: none; /* Empêche le redimensionnement */
+}
+
+iframe {
+    border-radius: 10px; /* Arrondi pour l'iframe */
+    max-width: 100%;
+}
+
+/* Zone draggable */
+.Div_Position {
+    background-color: transparent;
+    border: 2px dashed grey; /* Contour gris pointillé */
+    border-radius: 10px;
+    margin-top: 10px;
+    min-height: 50px;
+    cursor: move;
+}
