@@ -7,7 +7,7 @@
 }
 
 #titre {
-    background-image: url("/home/iut45/Etudiants/o22202319/Documents/sae/SAE_WEB_COMPTA/public/compta.jpeg");
+    background-image: url("../../public/compta.jpeg");
     background-size: cover;
     background-position: center;
     height: 25vh;
