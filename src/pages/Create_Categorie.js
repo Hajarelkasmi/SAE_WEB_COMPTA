@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import {toast} from "react-toastify";
+import Popup from "./Popup";
 
 const Create_Categorie = () => {
     const [titre, setTitre] = useState('');
@@ -124,7 +126,9 @@ const Create_Categorie = () => {
                 console.log('Sous-catégorie créée:', data_sous_categorie);
             }
             navigate(`/categories/${data.id}`);
-            window.location.reload();
+            const message = categorieId ? 'Catégorie modifiée' : 'Catégorie créée';
+            Popup(message, 2000, 'success');
+            // window.location.reload();
         } catch (error) {
             console.error('Erreur:', error);
         }

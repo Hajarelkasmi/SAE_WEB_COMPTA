@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Popup from './Popup';
 
 const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -49,6 +50,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
             console.error('Erreur:', error);
         }
         handleEditRubrique();
+        Popup('Sauvegarde de la rubrique réussie', 2000, 'success');
         localStorage.removeItem('edit_rubrique');
     }
 

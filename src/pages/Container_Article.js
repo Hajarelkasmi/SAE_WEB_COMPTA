@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
 import "../css/Container.Article.css";
+import Popup from './Popup';
 
 const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -123,6 +124,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
             console.error('Erreur:', error);
         }
         handleEditRubrique();
+        Popup('Sauvegarde de la rubrique réussie', 2000, 'success');
         localStorage.removeItem('edit_rubrique');
         window.location.reload();
     };
