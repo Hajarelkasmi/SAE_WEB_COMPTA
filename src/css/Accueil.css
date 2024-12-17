@@ -7,3 +7,7 @@ main p {
     font-size: 3vh;
     margin: 0px;
 }
+
+body {
+    font-family: "Open Sans", sans-serif;
+}
