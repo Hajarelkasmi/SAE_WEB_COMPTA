@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import '../css/Login.css';
 import {useNavigate} from 'react-router-dom';
+import Popup from './Popup';
 
 const Login = () => {
 
@@ -42,7 +43,20 @@ const Login = () => {
                 document.cookie = `refreshToken=${data.refreshToken}; path=/`;
             }
             Navigate('/');
+            Popup('Connexion réussie', 2000, 'success');
             window.location.reload();
+            const response_demande_abonnement = await fetch('http://localhost:5000/api/demande_abonnements', {
+                method: 'GET',
+                headers: {
+                    'Authorization': data.token
+                }
+            });
+            if (response_demande_abonnement.ok) {
+                const nombre_demandes = (await response_demande_abonnement.json()).length;
+                if (nombre_demandes > 0) {
+                    Popup('Vous avez ' + nombre_demandes + ' demandes d\'abonnement', 5000, 'error');
+                }
+            }
             // Redirigez l'utilisateur ou effectuez d'autres actions après la connexion
         } catch (err) {
             setError(err.response?.data?.error || 'Une erreur est survenue');

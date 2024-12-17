@@ -181,6 +181,10 @@ const Rubrique = sequelize.define('Rubrique', {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        est_public: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false
+        },
         page_id: {
             type: DataTypes.INTEGER,
             allowNull: false,

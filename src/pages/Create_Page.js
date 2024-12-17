@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
 import { refresh } from "./RefreshToken";
+import Popup from "./Popup";
 
 const Create_Page = () => {
     const { id_categorie, id_page } = useParams();
@@ -29,7 +30,13 @@ const Create_Page = () => {
                 setClasses(classes);
 
                 if (id_page) {
-                    const page = await fetch('http://localhost:5000/api/pages/' + id_page);
+                    const page = await fetch('http://localhost:5000/api/pages/' + id_page, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('token'),
+                        },
+                    });
                     if (!page.ok) {
                         const errorText = await page.text();
                         console.error('Réponse de l\'API:', errorText);
@@ -129,6 +136,9 @@ const Create_Page = () => {
             setImage('');
             setImageFile(null);
             navigate(`/page/${newPage.id}`);
+            
+            const message = id_page ? 'Page modifiée' : 'Page créée';
+            Popup(message, 2000, 'success');
 
             if (id_page) {
                 await modifClasses();

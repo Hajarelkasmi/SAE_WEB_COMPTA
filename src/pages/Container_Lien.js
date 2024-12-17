@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Popup from './Popup';
 
 const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -25,7 +26,8 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                     description: description,
                     lien: lien,
                     rubrique_id: rubrique.rubrique_id,
-                    page_id: rubrique.page_id
+                    page_id: rubrique.page_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 
@@ -39,6 +41,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
             console.error('Erreur:', error);
         }
         handleEditRubrique();
+        Popup('Sauvegarde de la rubrique réussie', 2000, 'success');
         localStorage.removeItem('edit_rubrique');
     };
 
@@ -117,6 +120,13 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                         )}
                         <button onClick={handleDelete}>Supprimer</button>
                     </div>
+                    ) : null}
+                    {isAdmin ? (
+                        isModifiable ? (
+                            <input checked={rubrique.est_public} type="checkbox" onChange={(event) => {rubrique.est_public = event.target.checked;}} /> 
+                        ) : (
+                            <p>{rubrique.est_public ? 'Public' : 'Privé'}</p>
+                        )
                     ) : null}
                 </div>            
             {isModifiable && isAdmin ? (
