@@ -250,78 +250,80 @@ function Carrousel() {
     };
 
     return (
-        <section id="cours">
-            <h2>Cours de Gestion de Comptabilité et Finance</h2>
-            <div id="carrousel">
-                <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
-                {elemsCarrousel
-                  .slice(currentIndex, currentIndex + visibleItemsCount)
-                  .map((elem, index) => (
-                    <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
-                  ))}
-                {elemsCarrousel
-                  .slice(0, depassement)
-                  .map((elem, index) => (
-                    <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
-                  ))}
-                <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
-            </div>
-            {isAdmin && 
-                <div id="modification_cours">
-                    {modifyElems ?
-                        <>
-                            <button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button>
-                            <button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button>
-                        </>
-                        :
-                        <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
-                    }
-
-                    {modifyElems && (
-                        <DragDropContext onDragEnd={onDragEnd}>
-                            <Droppable droppableId="selected" direction="horizontal">
-                                {(provided) => (
-                                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                                        <h3>Éléments sélectionnés</h3>
-                                        <div id="in-carrousel-items" className="scrollable-content">
-                                            {elemsSelected.map((elem, index) => (
-                                                <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
-                                                    {(provided) => (
-                                                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
-                                                            <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ), [elemsSelected])}
-                                            {provided.placeholder}
-                                        </div>
-                                    </div>
-                                )}
-                            </Droppable>
-                            <Droppable droppableId="notSelected" direction="horizontal vertical">
-                                {(provided) => (
-                                    <div ref={provided.innerRef} {...provided.droppableProps}>
-                                        <h3>Éléments non sélectionnés</h3>
-                                        <div id="not-in-carrousel-items" className="scrollable-content">
-                                            {elemsNotSelected.map((elem, index) => (
-                                                <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
-                                                    {(provided) => (
-                                                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
-                                                            <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ), [elemsNotSelected])}
-                                            {provided.placeholder}
-                                        </div>
-                                    </div>
-                                )}
-                            </Droppable>
-                        </DragDropContext>
-                    )}
+        (elemsCarrousel.length > 0 || isAdmin) && (
+            <section id="cours">
+                <h2>Cours de Gestion de Comptabilité et Finance</h2>
+                <div id="carrousel">
+                    <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
+                    {elemsCarrousel
+                    .slice(currentIndex, currentIndex + visibleItemsCount)
+                    .map((elem, index) => (
+                        <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    ))}
+                    {elemsCarrousel
+                    .slice(0, depassement)
+                    .map((elem, index) => (
+                        <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    ))}
+                    <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
                 </div>
-            }
-        </section>
+                {isAdmin && 
+                    <div id="modification_cours">
+                        {modifyElems ?
+                            <>
+                                <button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button>
+                                <button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button>
+                            </>
+                            :
+                            <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
+                        }
+
+                        {modifyElems && (
+                            <DragDropContext onDragEnd={onDragEnd}>
+                                <Droppable droppableId="selected" direction="horizontal">
+                                    {(provided) => (
+                                        <div ref={provided.innerRef} {...provided.droppableProps}>
+                                            <h3>Éléments sélectionnés</h3>
+                                            <div id="in-carrousel-items" className="scrollable-content">
+                                                {elemsSelected.map((elem, index) => (
+                                                    <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
+                                                        {(provided) => (
+                                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ), [elemsSelected])}
+                                                {provided.placeholder}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Droppable>
+                                <Droppable droppableId="notSelected" direction="horizontal vertical">
+                                    {(provided) => (
+                                        <div ref={provided.innerRef} {...provided.droppableProps}>
+                                            <h3>Éléments non sélectionnés</h3>
+                                            <div id="not-in-carrousel-items" className="scrollable-content">
+                                                {elemsNotSelected.map((elem, index) => (
+                                                    <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
+                                                        {(provided) => (
+                                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ), [elemsNotSelected])}
+                                                {provided.placeholder}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
+                        )}
+                    </div>
+                }
+            </section>
+        )
     );
 }
 
