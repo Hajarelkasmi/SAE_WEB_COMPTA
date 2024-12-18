@@ -11,11 +11,22 @@ const Create_Categorie = () => {
     const [imageFile, setImageFile] = useState(null);
     const [image, setImage] = useState(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [positionCarrousel, setPositionCarrousel] = useState({ xC: 0, yC: 0 });
     const [estPublic, setEstPublic] = useState(true);
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
     const { id_categorie } = useParams();
     const { id_parent } = useParams();
+
+    const [size, setSize] = useState({ width: 200, height: 200 });
+
+    const handleResize = (e, direction) => {
+        const delta = direction === "horizontal" ? e.movementX : e.movementY;
+        setSize((prevSize) => ({
+            width: direction === "horizontal" ? prevSize.width + delta : prevSize.width,
+            height: direction === "vertical" ? prevSize.height + delta : prevSize.height,
+        }));
+    };
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -98,6 +109,11 @@ const Create_Categorie = () => {
         setPosition({ x: data.x, y: data.y });
     };
 
+    const handleDragCarrousel = (e, data) => {
+        console.log(`Position: x=${data.xC}, y=${data.yC}`);
+        setPositionCarrousel({ xC: data.xC, yC: data.yC });
+    };
+
     return (
         <div className="create-cat-main-div">
             <div id="img-container">
@@ -114,6 +130,62 @@ const Create_Categorie = () => {
                     />
                 </Draggable>
 
+            </div>
+            <div id="cont-carrousel">
+                <div id="img-container-carrousel">
+                <Draggable onDrag={handleDragCarrousel}>
+                    <div
+                        style={{
+                            position: "relative",
+                            width: size.width,
+                            height: size.height,
+                            border: "2px dashed black",
+                            backgroundColor: "lightgray",
+                        }}
+                    >
+                        <img
+                            src={image}
+                            alt="Draggable and Resizeable"
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "cover",
+                                cursor: "move",
+                            }}
+                        />
+                        {/* Poignée de redimensionnement horizontale */}
+                        <div
+                            onMouseDown={(e) => e.stopPropagation()} // Empêche Draggable d'interférer
+                            onMouseMove={(e) => handleResize(e, "horizontal")}
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                right: 0,
+                                transform: "translateY(-50%)",
+                                width: 10,
+                                height: "20%",
+                                cursor: "ew-resize",
+                                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                            }}
+                        />
+                        {/* Poignée de redimensionnement verticale */}
+                        <div
+                            onMouseDown={(e) => e.stopPropagation()}
+                            onMouseMove={(e) => handleResize(e, "vertical")}
+                            style={{
+                                position: "absolute",
+                                bottom: 0,
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                width: "20%",
+                                height: 10,
+                                cursor: "ns-resize",
+                                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                            }}
+                        />
+                    </div>
+                </Draggable>
+            </div>
             </div>
 
             <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>

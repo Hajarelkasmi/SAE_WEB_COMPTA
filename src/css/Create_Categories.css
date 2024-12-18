@@ -97,6 +97,35 @@
     user-select: none;
 }
 
+#cont-carrousel {
+    display: flex;
+    justify-content: center;
+}
+
+#img-container-carrousel {
+    position: relative;
+    height: 20vh;
+    width: 20vh;
+    overflow: hidden;
+    border: 2px dashed black;
+    background-color: lightgray;
+
+    /* Gestion du texte */
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 2vh;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+#img-container-carrousel>img {
+    position: absolute;
+    cursor: move;
+    user-select: none;
+    height: 20vh;
+    width: 20vh;
+    object-fit: cover;
+}
+
 .create_cat_button {
     display: block;
     color: black;
