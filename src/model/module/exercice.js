@@ -59,7 +59,8 @@ module.exports = (app) => {
             });
             const exercice = await Exercice.create({ 
                 texte: req.body.texte,
-                lien_fichier: req.body.lien_fichier,
+                lien_fichier_exercice: req.body.lien_fichier_exercice,
+                lien_fichier_correction: req.body.lien_fichier_correction,
                 rubrique_id: rubrique.id
             });
             res.json(exercice);
