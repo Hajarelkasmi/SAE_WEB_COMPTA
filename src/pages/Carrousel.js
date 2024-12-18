@@ -180,7 +180,7 @@ function Carrousel() {
                 a_supprimer.push(element);
             }
             element.src = "/categories/" + element.id;
-            if (element.image === null) {
+            if (!element.image) {
                 element.img = "/logo_bitmoji.png";
             } else {
                 element.img = "/static/image/"+element.image;
