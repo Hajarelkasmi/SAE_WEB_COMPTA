@@ -70,16 +70,20 @@ module.exports = (app) => {
             const resultat = [];
             for (const c of carrousel) {
                 const categorie = await Categorie.findByPk(c.id_categorie);
-                resultat.push({
-                    id_carrousel: c.id,
-                    id: c.id_categorie,
-                    place: c.place,
-                    nom: categorie.nom,
-                    description: categorie.description,
-                    est_public: categorie.est_public,
-                    image: categorie.image,
-                    alt_image: categorie.alt_image
-                });
+                if (categorie.est_public) {
+                    resultat.push({
+                        id_carrousel: c.id,
+                        id: c.id_categorie,
+                        place: c.place,
+                        nom: categorie.nom,
+                        description: categorie.description,
+                        est_public: categorie.est_public,
+                        image: categorie.image,
+                        alt_image: categorie.alt_image
+                    });
+                } else {
+                    await c.destroy();
+                }
             }
             res.json(resultat);
         } catch (error) {
