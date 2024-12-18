@@ -6,8 +6,10 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
-    const [lien, setLien] = useState(rubrique.lien_fichier);
-    const [file, setFile] = useState(null);
+    const [lienExercice, setLienExercice] = useState(rubrique.lien_fichier_exercice);
+    const [fileExercice, setFileExercice] = useState(null);
+    const [lienCorrection, setLienCorrection] = useState(rubrique.lien_fichier_correction);
+    const [fileCorrection, setFileCorrection] = useState(null);
 
     const handleModify = () => {
         setIsModifiable(true);
@@ -17,13 +19,9 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            let name = '';
-            if (file) {
-                name = await fileSave(rubrique.id);
-            }
-
-            const lien_fichier = file ? name : lien;
-
+            const nameExercice = await fileExerciceSave(rubrique.id);
+            const nameCorrection = await fileCorrectionSave(rubrique.id);
+            
             const response = await fetch(`http://localhost:5000/api/exercices/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
@@ -33,7 +31,8 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                 body: JSON.stringify({
                     nom: titre,
                     description: description,
-                    lien_fichier: lien_fichier,
+                    lien_fichier_exercice: nameExercice,
+                    lien_fichier_correction: nameCorrection,
                     rubrique_id: rubrique.rubrique_id,
                     page_id: rubrique.page_id,
                     est_public: rubrique.est_public,
@@ -78,22 +77,30 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         }
     };
 
-    const handleFileChange = (e) => {
+    const handleFileExerciceChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            setLien(URL.createObjectURL(file));
-            setFile(file);
+            setLienExercice(URL.createObjectURL(file));
+            setFileExercice(file);
         }
     }
 
-    const fileSave = async (id) => {
+    const handleFileCorrectionChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setLienCorrection(URL.createObjectURL(file));
+            setFileCorrection(file);
+        }
+    }
+
+    const fileExerciceSave = async (id) => {
         const token = localStorage.getItem('token');
-        if (!file) {
+        if (!fileExercice) {
             return;
         }
-        const name = 'fichier_exercice_' + id + '.' + file.name.split('.').pop();
+        const name = 'fichier_exercice_' + id + '.' + fileExercice.name.split('.').pop();
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append('file', fileExercice);
         formData.append('name', name);
         const response = await fetch('http://localhost:5000/api/files', {
             headers: {
@@ -111,6 +118,30 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         return name;
     }
 
+    const fileCorrectionSave = async (id) => {
+        const token = localStorage.getItem('token');
+        if (!fileCorrection) {
+            return;
+        }
+        const name = 'fichier_correction_' + id + '.' + fileCorrection.name.split('.').pop();
+        const formData = new FormData();
+        formData.append('file', fileCorrection);
+        formData.append('name', name);
+        const response = await fetch('http://localhost:5000/api/files', {
+            headers: {
+                'Authorization': token,
+            },
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Réponse de l\'API:', errorText);
+            throw new Error('Erreur lors de la sauvegarde du fichier');
+        }
+        return name;
+    }
 
     return (
         <div className="container_exercice">
@@ -128,12 +159,12 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                 {isAdmin ? (
                     <div className="Div_Article_Buttons">
                         { isModifiable ? (
-                        <button className='buttonMS' onClick={handleSave}>Enregistrer</button>
+                        <button onClick={handleSave}>Enregistrer</button>
                         ) : (
-                        <button className='buttonMS' onClick={handleModify}>Modifier</button>
+                        <button onClick={handleModify}>Modifier</button>
                         )
                         }
-                        <button className='buttonMS' onClick={handleDelete}>Supprimer</button>
+                        <button onClick={handleDelete}>Supprimer</button>
                     </div>
                 ) : null}
                 {isAdmin ? (
@@ -148,13 +179,15 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                 {isModifiable ?
                     <div>
                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
-                        <input type="file" onChange={handleFileChange} />
-                        <button onClick={handleSave}>Sauvegarder</button>
+                        <input type="file" onChange={handleFileExerciceChange} />
+                        <input type="file" onChange={handleFileCorrectionChange} />
                     </div>
                     :
                     <div>
                         <p>{rubrique.description}</p>
-                        <iframe src={"/static/files/"+lien} title={titre} width="560" height="315" frameBorder="0" allowFullScreen loading='lazy'></iframe>
+                        <iframe src={"/static/files/"+lienExercice} title={titre} width="560" height="315" frameBorder="0" allowFullScreen loading='lazy'></iframe>
+                        <a href={"/static/files/"+lienExercice} download={lienExercice}>Télécharger l'exercice</a>
+                        <a href={"/static/files/"+lienCorrection} download={lienCorrection}>Télécharger la correction</a>
                     </div>
                 }
             </div>
