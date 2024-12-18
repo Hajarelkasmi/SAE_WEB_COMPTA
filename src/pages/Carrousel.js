@@ -174,12 +174,22 @@ function Carrousel() {
                         'Authorization': localStorage.getItem('token'),
                     }
         }).then(response => response.json()).catch(error => console.error(error));
+        let a_supprimer = [];
         for (const element of elems) {
+            if (element.est_public === false) {
+                a_supprimer.push(element);
+            }
             element.src = "/categories/" + element.id;
             if (element.image === null) {
                 element.img = "/logo_bitmoji.png";
             } else {
                 element.img = "/static/image/"+element.image;
+            }
+        }
+        for (const element of a_supprimer) {
+            let elemIndex = elems.findIndex(e => e.id === element.id);
+            if (elemIndex !== -1) {
+                elems.splice(elemIndex, 1);
             }
         }
         for (const element of elemsCarrousel) {
