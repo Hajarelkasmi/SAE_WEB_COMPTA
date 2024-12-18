@@ -110,33 +110,6 @@
     background-color: #A00000;
 }
 
-#img-container {
-    height: 25vh;
-    overflow: hidden;
-    border: black dashed medium;
-    background-color: lightgray;
-    align-content: center;
-    background-size: cover;
-    background-position: center;
-    justify-content: center;
-    align-items: center;
-    font-size: 0em;
-}
-
-#img-container>img {
-    max-width: 100%;
-    width: 100%;
-    object-fit: contain;
-}
-
-#img-container>p {
-    color: black;
-    text-align: center;
-    opacity: 50%;
-    font-size: 4vh;
-    font-weight: bold;
-}
-
 ul li button:hover {
     background-color: #A00000;
 }

@@ -78,27 +78,23 @@
 }
 
 #img-container {
+    position: relative;
     height: 25vh;
     overflow: hidden;
-    border: black dashed medium;
+    border: 2px dashed black;
     background-color: lightgray;
-    align-content: center;
-    background-size: cover;
-    background-position: center;
-    justify-content: center;
-    align-items: center;
+
+    /* Gestion du texte */
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 4vh;
+    font-weight: bold;
 }
 
 #img-container>img {
-    width: 100%;
-}
-
-#img-container>p {
-    color: black;
-    text-align: center;
-    opacity: 50%;
-    font-size: 4vh;
-    font-weight: bold;
+    position: absolute;
+    cursor: move;
+    user-select: none;
 }
 
 ul li button:hover {

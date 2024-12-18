@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import Draggable from "react-draggable";
 import Popup from "./Popup";
 import '../css/Create_Categories.css';
 
@@ -9,6 +10,7 @@ const Create_Categorie = () => {
     const [description, setDescription] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [image, setImage] = useState(null);
+    const [position, setPosition] = useState({ x: 0, y: 0 });
     const [estPublic, setEstPublic] = useState(true);
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
@@ -18,7 +20,6 @@ const Create_Categorie = () => {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (id_categorie) {
-            // Fetch the existing category details and set the state
             const fetchCategorie = async () => {
                 try {
                     const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`, {
@@ -31,12 +32,16 @@ const Create_Categorie = () => {
                         throw new Error('Erreur lors de la récupération de la catégorie');
                     }
                     const data = await response.json();
-                    console.log('Catégorie:', data);
                     setTitre(data.nom);
                     setDescription(data.description);
                     setImage(data.image);
                     setEstPublic(data.est_public);
                     setCategorieId(data.id);
+
+                    if (data.position) {
+                        const pos = JSON.parse(data.position);
+                        setPosition({ x: pos.x, y: pos.y });
+                    }
                 } catch (error) {
                     console.error('Erreur:', error);
                 }
@@ -51,12 +56,12 @@ const Create_Categorie = () => {
         try {
             const method = categorieId ? 'PUT' : 'POST';
             const url = categorieId ? `http://localhost:5000/api/categories/${categorieId}` : 'http://localhost:5000/api/categories';
-            const images = categorieId ? image : '';
 
             const formData = new FormData();
             formData.append('nom', titre);
             formData.append('description', description);
             formData.append('est_public', estPublic);
+            formData.append('position', JSON.stringify(position));
 
             const response = await fetch(url, {
                 method: method,
@@ -72,64 +77,9 @@ const Create_Categorie = () => {
             }
             const data = await response.json();
 
-            const id_category = categorieId ? categorieId : data.id;
-
-            const image_name = await imageSave(id_category);
-
-            if (image_name) {
-                if (data.image) {
-                    const deleteImage = await fetch('http://localhost:5000/api/images/' + data.image, {
-                        'Authorization': token,
-                        method: 'DELETE',
-                    });
-                    if (!deleteImage.ok) {
-                        const errorText = await deleteImage.text();
-                        console.error('Réponse de l\'API:', errorText);
-                        throw new Error('Erreur lors de la suppression de l\'image');
-                    }
-                }
-                const responseImage = await fetch('http://localhost:5000/api/categories/' + id_category, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': token,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        image: image_name,
-                    }),
-                });
-
-                if (!responseImage.ok) {
-                    const errorText = await responseImage.text();
-                    console.error('Réponse de l\'API:', errorText);
-                    throw new Error('Erreur lors de la création de la page');
-                }
-            }
-            console.log(`Catégorie ${categorieId ? 'modifiée' : 'créée'}:`, data);
-            if (id_parent) {
-                const reponse_sous_categorie = await fetch(`http://localhost:5000/api/sous_categories`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        Authorization: token
-                    },
-                    body: JSON.stringify({
-                        id_parent: id_parent,
-                        id_enfant: data.id
-                    })
-                });
-
-                if (!reponse_sous_categorie.ok) {
-                    const errorText = await reponse_sous_categorie.text();
-                    throw new Error(`Erreur lors de la création de la sous-catégorie: ${errorText}`);
-                }
-                const data_sous_categorie = await reponse_sous_categorie.json();
-                console.log('Sous-catégorie créée:', data_sous_categorie);
-            }
             navigate(`/categories/${data.id}`);
             const message = categorieId ? 'Catégorie modifiée' : 'Catégorie créée';
             Popup(message, 2000, 'success');
-            // window.location.reload();
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -143,70 +93,51 @@ const Create_Categorie = () => {
         }
     };
 
-    const imageSave = async (id) => {
-        console.log(imageFile, id)
-        const token = localStorage.getItem('token');
-        if (!imageFile) {
-            return;
-        }
-        const name = 'image_categorie_' + id + '.' + imageFile.name.split('.').pop();
-        const formData = new FormData();
-        formData.append('image', imageFile);
-        formData.append('name', name);
-        const response = await fetch('http://localhost:5000/api/images', {
-            headers: {
-                'Authorization': token,
-            },
-            method: 'POST',
-            body: formData,
-        });
-
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('Réponse de l\'API:', errorText);
-            throw new Error('Erreur lors de la sauvegarde de l\'image');
-        }
-        return name;
-    }
+    const handleDrag = (e, data) => {
+        console.log(`Position: x=${data.x}, y=${data.y}`);
+        setPosition({ x: data.x, y: data.y });
+    };
 
     return (
         <div className="create-cat-main-div">
-            {image ? (
-                <div id="img-container">
-                    <img src={image} alt="Aperçu de l'image" />
-                    <img src={"/static/image/" + image} alt="Aperçu de l'image" />
-                </div>
-            ) : (
-                <div id="img-container">
-                    <p>Aperçu de l'image</p>
-                </div>
-            )}
+            <div id="img-container">
+                <Draggable
+                    onDrag={handleDrag}
+                >
+                    <img
+                        src={image}
+                        alt="Aperçu de l'image"
+                        style={{
+                            top: position.y,
+                            left: position.x
+                        }}
+                    />
+                </Draggable>
 
-            <h1 class="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
-            <form class="form-create-cat" onSubmit={handleSubmit}>
-                <div class="create-cat-div">
-                    <label class="label-create-cat">Titre :</label>
+            </div>
+
+            <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
+            <form className="form-create-cat" onSubmit={handleSubmit}>
+                <div className="create-cat-div">
+                    <label className="label-create-cat">Titre :</label>
                     <input type="text" value={titre} onChange={event => setTitre(event.target.value)} required />
                 </div>
-                <div class="create-cat-div">
-                    <label class="label-create-cat">Description :</label>
+                <div className="create-cat-div">
+                    <label className="label-create-cat">Description :</label>
                     <textarea id="ta-create-cat" value={description} onChange={event => setDescription(event.target.value)} required />
                 </div>
-                <div class="create-cat-div">
-                    <label class="label-create-cat">Image actuelle :</label>
-                    {image && <img src={"/static/image/" + image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
-                    <input type="text" value={imageFile ? imageFile.name : ''} />
+                <div className="create-cat-div">
+                    <label className="label-create-cat">Image actuelle :</label>
                     <input type="file" onChange={handleImageChange} accept="image/*" required={categorieId ? false : true} />
-                    {image && <img src={image} alt="Aperçu de l'image" style={{ display: 'none' }} />}
                 </div>
-                <div class="create-cat-div">
-                    <label class="label-create-cat">Est public :</label>
+                <div className="create-cat-div">
+                    <label className="label-create-cat">Est public :</label>
                     <input type="checkbox" checked={estPublic} onChange={event => setEstPublic(event.target.checked)} />
                 </div>
-                <button class="create_cat_button" type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
+                <button className="create_cat_button" type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
             </form>
         </div>
     );
-}
+};
 
 export default Create_Categorie;
