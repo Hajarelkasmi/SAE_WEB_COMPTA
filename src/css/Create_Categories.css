@@ -101,10 +101,6 @@
     font-weight: bold;
 }
 
-ul li button:hover {
-    background-color: #A00000;
-}
-
 .create_cat_button {
     display: block;
     color: black;
