@@ -138,7 +138,6 @@ const Page = sequelize.define('Page', {
     },
     categorie_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
             model: 'Categorie',
             key: 'id'
@@ -405,8 +404,23 @@ const Carrousel = sequelize.define('Carrousel', {
     timestamps: false
 });
 
+const createPageAccueil = async () => {
+    const defaultPage = await Page.findByPk(1);
+    if (!defaultPage) {
+        await Page.create({
+            nom: 'Accueil',
+            description: 'Page d\'accueil',
+            categorie_id: null,
+            image: 'image_page_1.png',
+            alt_image: '',
+            est_public: true
+        });
+    }
+};
+
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
+    createPageAccueil();
 });
 
 Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});

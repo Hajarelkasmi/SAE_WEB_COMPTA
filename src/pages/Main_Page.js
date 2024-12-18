@@ -8,8 +8,9 @@ import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
 import { checkAdmin } from './CheckAdmin';
 
-const Main_Page = () => {
-    const { id } = useParams();
+const Main_Page = ({id_page}) => {  
+    let { id } = useParams();
+    id = id|| id_page;
     const [isChoosingRubrique, setIsChoosingRubrique] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
