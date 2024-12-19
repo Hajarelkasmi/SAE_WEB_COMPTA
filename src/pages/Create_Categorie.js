@@ -130,19 +130,19 @@ const Create_Categorie = () => {
 
             </div>
             <div id="cont-carrousel">
-                <div id="img-container-carrousel">
+                <div id="square-container">
+                    <div id="circle-container"></div>
                     <Draggable onDrag={handleDragCarrousel}>
-                        <div>
                             <ResizableBox
                                 width={size.width}
                                 height={size.height}
-                                minConstraints={[10, 10]} // Dimensions minimales
-                                maxConstraints={[400, 400]} // Dimensions maximales
+                                minConstraints={[100, 100]} // Dimensions minimales
+                                maxConstraints={[1000, 1000]} // Dimensions maximales
                                 resizeHandles={["se", "sw", "ne", "nw"]} // Coins de redimensionnement
                                 onResize={handleResize}
                             >
                                 <img
-                                    src="https://via.placeholder.com/200"
+                                    src={image}
                                     alt="Draggable and Resizeable"
                                     style={{
                                         width: "100%",
@@ -151,7 +151,6 @@ const Create_Categorie = () => {
                                     }}
                                 />
                             </ResizableBox>
-                        </div>
                     </Draggable>
                 </div>
             </div>
