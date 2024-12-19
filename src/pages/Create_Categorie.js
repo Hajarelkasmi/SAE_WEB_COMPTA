@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import Draggable from "react-draggable";
 import Popup from "./Popup";
 import '../css/Create_Categories.css';
+import { ResizableBox } from "react-resizable";
+import "react-resizable/css/styles.css";
 
 const Create_Categorie = () => {
     const [titre, setTitre] = useState('');
@@ -20,12 +22,8 @@ const Create_Categorie = () => {
 
     const [size, setSize] = useState({ width: 200, height: 200 });
 
-    const handleResize = (e, direction) => {
-        const delta = direction === "horizontal" ? e.movementX : e.movementY;
-        setSize((prevSize) => ({
-            width: direction === "horizontal" ? prevSize.width + delta : prevSize.width,
-            height: direction === "vertical" ? prevSize.height + delta : prevSize.height,
-        }));
+    const handleResize = (event, { size }) => {
+        setSize(size);
     };
 
     useEffect(() => {
@@ -133,59 +131,29 @@ const Create_Categorie = () => {
             </div>
             <div id="cont-carrousel">
                 <div id="img-container-carrousel">
-                <Draggable onDrag={handleDragCarrousel}>
-                    <div
-                        style={{
-                            position: "relative",
-                            width: size.width,
-                            height: size.height,
-                            border: "2px dashed black",
-                            backgroundColor: "lightgray",
-                        }}
-                    >
-                        <img
-                            src={image}
-                            alt="Draggable and Resizeable"
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                objectFit: "cover",
-                                cursor: "move",
-                            }}
-                        />
-                        {/* Poignée de redimensionnement horizontale */}
-                        <div
-                            onMouseDown={(e) => e.stopPropagation()} // Empêche Draggable d'interférer
-                            onMouseMove={(e) => handleResize(e, "horizontal")}
-                            style={{
-                                position: "absolute",
-                                top: "50%",
-                                right: 0,
-                                transform: "translateY(-50%)",
-                                width: 10,
-                                height: "20%",
-                                cursor: "ew-resize",
-                                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                            }}
-                        />
-                        {/* Poignée de redimensionnement verticale */}
-                        <div
-                            onMouseDown={(e) => e.stopPropagation()}
-                            onMouseMove={(e) => handleResize(e, "vertical")}
-                            style={{
-                                position: "absolute",
-                                bottom: 0,
-                                left: "50%",
-                                transform: "translateX(-50%)",
-                                width: "20%",
-                                height: 10,
-                                cursor: "ns-resize",
-                                backgroundColor: "rgba(0, 0, 0, 0.2)",
-                            }}
-                        />
-                    </div>
-                </Draggable>
-            </div>
+                    <Draggable onDrag={handleDragCarrousel}>
+                        <div>
+                            <ResizableBox
+                                width={size.width}
+                                height={size.height}
+                                minConstraints={[10, 10]} // Dimensions minimales
+                                maxConstraints={[400, 400]} // Dimensions maximales
+                                resizeHandles={["se", "sw", "ne", "nw"]} // Coins de redimensionnement
+                                onResize={handleResize}
+                            >
+                                <img
+                                    src="https://via.placeholder.com/200"
+                                    alt="Draggable and Resizeable"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            </ResizableBox>
+                        </div>
+                    </Draggable>
+                </div>
             </div>
 
             <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>

@@ -142,3 +142,14 @@
 .create_cat_button:hover {
     background-color: #D0D0D0;
 }
+
+.react-resizable-handle {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    bottom: 0;
+    right: 0;
+    cursor: se-resize;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+}
