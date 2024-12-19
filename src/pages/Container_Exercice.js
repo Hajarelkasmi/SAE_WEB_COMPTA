@@ -143,9 +143,37 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         return name;
     }
 
+
+    const handleDragStart = (event, position) => {
+        event.dataTransfer.setData('position', position);
+    };
+
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = async (event) => {
+        if (!isAdmin) {
+            return;
+        }
+        event.preventDefault();
+        const position = event.dataTransfer.getData('position');
+        const position1 = parseInt(position);
+        const position2 = parseInt(rubrique.position);
+        if (position1 === position2 || isNaN(position1) || isNaN(position2)) {
+            return;
+        }
+        handleSwitchPosition(position1, position2);
+    };
+
     return (
         <div className="container_exercice">
-            <div className="container_exercice_header">
+        <div className="Div_Exercice"
+            id={`article-${rubrique.rubrique_id}`}
+            onDragOver={handleDragOver}
+            onDrop={handleDrop}
+        >
+            <div className="Div_Exercice_Title">
                 {isModifiable && isAdmin ? (
                     <input
                         type="text"
@@ -157,7 +185,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                     <h2>{titre}</h2>
                 )}
                 {isAdmin ? (
-                    <div className="Div_Article_Buttons">
+                    <div className="Div_Exercice_Buttons">
                         { isModifiable ? (
                         <button onClick={handleSave}>Enregistrer</button>
                         ) : (
@@ -175,7 +203,6 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                     )
                 ) : null}
             </div>
-            <div className="container_exercice_body">
                 {isModifiable ?
                     <div>
                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
@@ -190,6 +217,16 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                         <a href={"/static/files/"+lienCorrection} download={lienCorrection}>Télécharger la correction</a>
                     </div>
                 }
+                {isAdmin ? (
+                <div className="Div_Position"
+                    draggable={true && !isModifiable} 
+                    onDragStart={(e) => handleDragStart(e, rubrique.position)} 
+                    style={{cursor: 'move', 
+                        opacity: isModifiable ? 0.5 : 1, 
+                        backgroundColor: 'lightgrey',
+                        minHeight: '50px'}}>
+                </div> 
+                ) : null}
             </div>
         </div>
     );
