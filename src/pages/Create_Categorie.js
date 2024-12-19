@@ -143,7 +143,7 @@ const Create_Categorie = () => {
                             >
                                 <img
                                     src={image}
-                                    alt="Draggable and Resizeable"
+                                    alt="Aperçu de l'image"
                                     style={{
                                         width: "100%",
                                         height: "100%",
