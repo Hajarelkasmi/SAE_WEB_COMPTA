@@ -138,7 +138,7 @@ const Create_Categorie = () => {
                                 height={size.height}
                                 minConstraints={[100, 100]} // Dimensions minimales
                                 maxConstraints={[1000, 1000]} // Dimensions maximales
-                                resizeHandles={["se", "sw", "ne", "nw"]} // Coins de redimensionnement
+                                resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
                                 onResize={handleResize}
                             >
                                 <img
