@@ -10,7 +10,16 @@ function ElemCarrousel({ src, img, nom }) {
     }
     return (
         <div className="composant_carrousel">
-            <img ref={imgRef} src={img} alt={img} onError={updateImage} />
+            <div className="cont_img_carrousel">
+                <img ref={imgRef} src={img} alt={img} onError={updateImage} 
+                // style={{
+                //     width: "50px",
+                //     height: "80px",
+                //     top: "30px",
+                //     left: "10px",
+                // }}
+                />
+            </div>
             <p><a href={src}>{nom}</a></p>
         </div>
     );
