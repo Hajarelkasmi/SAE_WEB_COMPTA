@@ -137,7 +137,7 @@ const Create_Categorie = () => {
                                 width={size.width}
                                 height={size.height}
                                 minConstraints={[100, 100]} // Dimensions minimales
-                                maxConstraints={[1000, 1000]} // Dimensions maximales
+                                maxConstraints={[10000, 10000]} // Dimensions maximales
                                 resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
                                 onResize={handleResize}
                             >
@@ -145,9 +145,9 @@ const Create_Categorie = () => {
                                     src={image}
                                     alt="Aperçu de l'image"
                                     style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        objectFit: "cover",
+                                        width: `${size.width}px`,
+                                        height: `${size.height}px`,
+                                        objectFit: "fill"
                                     }}
                                 />
                             </ResizableBox>

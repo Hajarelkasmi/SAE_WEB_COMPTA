@@ -141,9 +141,6 @@
     position: absolute;
     cursor: move;
     user-select: none;
-    height: 20vh;
-    width: 20vh;
-    object-fit: cover;
     z-index: 2;
 }
 
