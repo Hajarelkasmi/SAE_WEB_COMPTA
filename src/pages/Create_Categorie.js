@@ -133,24 +133,24 @@ const Create_Categorie = () => {
                 <div id="square-container">
                     <div id="circle-container"></div>
                     <Draggable onDrag={handleDragCarrousel}>
-                            <ResizableBox
-                                width={size.width}
-                                height={size.height}
-                                minConstraints={[100, 100]} // Dimensions minimales
-                                maxConstraints={[10000, 10000]} // Dimensions maximales
-                                resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
-                                onResize={handleResize}
-                            >
-                                <img
-                                    src={image}
-                                    alt="Aperçu de l'image"
-                                    style={{
-                                        width: `${size.width}px`,
-                                        height: `${size.height}px`,
-                                        objectFit: "fill"
-                                    }}
-                                />
-                            </ResizableBox>
+                        <ResizableBox
+                            width={size.width}
+                            height={size.height}
+                            minConstraints={[100, 100]} // Dimensions minimales
+                            maxConstraints={[10000, 10000]} // Dimensions maximales
+                            resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
+                            onResize={handleResize}
+                        >
+                            <img
+                                src={image}
+                                alt="Aperçu de l'image"
+                                style={{
+                                    width: `${size.width}px`,
+                                    height: `${size.height}px`,
+                                    objectFit: "fill"
+                                }}
+                            />
+                        </ResizableBox>
                     </Draggable>
                 </div>
             </div>
