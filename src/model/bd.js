@@ -1,5 +1,5 @@
 const express = require('express');
-const {Sequelize, DataTypes} = require('sequelize');
+const { Sequelize, DataTypes } = require('sequelize');
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -95,6 +95,11 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
+    position: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        defaultValue: { x: 0, y: 0 }
+    }
 }, {
     tableName: 'Categorie',
     timestamps: false
@@ -164,36 +169,36 @@ const Page = sequelize.define('Page', {
 });
 
 const Rubrique = sequelize.define('Rubrique', {
-        id: {
-            type: DataTypes.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        nom: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        description: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        position : {
-            type: DataTypes.INTEGER,
-            allowNull: false
-        },
-        est_public: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
-        page_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'Page',
-                key: 'id'
-            }
-        }
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
+    nom: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    description: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    position: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    est_public: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
+    },
+    page_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: 'Page',
+            key: 'id'
+        }
+    }
+},
     {
         tableName: 'Rubrique',
         timestamps: false
@@ -409,34 +414,34 @@ sequelize.sync().then(() => {
     console.log('Connected to SQLite');
 });
 
-Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});
+Demande_Abonnement.belongsTo(Etudiant, { foreignKey: 'etudiant_id' });
 
-Rubrique.hasMany(Lien, {foreignKey: 'rubrique_id', onDelete: 'CASCADE'});
-Lien.belongsTo(Rubrique, {foreignKey: 'rubrique_id'});
+Rubrique.hasMany(Lien, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Lien.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
 
-Rubrique.hasMany(Article, {foreignKey: 'rubrique_id', onDelete: 'CASCADE'});
-Article.belongsTo(Rubrique, {foreignKey: 'rubrique_id'});
+Rubrique.hasMany(Article, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Article.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
 
-Rubrique.hasMany(Video, {foreignKey: 'rubrique_id', onDelete: 'CASCADE'});
-Video.belongsTo(Rubrique, {foreignKey: 'rubrique_id'});
+Rubrique.hasMany(Video, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Video.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
 
-Rubrique.hasMany(Exercice, {foreignKey: 'rubrique_id', onDelete: 'CASCADE'});
-Exercice.belongsTo(Rubrique, {foreignKey: 'rubrique_id'});
+Rubrique.hasMany(Exercice, { foreignKey: 'rubrique_id', onDelete: 'CASCADE' });
+Exercice.belongsTo(Rubrique, { foreignKey: 'rubrique_id' });
 
-Page.hasMany(Rubrique, {foreignKey: 'page_id', onDelete: 'CASCADE'});
-Rubrique.belongsTo(Page, {foreignKey: 'page_id'});
+Page.hasMany(Rubrique, { foreignKey: 'page_id', onDelete: 'CASCADE' });
+Rubrique.belongsTo(Page, { foreignKey: 'page_id' });
 
-Categorie.hasMany(Page, {foreignKey: 'categorie_id', onDelete: 'CASCADE'});
-Page.belongsTo(Categorie, {foreignKey: 'categorie_id'});
+Categorie.hasMany(Page, { foreignKey: 'categorie_id', onDelete: 'CASCADE' });
+Page.belongsTo(Categorie, { foreignKey: 'categorie_id' });
 
-Etudiant.hasMany(Connexion_Log, {foreignKey: 'id_etudiant'});
-Connexion_Log.belongsTo(Etudiant, {foreignKey: 'id_etudiant'});
+Etudiant.hasMany(Connexion_Log, { foreignKey: 'id_etudiant' });
+Connexion_Log.belongsTo(Etudiant, { foreignKey: 'id_etudiant' });
 
-Classe.hasMany(Etudiant, {foreignKey: 'classe_id', onDelete: 'CASCADE'});
-Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
+Classe.hasMany(Etudiant, { foreignKey: 'classe_id', onDelete: 'CASCADE' });
+Etudiant.belongsTo(Classe, { foreignKey: 'classe_id' });
 
-Categorie.hasMany(SousCategorie, {foreignKey: 'id_parent', onDelete: 'CASCADE'});
-SousCategorie.belongsTo(Categorie, {foreignKey: 'id_parent'});
+Categorie.hasMany(SousCategorie, { foreignKey: 'id_parent', onDelete: 'CASCADE' });
+SousCategorie.belongsTo(Categorie, { foreignKey: 'id_parent' });
 
 Categorie.hasOne(Carrousel, { foreignKey: 'id_categorie', onDelete: 'CASCADE' });
 Carrousel.belongsTo(Categorie, { foreignKey: 'id_categorie' });

@@ -56,7 +56,6 @@ module.exports = (app) => {
     });
 
     app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
-        // app.post('/api/etudiants', async (req, res) => {
         try {
             const etudiant = await Etudiant.create({
                 nom: req.body.nom,
@@ -94,7 +93,8 @@ module.exports = (app) => {
         }
     });
 
-    app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
+    // app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
+    app.put('/api/etudiants/:id', async (req, res) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
             let crypted_password;

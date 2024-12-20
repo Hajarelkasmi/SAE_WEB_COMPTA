@@ -95,6 +95,8 @@
     position: absolute;
     cursor: move;
     user-select: none;
+    touch-action: manipulation;
+    width: 100%;
 }
 
 .create_cat_button {

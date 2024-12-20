@@ -4,7 +4,8 @@ const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 const { Sequelize } = require('sequelize');
 
 module.exports = (app) => {
-    app.get('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
+    app.get('/api/categories', async (req, res) => {
+        // app.get('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categories = await Categorie.findAll();
             res.json(categories);
@@ -149,7 +150,7 @@ module.exports = (app) => {
             }
             res.json(enfants);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while fetching subcategories'});
+            res.status(500).json({ error: 'An error occurred while fetching subcategories' });
         }
     });
 
@@ -159,7 +160,8 @@ module.exports = (app) => {
                 nom: req.body.nom,
                 description: req.body.description,
                 image: req.body.image,
-                est_public: req.body.est_public
+                est_public: req.body.est_public,
+                position: req.body.position
             });
             res.json(categorie);
         } catch (error) {
@@ -177,7 +179,7 @@ module.exports = (app) => {
             });
             res.json(sous_categorie);
         } catch (error) {
-            res.status(500).json({error: 'An error occurred while creating subcategory'});
+            res.status(500).json({ error: 'An error occurred while creating subcategory' });
         }
     });
 
@@ -189,7 +191,8 @@ module.exports = (app) => {
                     nom: req.body.nom,
                     description: req.body.description,
                     image: req.body.image,
-                    est_public: req.body.est_public
+                    est_public: req.body.est_public,
+                    position: req.body.position
                 });
                 res.json(categorie);
             } else {
