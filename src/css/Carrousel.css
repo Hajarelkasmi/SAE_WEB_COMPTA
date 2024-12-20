@@ -75,7 +75,7 @@
         font-size: 1vh;
     }
 
-    .composant_carrousel img {
+    .composant_carrousel .cont_img_carrousel {
         height: 10vh;
         width: 10vh;
         margin: 2vh 0px;
