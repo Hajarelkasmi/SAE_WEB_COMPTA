@@ -20,7 +20,6 @@ function Footer() {
         if(footer) {
             footer.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         }
-        console.log(isAdmin);
     }, [isAdmin]);
     return (
         <footer>

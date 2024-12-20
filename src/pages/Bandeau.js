@@ -79,7 +79,6 @@ function Bandeau() {
 
     useEffect(() => {
         const sousMenus = document.querySelectorAll('.sous');
-        console.log(sousMenus);
         sousMenus.forEach(sousMenu => {
             sousMenu.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         });
@@ -87,7 +86,6 @@ function Bandeau() {
         if(header) {
             header.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         }
-        console.log(isAdmin);
     }, [isAdmin, data]);
 
     if (isAdmin === null) {

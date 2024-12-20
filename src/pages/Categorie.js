@@ -46,11 +46,6 @@ const Categorie = () => {
                 }
                 const dataSousCategories = await reponseSousCategories.json();
                 setSousCategories(dataSousCategories);
-
-
-                console.log('Catégorie:', data);
-                console.log('Pages:', dataPages);
-                console.log('Sous-catégories:', dataSousCategories);
             } catch (error) {
                 console.error('Erreur:', error);
             }

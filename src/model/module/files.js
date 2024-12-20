@@ -7,8 +7,6 @@ module.exports = (app) => {
         try {
             const { file } = req.files;
             const { name } = req.body;
-            console.log('file', file);
-            console.log('name', name);
 
             if (!file) return res.sendStatus(400);
 
