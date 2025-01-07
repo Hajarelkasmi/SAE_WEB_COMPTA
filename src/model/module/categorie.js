@@ -79,7 +79,8 @@ module.exports = (app) => {
                         description: categorie.description,
                         est_public: categorie.est_public,
                         image: categorie.image,
-                        alt_image: categorie.alt_image
+                        alt_image: categorie.alt_image,
+                        placement_image_carrousel: categorie.placement_image_carrousel
                     });
                 } else {
                     await c.destroy();
