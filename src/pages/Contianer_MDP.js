@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, {useContext, useState} from 'react';
+import {InfosContext} from "../InfosContext";
 
 const Contianer_MDP = () => {
+    const {idUser} = useContext(InfosContext);
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
         currentPassword: '',
@@ -25,8 +27,30 @@ const Contianer_MDP = () => {
             setErrorMessage('Les mots de passe ne correspondent pas.');
             return;
         }
+
+        try{
+            const response = await fetch('http://localhost:5000/api/changePassword', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: idUser,
+                    oldPassword: formData.currentPassword,
+                    newPassword: formData.newPassword
+                })
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Réponse de l\'API:', errorText);
+                throw new Error('Erreur lors de la modification du mot de passe');
+            }
+        } catch (error) {
+            console.error('Erreur lors de la modification du mot de passe:', error);
+            setErrorMessage('Erreur lors de la modification du mot de passe');
+        }
+
         // Handle form submission logic here
-        console.log(formData);
         setShowForm(false);
         setFormData({
             currentPassword: '',

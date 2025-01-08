@@ -41,7 +41,7 @@ async function authenticate(req, res) {
 }
 
 async function changePassword(req, res) {
-    const etudiant = await Etudiant.findByPk(req.params.id);
+    const etudiant = await Etudiant.findByPk(req.body.id);
     if (!etudiant) {
         return res.status(404).json({ error: 'Etudiant non trouvé' });
     }
