@@ -1,33 +1,11 @@
 import "../css/Carrousel.css";
 import ElemCarrousel from "./ElemCarrousel";
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import {InfosContext} from "../InfosContext";
 
 function Carrousel() {
     // Vérifier si l'utilisateur est admin
-    const [isAdmin, setIsAdmin] = useState(null);
-    useEffect(() => {
-        const checkAdmin = async () => {
-            const token = localStorage.getItem('token');
-            if (token === null) {
-                setIsAdmin(false);
-                return;
-            }
-            try {
-                const response = await fetch('http://localhost:5000/api/isAdmin', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${token}`
-                    }
-                });
-                if (!response.ok) {setIsAdmin(false);}
-                const data = await response.json();
-                setIsAdmin(data.isAdmin);
-            } catch (error) {
-                setIsAdmin(false);
-            }
-        };
-        checkAdmin();
-    }, []);
+    const {isAdmin} = useContext(InfosContext);
 
     // Liste des éléments du carrousel
     const [elemsCarrousel, setElemsCarrousel] = useState([]);

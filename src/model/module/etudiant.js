@@ -5,16 +5,26 @@ const { Cryptage } = require('../cryptage');
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
-        const etudiants = await Etudiant.findAll(
-            {
-                attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
-                include: {
-                    model: Classe,
-                    attributes: ['nom']
-                }
+            const class_id = req.query.classe_id;
+            const est_abonne = req.query.est_abonne;
+            const where = {};
+            if (class_id) {
+                where.classe_id = class_id;
             }
-        );
-        res.json(etudiants);
+            if (est_abonne) {
+                where.est_abonne = est_abonne;
+            }
+            const etudiants = await Etudiant.findAll(
+                {
+                    attributes: ['id', 'nom', 'prenom', 'mail', 'est_abonne', 'est_admin', 'classe_id'],
+                    include: {
+                        model: Classe,
+                        attributes: ['nom']
+                    },
+                    where: where
+                }
+            );
+            res.json(etudiants);
         } catch (error) {
             res.status(500).json({ error: 'An error occurred while fetching etudiants' });
         }
@@ -22,13 +32,18 @@ module.exports = (app) => {
 
     app.get('/api/etudiants/:id', async (req, res) => {
         try {
-            const etudiant = await Etudiant.findByPk(req.params.id);
+            const etudiant = await Etudiant.findByPk(req.params.id, {
+                include: {
+                    model: Classe,
+                    attributes: ['nom']
+                }
+            });
             if (etudiant) {
                 const infos = {
                     nom: etudiant.nom,
                     prenom: etudiant.prenom,
                     mail: etudiant.mail,
-                    classe: etudiant.classe.nom,
+                    classe: etudiant.Classe ? etudiant.Classe.nom : null,
                     est_abonne: etudiant.est_abonne,
                     est_admin: etudiant.est_admin
                 }
@@ -44,7 +59,7 @@ module.exports = (app) => {
     app.get('/api/infos', verifyToken, async (req, res) => {
         const etudiant = await Etudiant.findByPk(req.userId);
         if (etudiant) {
-            res.json({ isAdmin: etudiant.est_admin, isAbonne: etudiant.est_abonne });
+            res.json({ isAdmin: etudiant.est_admin, idUser: etudiant.id });
         } else {
             res.status(404).json({ error: 'Etudiant not found' });
         }
@@ -91,9 +106,11 @@ module.exports = (app) => {
     app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
-            const crypted_password = await Cryptage(req.body.mot_de_passe);
+            let crypted_password = etudiant.mot_de_passe;
+            if (req.body.mot_de_passe) {
+                crypted_password = await Cryptage(req.body.mot_de_passe);
+            }
             if (etudiant) {
-                console.log(req.crypted_password);
                 await etudiant.update({
                     nom: req.body.nom,
                     prenom: req.body.prenom,

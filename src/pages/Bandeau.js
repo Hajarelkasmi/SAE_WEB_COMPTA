@@ -6,7 +6,7 @@ import {InfosContext} from "../InfosContext";
 
 function Bandeau() {
     const [data, setData] = useState([]);
-    const {isAdmin, isAbonne} = useContext(InfosContext);
+    const {isAdmin} = useContext(InfosContext);
     const [auths, setAuths] = useState([]);
 
     useEffect(() => {
@@ -31,16 +31,11 @@ function Bandeau() {
 
     // return (
     //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
-
-    window.onload = function () {
-        const menuToggle = document.querySelector('.menu-toggle');
-        const header = document.querySelector('header');
-
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setAuths([
                 {img: '/deconnexion.png', link: '/deconnexion'},
-                {img: '/compte.png', link: '/compte'}
+                {img: '/compte.png', link: '/profil'}
             ]);
         } else {
             setAuths([
@@ -54,45 +49,7 @@ function Bandeau() {
         const menuToggle = document.querySelector('.menu-toggle');
         const header = document.querySelector('header');
 
-        menuToggle.addEventListener('click', function () {
-            header.classList.toggle('menu-open');
-            if (header.classList.contains('menu-open')) {
-                menuToggle.innerHTML = '✖';
-            } else {
-                menuToggle.innerHTML = '☰';
-            }
-        });
-    };
-
-    if (isAdmin === null || isAbonne === null) {
-        return <div>Loading...</div>;
-    }
-
-    return (
-        <header style={{backgroundColor: isAdmin ? '#a63629' : '#1c3f59'}}>
-            <button className='menu-toggle'>☰</button>
-            <nav>
-                <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo'/></a>
-                <ul id="pages">
-                    <ElemBandeau link="/accueil" nom="Accueil" enfants={[]}/>
-                    {data.map((elem, index) => (
-                        <ElemBandeau key={index} link={"/categories/" + elem.id} nom={elem.nom} enfants={elem.enfants}/>
-                    ))}
-                    <ElemBandeau link="/blog" nom="Blog" enfants={[]}/>
-                    {localStorage.getItem('token') ? <ElemBandeau link="/deconnexion" nom="Déconnexion" enfants={[]}/> :
-                        <ElemBandeau link="/connexion" nom="Connexion" enfants={[]}/>
-
-                    }
-                </ul>
-                <ul id="reseaux">
-                    {reseaux.map((elem, index) => (
-                        <ElemReseau key={index} img={elem.img} link={elem.link}/>
-                    ))}
-                </ul>
-            </nav>
-        </header>
-    );
-        if(!menuToggle){
+        if (!menuToggle || !header) {
             return;
         }
 
@@ -105,9 +62,9 @@ function Bandeau() {
             }
         });
     };
+
     useEffect(() => {
         const sousMenus = document.querySelectorAll('.sous');
-        console.log(sousMenus);
         sousMenus.forEach(sousMenu => {
             sousMenu.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         });
@@ -115,12 +72,12 @@ function Bandeau() {
         if(header) {
             header.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         }
-        console.log(isAdmin);
     }, [isAdmin, data]);
 
     if (isAdmin === null) {
         return <div>Loading...</div>;
     }
+
 
     return (
         <header>

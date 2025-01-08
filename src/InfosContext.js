@@ -5,19 +5,19 @@ export const InfosContext = createContext(undefined);
 
 export const InfosProvider = ({children}) => {
     const [isAdmin, setIsAdmin] = useState(null);
-    const [isAbonne, setIsAbonne] = useState(null);
+    const [idUser, setIdUser] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const infos = await checkInfos();
             setIsAdmin(infos.isAdmin);
-            setIsAbonne(infos.isAbonne);
+            setIdUser(infos.idUser);
         };
         fetchData();
     }, []);
 
     return (
-        <InfosContext.Provider value={{isAdmin, isAbonne}}>
+        <InfosContext.Provider value={{isAdmin, idUser}}>
             {children}
         </InfosContext.Provider>
     );

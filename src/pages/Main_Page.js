@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Container_Lien from './Container_Lien';
 import Container_Article from './Container_Article';
@@ -6,7 +6,7 @@ import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
 import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
-import { checkInfos } from '../CheckInfos';
+import {InfosContext} from "../InfosContext";
 
 const Main_Page = () => {
     const { id } = useParams();
@@ -17,7 +17,7 @@ const Main_Page = () => {
     const [rubriques, setRubriques] = useState([]);
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
+    const {isAdmin} = useContext(InfosContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -99,8 +99,6 @@ const Main_Page = () => {
                 setRubriques(nouvelles_rubriques);
                 const rubriques_triees = nouvelles_rubriques.sort((a, b) => a.position - b.position);
                 setRubriques(rubriques_triees);
-                const admin = await checkInfos();
-                setIsAdmin(admin);
             } catch (error) {
                 setError(error);
             } finally {

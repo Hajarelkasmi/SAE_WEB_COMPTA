@@ -8,7 +8,6 @@ const Disconnect = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         Navigate('/');
-        window.location.reload();
     }, [Navigate]);
 
     return null;
