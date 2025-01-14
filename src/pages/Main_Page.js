@@ -19,6 +19,7 @@ const Main_Page = ({id_page}) => {
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isPreview, setIsPreview] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -415,6 +416,11 @@ const Main_Page = ({id_page}) => {
                 {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
                 {data && <h1>{data.nom}</h1>}
             </div>
+            { isAdmin && isPreview ? (
+                    <button onClick={() => setIsPreview(false)}>Quitter la prévisualisation</button>
+                ) : isPreview && (
+                    <button onClick={() => setIsPreview(true)}>Prévisualiser</button> 
+            )}
             <div className="Div_Content">
                 {data && <p>{data.description}</p>}
             </div>
@@ -422,18 +428,18 @@ const Main_Page = ({id_page}) => {
                 {
                     rubriques.map((rubrique) => (
                         rubrique.type === "lien" ? (
-                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview} />
                         ) : rubrique.type === "article" ? (
                             <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
                         ) : rubrique.type === "video" ? (
                             <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
                         ) :  rubrique.type === "exercice" ? (
-                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} /> 
+                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin}/>
                         ) : null
                     ))
                 }
             </div>
-            { isAdmin && (
+            { isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     
                     {isChoosingRubrique ? (
