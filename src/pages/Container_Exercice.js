@@ -206,13 +206,21 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
                 {isModifiable ?
                     <div>
                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+                        { fileExercice ? 
+                            <iframe src={URL.createObjectURL(fileExercice)} title={titre} frameBorder="0" allowFullScreen loading='lazy'></iframe> 
+                            : <iframe src={"/static/files/"+lienExercice} title={titre} frameBorder="0" allowFullScreen loading='lazy'></iframe> 
+                        }
+                        { fileCorrection ? 
+                            <iframe src={URL.createObjectURL(fileCorrection)} title={titre} frameBorder="0" allowFullScreen loading='lazy'></iframe> 
+                            : <iframe src={"/static/files/"+lienCorrection} title={titre} frameBorder="0" allowFullScreen loading='lazy'></iframe> 
+                        }
                         <input type="file" onChange={handleFileExerciceChange} />
                         <input type="file" onChange={handleFileCorrectionChange} />
                     </div>
                     :
                     <div>
                         <p>{rubrique.description}</p>
-                        <iframe src={"/static/files/"+lienExercice} title={titre} width="560" height="315" frameBorder="0" allowFullScreen loading='lazy'></iframe>
+                        <iframe src={"/static/files/"+lienExercice} title={titre} frameBorder="0" allowFullScreen loading='lazy'></iframe>
                         <a href={"/static/files/"+lienExercice} download={lienExercice}>Télécharger l'exercice</a>
                         <a href={"/static/files/"+lienCorrection} download={lienCorrection}>Télécharger la correction</a>
                     </div>
