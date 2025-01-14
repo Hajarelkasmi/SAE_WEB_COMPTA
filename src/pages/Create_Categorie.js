@@ -141,7 +141,7 @@ const Create_Categorie = () => {
             <div id="cont-carrousel">
                 <div id="square-container">
                     <div id="circle-container"></div>
-                    <Draggable onDrag={handleDragCarrousel}>
+                    <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle">
                         <ResizableBox
                             width={size.width}
                             height={size.height}
@@ -158,7 +158,8 @@ const Create_Categorie = () => {
                                     left: positionCarrousel.xC,
                                     width: `${size.width}px`,
                                     height: `${size.height}px`,
-                                    objectFit: "fill"
+                                    objectFit: "fill",
+                                    cursor: "grab",
                                 }}
                                 draggable="false"
                             />
