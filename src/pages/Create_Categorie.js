@@ -78,8 +78,7 @@ const Create_Categorie = () => {
             formData.append('est_public', estPublic);
             formData.append('image', imageFile);
             formData.append('placement_image_carrousel', JSON.stringify({ x: positionCarrousel.xC, y: positionCarrousel.yC, width: size.width, height: size.height }));
-            //formData.append('position', JSON.stringify(position));
-            console.log('pos', JSON.stringify({ x: positionCarrousel.xC, y: positionCarrousel.yC, width: size.width, height: size.height }));
+            // formData.append('position', JSON.stringify(position));
 
             const response = await fetch(url, {
                 method: method,
@@ -90,6 +89,7 @@ const Create_Categorie = () => {
             });
 
             if (!response.ok) {
+                console.error('Erreur lors de la création de la catégorie:', response);
                 const errorText = await response.text();
                 throw new Error(`Erreur lors de la ${categorieId ? 'modification' : 'création'} de la catégorie: ${errorText}`);
             }
@@ -180,7 +180,7 @@ const Create_Categorie = () => {
                 </div>
                 <div className="create-cat-div">
                     <label className="label-create-cat">Image actuelle :</label>
-                    <input type="file" onChange={handleImageChange} accept="image/*" required={categorieId ? false : true} />
+                    <input type="file" onChange={handleImageChange} accept="image/*" required={!categorieId} />
                 </div>
                 <div className="create-cat-div">
                     <label className="label-create-cat">Est public :</label>

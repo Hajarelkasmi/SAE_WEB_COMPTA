@@ -67,13 +67,13 @@ const Categorie = () => {
         <div className="categorie">
             {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
             {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
-            <div class="general-div-cat">
-                <div class="main-div-cat">
-                    <h1 class="title-cat">{categorie?.nom}</h1>
+            <div className="general-div-cat">
+                <div className="main-div-cat">
+                    <h1 className="title-cat">{categorie?.nom}</h1>
                     <p>{categorie?.description}</p>
                 </div>
-                <div class="second-div-cat">
-                    <h2 class="title-cat">Sous-catégories :</h2>
+                <div className="second-div-cat">
+                    <h2 className="title-cat">Sous-catégories :</h2>
                     {sousCategories.length === 0 && <p>Aucune sous-catégorie trouvée</p>}
                     <ul>
                         {sousCategories.map(sc => (
@@ -84,8 +84,8 @@ const Categorie = () => {
                     </ul>
                     {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</Button>}
                 </div>
-                <div class="second-div-cat">
-                    <h2 class="title-cat">Pages :</h2>
+                <div className="second-div-cat">
+                    <h2 className="title-cat">Pages :</h2>
                     {pages.length === 0 && <p>Aucune page trouvée</p>}
                     <ul>
                         {pages.map(page => (
