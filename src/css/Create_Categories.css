@@ -1,37 +1,30 @@
-.DivCreateMain {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: black;
-    padding: 20px;
-    min-height: 100vh;
+.form-create-cat {
+    width: 50%;
+    margin: auto;
 }
 
-.titre-create {
+.title-create-cat {
     text-align: center;
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
-    margin: 20px 0;
 }
 
-.DivCreate {
+.title-create-cat,
+.label-create-cat {
+    color: #C61111;
+}
+
+.create-cat-div {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 45%;
+    flex-wrap: wrap;
     margin: 10px 0;
 }
 
-.label-create {
-    color: #C61111;
+.label-create-cat {
     font-weight: bold;
-    font-family: "Open Sans", sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.2em;
     margin-bottom: 5px;
 }
 
-.DivCreate input[type="file"] {
+.create-cat-div input[type="file"] {
     width: 100%;
     background-color: #F0F0F0;
     color: #C61111;
@@ -42,7 +35,12 @@
     cursor: pointer;
 }
 
-.DivCreate input[type="text"] {
+#ta-create-cat {
+    height: 131px;
+}
+
+.create-cat-div input[type="text"],
+#ta-create-cat {
     width: 100%;
     border: none;
     border-radius: 5px;
@@ -50,7 +48,7 @@
     margin: 10px 0;
 }
 
-.DivCreate input[type="checkbox"] {
+.create-cat-div input[type="checkbox"] {
     accent-color: #C61111;
     transform: scale(1.5);
     margin-left: 10px;
@@ -74,40 +72,9 @@
     background-color: #D0D0D0;
 }
 
-.DivCreateMain select {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin: 10px 0;
-}
-
-
-.DivCreate ul {
+.create-cat-div ul {
     list-style: none;
     padding: 0;
-}
-
-
-.DivCreate ul li {
-    color: white;
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
-.DivCreate ul li button {
-    background-color: #C61111;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    margin-left: 10px;
-    padding: 5px 10px;
-    cursor: pointer;
-}
-
-.DivCreateMain ul li button:hover {
-    background-color: #A00000;
 }
 
 #img-container {
@@ -120,13 +87,10 @@
     background-position: center;
     justify-content: center;
     align-items: center;
-    font-size: 0em;
 }
 
 #img-container>img {
-    max-width: 100%;
     width: 100%;
-    object-fit: contain;
 }
 
 #img-container>p {
@@ -137,11 +101,19 @@
     font-weight: bold;
 }
 
-.DivCreate ul li button:hover {
-    background-color: #A00000;
+.create_cat_button {
+    display: block;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #F0F0F0;
+    font-weight: bold;
+    text-decoration: none;
+    margin: auto;
 }
 
-.DivCreateMain textarea {
-    width: 662px;
-    height: 131px;
+.create_cat_button:hover {
+    background-color: #D0D0D0;
 }

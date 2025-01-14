@@ -12,7 +12,14 @@ function Bandeau() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/bandeau');
+                const token = localStorage.getItem('token');
+                const response = await fetch('http://localhost:5000/api/bandeau',
+                    {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: token
+                        }
+                    });
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -27,10 +34,6 @@ function Bandeau() {
         };
         fetchData();
     }, []);
-
-
-    // return (
-    //<header style={{ backgroundColor: isAdmin ? '#a63629' : '#1c3f59' }}>
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setAuths([

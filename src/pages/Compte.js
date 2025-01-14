@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import Popup from "./Popup";
 
 function Compte() {
     const [comptes, setComptes] = useState([]);
@@ -104,6 +105,7 @@ function Compte() {
 
     const CopierMail = () => {
         navigator.clipboard.writeText(comptes.map(compte => compte.mail).join(', '));
+        Popup("Mails copiés", 2000, "success");
     }
 
     return (

@@ -1,15 +1,27 @@
-const { Exercice, Rubrique } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { Exercice, Rubrique, Etudiant } = require('../bd');
+const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/exercices', async (req, res) => {
+        const id_user = await checkUserFromToken(req);
+        let est_abonne;
+        if (id_user) {
+            const etudiant = await Etudiant.findByPk(id_user);
+            if (etudiant.est_abonne || etudiant.est_admin) {
+                est_abonne = true;
+            }
+        }
         const { page_id } = req.query; 
         try {
+        const condition_where = page_id ? { page_id } : {};
+        if (!est_abonne) {
+            condition_where.est_public = true;
+        }
         const exercices = await Exercice.findAll({
             include: {
                 model: Rubrique,
-                attributes: ['id', 'nom', 'description', 'page_id', 'position'],
-                where: page_id ? { page_id } : {},
+                attributes: ['id', 'nom', 'description', 'page_id', 'position', 'est_public'],
+                where: condition_where
             },
         });
         res.json(exercices);
@@ -33,17 +45,25 @@ module.exports = (app) => {
     
     app.post('/api/exercices', verifyToken, verifyAdmin, async (req, res) => {
         try {
-        const rubrique = await Rubrique.create({
-            nom: req.body.nom, 
-            description: req.body.description,
-            page_id: req.body.page_id
-        });
-        const exercice = await Exercice.create({ 
-            texte: req.body.texte,
-            lien_fichier: req.body.lien_fichier,
-            rubrique_id: rubrique.id
-        });
-        res.json(exercice);
+            const max_position_rubrique = await Rubrique.findOne({
+                where: { page_id: req.body.page_id },
+                order: [['position', 'DESC']]
+            });
+            const position = max_position_rubrique ? max_position_rubrique.position + 1 : 0;
+            const rubrique = await Rubrique.create({
+                nom: req.body.nom, 
+                description: req.body.description,
+                page_id: req.body.page_id,
+                position: position,
+                est_public: req.body.est_public
+            });
+            const exercice = await Exercice.create({ 
+                texte: req.body.texte,
+                lien_fichier_exercice: req.body.lien_fichier_exercice,
+                lien_fichier_correction: req.body.lien_fichier_correction,
+                rubrique_id: rubrique.id
+            });
+            res.json(exercice);
         }
         catch (error) {
             res.status(500).json({ error: 'An error occurred while creating exercice' });
@@ -59,11 +79,13 @@ module.exports = (app) => {
             await rubrique.update({
             nom: req.body.nom,
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            est_public: req.body.est_public
             });
             await exercice.update({ 
             texte: req.body.texte,
-            lien_fichier: req.body.lien_fichier,
+            lien_fichier_exercice: req.body.lien_fichier_exercice,
+            lien_fichier_correction: req.body.lien_fichier_correction,
             rubrique_id: req.body.rubrique_id
             });
             res.json(exercice);

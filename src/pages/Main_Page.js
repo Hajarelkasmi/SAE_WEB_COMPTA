@@ -8,8 +8,9 @@ import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
 import {InfosContext} from "../InfosContext";
 
-const Main_Page = () => {
-    const { id } = useParams();
+const Main_Page = ({id_page}) => {  
+    let { id } = useParams();
+    id = id|| id_page;
     const [isChoosingRubrique, setIsChoosingRubrique] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -18,18 +19,31 @@ const Main_Page = () => {
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
     const {isAdmin} = useContext(InfosContext);
+    const [isPreview, setIsPreview] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/pages/${id}`);
+                const response = await fetch(`http://localhost:5000/api/pages/${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    } 
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const result = await response.json();
                 setData(result);
 
-                const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`);
+                const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!liens_response.ok) {
                     throw new Error(`HTTP error! status: ${liens_response.status}`);
                 }
@@ -42,10 +56,17 @@ const Main_Page = () => {
                     type: "lien",
                     rubrique_id: lien.rubrique_id,
                     page_id : lien.Rubrique.page_id,
-                    position : lien.Rubrique.position
+                    position : lien.Rubrique.position,
+                    est_public: lien.Rubrique.est_public
                 }));
 
-                const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`);
+                const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!articles_response.ok) {
                     throw new Error(`HTTP error! status: ${articles_response.status}`);
                 }
@@ -59,10 +80,17 @@ const Main_Page = () => {
                     type: "article",
                     rubrique_id: article.rubrique_id,
                     page_id : article.Rubrique.page_id,
-                    position : article.Rubrique.position
+                    position : article.Rubrique.position,
+                    est_public: article.Rubrique.est_public
                 }));
                 
-                const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`);
+                const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!videos_response.ok) {
                     throw new Error(`HTTP error! status: ${videos_response.status}`);
                 }
@@ -75,10 +103,17 @@ const Main_Page = () => {
                     type: "video",
                     rubrique_id: video.rubrique_id,
                     page_id : video.Rubrique.page_id,
-                    position : video.Rubrique.position
+                    position : video.Rubrique.position,
+                    est_public: video.Rubrique.est_public
                 }));
 
-                const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`);
+                const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${localStorage.getItem('token')}`
+                    }
+                });
                 if (!exercices_response.ok) {
                     throw new Error(`HTTP error! status: ${exercices_response.status}`);
                 }
@@ -88,11 +123,13 @@ const Main_Page = () => {
                     nom: exercice.Rubrique.nom,
                     description: exercice.Rubrique.description,
                     texte: exercice.texte,
-                    lien_fichier: exercice.lien_fichier,
+                    lien_fichier_exercice: exercice.lien_fichier_exercice,
+                    lien_fichier_correction: exercice.lien_fichier_correction,
                     type: "exercice",
                     rubrique_id: exercice.rubrique_id,
                     page_id : exercice.Rubrique.page_id,
-                    position : exercice.Rubrique.position
+                    position : exercice.Rubrique.position,
+                    est_public: exercice.Rubrique.est_public
                 }));
 
                 const nouvelles_rubriques = [...nouveaux_liens, ...nouveaux_articles, ...nouvelles_videos, ...nouveaux_exercices];
@@ -126,7 +163,8 @@ const Main_Page = () => {
                     nom: '',
                     description: '',
                     lien: '',
-                    page_id: id
+                    page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -146,7 +184,8 @@ const Main_Page = () => {
                 type: "lien",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                est_public: true,
             }]);
             setActiveRubrique(result.rubrique_id);
             
@@ -171,6 +210,7 @@ const Main_Page = () => {
                     image: '',
                     alt_image: '',
                     page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -192,7 +232,8 @@ const Main_Page = () => {
                 isModifiable: true,
                 page_id: id,
                 rubrique_id: result.rubrique_id,
-                position: result.position
+                position: result.position,
+                est_public: true
             }]);
             setActiveRubrique(result.rubrique_id);
             setIsChoosingRubrique(false);
@@ -216,7 +257,8 @@ const Main_Page = () => {
                     nom: '',
                     description: '',
                     lien: '',
-                    page_id: id
+                    page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -236,7 +278,8 @@ const Main_Page = () => {
                 type: "video",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                est_public: true
             }]);
             setActiveRubrique(result.rubrique_id);
         } catch (error) {
@@ -257,8 +300,10 @@ const Main_Page = () => {
                     nom: '',
                     description: '',
                     texte: '',
-                    lien_fichier: '',
-                    page_id: id
+                    lien_fichier_exercice: '',
+                    lien_fichier_correction: '',
+                    page_id: id,
+                    est_public: true
                 }),
             });
 
@@ -275,11 +320,13 @@ const Main_Page = () => {
                 nom: '',
                 description: '',
                 texte: '',
-                lien_fichier: '',
+                lien_fichier_exercice: '',
+                lien_fichier_correction: '',
                 type: "exercice",
                 isModifiable: true,
                 page_id: id,
-                rubrique_id: result.rubrique_id
+                rubrique_id: result.rubrique_id,
+                est_public: true
             }]);
             setActiveRubrique(result.rubrique_id);
         } catch (error) {
@@ -288,37 +335,24 @@ const Main_Page = () => {
     }
 
     const handleEditRubrique = (id) => {
-        setActiveRubrique(id);
+        if (id) {
+            setActiveRubrique(id);
+        } else {
+            setActiveRubrique(null);
+        }
     }
 
     const handleSwitchPosition = (position1, position2) => {
-        if (position1 < position2) {
-            const rubriques_triees = [...rubriques];
-            let oldRubriques = rubriques_triees[position1];
-            for (let i = position1 + 1; i <= position2; i++) {
-                rubriques_triees[i].position--;
-                rubriques_triees[i].positionModifiee = true;
-                rubriques_triees[i - 1] = rubriques_triees[i];
-                rubriques_triees[i] = oldRubriques;
-                oldRubriques = rubriques_triees[i];
-            }
-            oldRubriques.position = position2;
-            oldRubriques.positionModifiee = true;
-            setRubriques(() => rubriques_triees);
-        } else {
-            const rubriques_triees = [...rubriques];
-            let oldRubriques = rubriques_triees[position1];
-            for (let i = position1 - 1; i >= position2; i--) {
-                rubriques_triees[i].position++;
-                rubriques_triees[i].positionModifiee = true;
-                rubriques_triees[i + 1] = rubriques_triees[i];
-                rubriques_triees[i] = oldRubriques;
-                oldRubriques = rubriques_triees[i];
-            }
-            oldRubriques.position = position2;
-            oldRubriques.positionModifiee = true;
-            setRubriques(() => rubriques_triees);
-        }
+        const rubriques_triees = [...rubriques];
+        const [movedRubrique] = rubriques_triees.splice(position1, 1);
+        rubriques_triees.splice(position2, 0, movedRubrique);
+
+        rubriques_triees.forEach((rubrique, index) => {
+            rubrique.position = index;
+            rubrique.positionModifiee = true;
+        });
+
+        setRubriques(rubriques_triees);
     };
 
     const handleSauvegarderPosition = async (rubriques) => {
@@ -361,7 +395,7 @@ const Main_Page = () => {
 
     return (
         <div className="Main">
-            {isAdmin && (
+            {isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     <button onClick={() => navigate('/categories/' + data.categorie_id + '/pages/' + id)}>Modifier</button>
                 </div>
@@ -370,6 +404,11 @@ const Main_Page = () => {
                 {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
                 {data && <h1>{data.nom}</h1>}
             </div>
+            { isAdmin && isPreview ? (
+                    <button onClick={() => setIsPreview(false)}>Quitter la prévisualisation</button>
+                ) : isAdmin && (
+                    <button onClick={() => setIsPreview(true)}>Prévisualiser</button> 
+            )}
             <div className="Div_Content">
                 {data && <p>{data.description}</p>}
             </div>
@@ -377,26 +416,26 @@ const Main_Page = () => {
                 {
                     rubriques.map((rubrique) => (
                         rubrique.type === "lien" ? (
-                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview} />
                         ) : rubrique.type === "article" ? (
-                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) : rubrique.type === "video" ? (
-                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) :  rubrique.type === "exercice" ? (
-                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} /> 
+                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) : null
                     ))
                 }
             </div>
-            { isAdmin && (
+            { isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     
                     {isChoosingRubrique ? (
                         <div>
-                            <button onClick={handleAddRubriqueVideo}>Vidéo</button>
-                            <button onClick={handleAddRubriqueArticle}>Article</button>
-                            <button onClick={handleAddRubriqueLien}>Lien</button>
-                            <button onClick={handleAddRubriqueExercice}>Exercice</button>
+                            <button onClick={handleAddRubriqueVideo} disabled={activeRubrique !== null}>Vidéo</button>
+                            <button onClick={handleAddRubriqueArticle} disabled={activeRubrique !== null}>Article</button>
+                            <button onClick={handleAddRubriqueLien} disabled={activeRubrique !== null}>Lien</button>
+                            <button onClick={handleAddRubriqueExercice} disabled={activeRubrique !== null}>Exercice</button>
                         </div>
                     ) : (
                         <div>

@@ -5,11 +5,11 @@ const { Cryptage } = require('../cryptage');
 module.exports = (app) => {
     app.get('/api/etudiants', async (req, res) => {
         try {
-            const class_id = req.query.classe_id;
+            const classe_id = req.query.classe_id;
             const est_abonne = req.query.est_abonne;
             const where = {};
-            if (class_id) {
-                where.classe_id = class_id;
+            if (classe_id) {
+                where.classe_id = classe_id;
             }
             if (est_abonne) {
                 where.est_abonne = est_abonne;
@@ -66,6 +66,7 @@ module.exports = (app) => {
     });
 
     app.post('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
+        // app.post('/api/etudiants', async (req, res) => {
         try {
             const etudiant = await Etudiant.create({
                 nom: req.body.nom,
@@ -106,7 +107,7 @@ module.exports = (app) => {
     app.put('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
-            let crypted_password = etudiant.mot_de_passe;
+            let crypted_password;
             if (req.body.mot_de_passe) {
                 crypted_password = await Cryptage(req.body.mot_de_passe);
             }

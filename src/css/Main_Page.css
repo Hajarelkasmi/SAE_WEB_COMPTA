@@ -63,6 +63,23 @@
     background-color: #777777;
 }
 
+.Div_Exercice a {
+    width: auto;
+    height: 30px;
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: auto 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.Div_Exercice a:hover {
+    background-color: #777777;
+}
+
 .Div_Article_Content, .Div_Video_Content, .Div_Lien_Content {
     display: flex;
     flex-wrap: wrap;

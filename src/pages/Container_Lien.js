@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import "../css/Container_Lien.css";
+import Popup from './Popup';
+
 
 const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -25,7 +28,8 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                     description: description,
                     lien: lien,
                     rubrique_id: rubrique.rubrique_id,
-                    page_id: rubrique.page_id
+                    page_id: rubrique.page_id,
+                    est_public: rubrique.est_public,
                 }),
             });
 
@@ -39,6 +43,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
             console.error('Erreur:', error);
         }
         handleEditRubrique();
+        Popup('Sauvegarde de la rubrique réussie', 2000, 'success');
         localStorage.removeItem('edit_rubrique');
     };
 
@@ -66,14 +71,14 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
         }
     }
 
-    const handleDragStart = (event,position) => {
+    const handleDragStart = (event, position) => {
         event.dataTransfer.setData('position', position);
     };
-    
+
     const handleDragOver = (event) => {
         event.preventDefault();
     };
-    
+
     const handleDrop = async (event) => {
         if (!isAdmin) {
             return;
@@ -82,21 +87,23 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
         const position = event.dataTransfer.getData('position');
         const position1 = parseInt(position);
         const position2 = parseInt(rubrique.position);
-        if (position1 === position2) {
+        if (position1 === position2 || isNaN(position1) || isNaN(position2)) {
             return;
         }
-        handleSwitchPosition(position1,position2);
+        handleSwitchPosition(position1, position2);
     };
 
     if (isAdmin === null) {
-        (<div>loading . . . . . . . . .</div>)
+        return <div>Loading...</div>;
     }
 
     return (
-        <div className="Div_Lien"
-         id={`article-${rubrique.rubrique_id}`}
-         onDragOver={handleDragOver} 
-         onDrop={handleDrop}>
+        <div className="container-lien">
+            <div className="Div_Lien"
+                id={`article-${rubrique.rubrique_id}`}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+            >
                 <div className="Div_Lien_Title">
                     {isModifiable && isAdmin ? (
                         <input
@@ -108,6 +115,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                     ) : (
                         <h2>{titre}</h2>
                     )}
+
                     {isAdmin ? (
                     <div className="Div_Liens_Buttons">
                         {isModifiable ? (
@@ -117,6 +125,13 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
                         )}
                         <button onClick={handleDelete}>Supprimer</button>
                     </div>
+                    ) : null}
+                    {isAdmin ? (
+                        isModifiable ? (
+                            <input checked={rubrique.est_public} type="checkbox" onChange={(event) => {rubrique.est_public = event.target.checked;}} /> 
+                        ) : (
+                            <p>{rubrique.est_public ? 'Public' : 'Privé'}</p>
+                        )
                     ) : null}
                 </div>            
             {isModifiable && isAdmin ? (
@@ -149,8 +164,9 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
             </div> 
             ) : null}
         </div> 
-    );
-    
-};
-
-export default Container_Lien;
+        </div> // Add this closing tag
+        
+        );
+        };
+        
+        export default Container_Lien;

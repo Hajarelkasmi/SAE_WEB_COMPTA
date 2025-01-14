@@ -138,7 +138,6 @@ const Page = sequelize.define('Page', {
     },
     categorie_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
         references: {
             model: 'Categorie',
             key: 'id'
@@ -179,6 +178,10 @@ const Rubrique = sequelize.define('Rubrique', {
         },
         position : {
             type: DataTypes.INTEGER,
+            allowNull: false
+        },
+        est_public: {
+            type: DataTypes.BOOLEAN,
             allowNull: false
         },
         page_id: {
@@ -284,7 +287,11 @@ const Exercice = sequelize.define('Exercice', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lien_fichier: {
+    lien_fichier_exercice: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    lien_fichier_correction: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -401,8 +408,23 @@ const Carrousel = sequelize.define('Carrousel', {
     timestamps: false
 });
 
+const createPageAccueil = async () => {
+    const defaultPage = await Page.findByPk(1);
+    if (!defaultPage) {
+        await Page.create({
+            nom: 'Accueil',
+            description: 'Page d\'accueil',
+            categorie_id: null,
+            image: 'image_page_1.png',
+            alt_image: '',
+            est_public: true
+        });
+    }
+};
+
 sequelize.sync().then(() => {
     console.log('Connected to SQLite');
+    createPageAccueil();
 });
 
 Demande_Abonnement.belongsTo(Etudiant, {foreignKey: 'etudiant_id'});

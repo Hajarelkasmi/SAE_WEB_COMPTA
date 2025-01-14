@@ -16,6 +16,9 @@ import Create_Categorie from "./pages/Create_Categorie";
 import Gestion_Categorie from "./pages/Gestion_Categorie";
 import { InfosProvider } from "./InfosContext";
 import Profil from "./pages/Profil";
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 
 function App() {
     let reseaux = [
@@ -49,10 +52,12 @@ function App() {
                             <Route exact path='/categories/:id_categorie/pages' element={<Create_Page/>}></Route>
                             <Route exact path='/profil' element={<Profil/>}></Route>
                         </Routes>
+                        <ToastContainer />
                     </BrowserRouter>
                 </div>
                 <Footer/>
             </InfosProvider>
+
         </div>
     );
 }
