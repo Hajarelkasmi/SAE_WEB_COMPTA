@@ -1,5 +1,5 @@
 #cours h2 {
-    font-size: 5vh;;
+    font-size: 5vh;
     color: white;
     margin: 5vh 0px;
     text-align: center;
@@ -49,6 +49,47 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.carrousel-item:active {
+    cursor: grabbing;
+}
+
+.carrousel-items {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.carrousel-item {
+    .composant_carrousel {
+        height: 18vh;
+        width: 14vh;
+        margin: 0px 1vh;
+    }
+
+    .composant_carrousel p {
+        height: 5vh;
+    }
+
+    .composant_carrousel a {
+        font-size: 1vh;
+    }
+
+    .composant_carrousel img {
+        height: 10vh;
+        width: 10vh;
+        margin: 2vh 0px;
+    }
+}
+
+#in-carrousel-items, #not-in-carrousel-items {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    scrollbar-color: #2196F3 white;
+    padding-bottom: 1.5vh;
+    pointer-events: auto;
+    min-height: 15vh;
 }
 
 @media screen and (max-width: 768px) {

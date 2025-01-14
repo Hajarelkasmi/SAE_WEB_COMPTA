@@ -14,6 +14,7 @@ const configureExerciceRoutes = require('./module/exercice');
 const configureDemandeAbonnementRoutes = require('./module/demande_abonnement');
 const configureAuthentificationRoutes = require('./module/authentification');
 const configureImageRoutes = require('./module/images');
+const configureFileRoutes = require('./module/files');
 const configureLogRoutes = require('./module/log');
 
 const app = express();
@@ -37,6 +38,7 @@ configureExerciceRoutes(app);
 configureDemandeAbonnementRoutes(app);
 configureAuthentificationRoutes(app);
 configureImageRoutes(app);
+configureFileRoutes(app);
 configureLogRoutes(app);
 
 app.listen(PORT, () => {

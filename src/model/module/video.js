@@ -1,15 +1,27 @@
-const { Video, Rubrique } = require('../bd');
-const { verifyToken, verifyAdmin } = require('../auth');
+const { Video, Rubrique, Etudiant } = require('../bd');
+const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 
 module.exports = (app) => {
     app.get('/api/videos', async (req, res) => {
+        const id_user = await checkUserFromToken(req);
+        let est_abonne;
+        if (id_user) {
+            const etudiant = await Etudiant.findByPk(id_user);
+            if (etudiant.est_abonne || etudiant.est_admin) {
+                est_abonne = true;
+            }
+        }
         const { page_id } = req.query; 
         try {
+        const condition_where = page_id ? { page_id } : {};
+        if (!est_abonne) {
+            condition_where.est_public = true;
+        }
         const videos = await Video.findAll({
             include: {
                 model: Rubrique,
-                attributes: ['id', 'nom', 'description', 'page_id', 'position'],
-                where: page_id ? { page_id } : {},
+                attributes: ['id', 'nom', 'description', 'page_id', 'position', 'est_public'],
+                where: condition_where
             },
         });
         res.json(videos);
@@ -42,7 +54,8 @@ module.exports = (app) => {
             nom: req.body.nom, 
             description: req.body.description,
             page_id: req.body.page_id,
-            position: position
+            position: position,
+            est_public: req.body.est_public
         });
         const video = await Video.create({ 
             lien: req.body.lien, 
@@ -62,7 +75,9 @@ module.exports = (app) => {
             await rubrique.update({
             nom: req.body.nom,
             description: req.body.description,
-            page_id: req.body.page_id
+            page_id: req.body.page_id,
+            position: req.body.position,
+            est_public: req.body.est_public
             });
             await video.update({ 
             lien: req.body.lien,

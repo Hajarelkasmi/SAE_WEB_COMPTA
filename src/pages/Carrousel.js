@@ -2,6 +2,7 @@ import "../css/Carrousel.css";
 import ElemCarrousel from "./ElemCarrousel";
 import React, {useState, useEffect, useContext} from 'react';
 import {InfosContext} from "../InfosContext";
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 function Carrousel() {
     // Vérifier si l'utilisateur est admin
@@ -104,58 +105,78 @@ function Carrousel() {
     async function handleModify(modify) {
         if (modify) {
             if (modifyElems) {
-                // supprimer les cours existants du carrousel
-                await fetch('http://localhost:5000/api/carrousel', {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': localStorage.getItem('token'),
-                    }
-                }).catch(error => console.error(error));
-                // ajouter les cours sélectionnés dans le carrousel
-                let newElems = elemsSelected;
-                for (let i=0; i<newElems.length; i++) {
-                    let response = await fetch('http://localhost:5000/api/carrousel', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': localStorage.getItem('token'),
-                        },
-                        body: JSON.stringify({
-                            id_categorie: newElems[i].id,
-                            place: i
-                        })
-                    }).catch(error => console.error(error));
-                    let data = await response.json();
-                    // mettre l'element à jour dans newsElems
-                    newElems[i].place = data.place;
-                }
-                setElemsCarrousel(newElems);
-                setTotalItems(newElems.length);
+                await deleteExistingCourses();
+                await addSelectedCourses();
             } else {
-                // récupérer tous les cours
-                let elems = [];
-                elems = await fetch('http://localhost:5000/api/categories', {
-                    method: 'GET',
-                }).then(response => response.json()).catch(error => console.error(error));
-                for (const element of elems) {
-                    element.src = "/categories/"+element.id;
-                    if (element.image === null) {
-                        element.img = "/logo_bitmoji.png";
-                    } else {
-                        element.img = "/static/image/"+element.image;
-                    }
-                }
-                //  donner leur place depuis elemsCarrousel
-                for (const element of elemsCarrousel) {
-                    let elemIndex = elems.findIndex(e => e.id === element.id);
-                    if (elemIndex !== -1) {
-                        elems[elemIndex] = element;
-                    }
-                }
-                setAllElems(elems);
+                await fetchAllCourses();
             }
         }
         setModifyElems(!modifyElems);
+    }
+
+    async function deleteExistingCourses() {
+        await fetch('http://localhost:5000/api/carrousel', {
+            method: 'DELETE',
+            headers: {
+                'Authorization': localStorage.getItem('token'),
+            }
+        }).catch(error => console.error(error));
+    }
+
+    async function addSelectedCourses() {
+        let newElems = elemsSelected;
+        for (let i = 0; i < newElems.length; i++) {
+            let response = await fetch('http://localhost:5000/api/carrousel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token'),
+                },
+                body: JSON.stringify({
+                    id_categorie: newElems[i].id,
+                    place: i
+                })
+            }).catch(error => console.error(error));
+            let data = await response.json();
+            newElems[i].place = data.place;
+        }
+        setElemsCarrousel(newElems);
+        setTotalItems(newElems.length);
+    }
+
+    async function fetchAllCourses() {
+        let elems = [];
+        elems = await fetch('http://localhost:5000/api/categories', {
+            method: 'GET',
+                    headers: {
+                        'Authorization': localStorage.getItem('token'),
+                    }
+        }).then(response => response.json()).catch(error => console.error(error));
+        let a_supprimer = [];
+        for (const element of elems) {
+            if (element.est_public === false) {
+                a_supprimer.push(element);
+            }
+            element.src = "/categories/" + element.id;
+            if (!element.image) {
+                element.img = "/logo_bitmoji.png";
+            } else {
+                element.img = "/static/image/"+element.image;
+            }
+        }
+        for (const element of a_supprimer) {
+            let elemIndex = elems.findIndex(e => e.id === element.id);
+            if (elemIndex !== -1) {
+                elems.splice(elemIndex, 1);
+            }
+        }
+        for (const element of elemsCarrousel) {
+            let elemIndex = elems.findIndex(e => e.id === element.id);
+            if (elemIndex !== -1) {
+                elems[elemIndex] = element;
+            }
+        }
+        setAllElems(elems);
     }
 
     useEffect(() => {
@@ -176,120 +197,121 @@ function Carrousel() {
         setElemsNotSelected(notSelected);
     }, [allElems]);
 
-    async function handleModifyElem(event) {
-        // trouver le bouton cliqué
-        let elem = event.target;
-        while (elem.tagName !== "BUTTON") {
-            elem = elem.parentElement;
-            if (elem === null) {return;}
+    const onDragEnd = (result) => {
+        const { source, destination } = result;
+    
+        if (!destination || (source.droppableId === destination.droppableId && source.index === destination.index)) return;
+    
+        if (source.droppableId === destination.droppableId) {
+            handleReorderWithinList(source, destination);
+        } else {
+            handleMoveBetweenLists(source, destination);
         }
-        // si la div est elems_carrousel_not_selected
-        if (elem.parentElement.id === "cours_carrousel_not_selected") {
-            let id = elem.id.split("_")[1];
-            let cours = allElems.find(e => e.id === parseInt(id));
-            if (cours === undefined) {return;}
-            cours.place = elemsSelected.length;
-            // Ajouter le cours à elemsSelected
-            setElemsSelected((prevSelected) => [...prevSelected, cours]);
-            // Enlever le cours de elemsNotSelected
-            setElemsNotSelected((prevNotSelected) =>
-                prevNotSelected.filter(e => e.id !== cours.id)
-            );
-        }
-        else if (elem.parentElement.id === "cours_carrousel_selected") {
-            let id = elem.id.split("_")[1];
-            let cours = allElems.find(e => e.id === parseInt(id));
-            if (cours === undefined) {return;}
-            cours.place = undefined;
-            // Ajouter le cours à elemsNotSelected
-            setElemsNotSelected((prevNotSelected) => [...prevNotSelected, cours]);
-            // Enlever le cours de elemsSelected
-            setElemsSelected((prevSelected) =>
-                prevSelected.filter(e => e.id !== cours.id)
-            );
-            // Mettre à jour les places des autres cours de elemsSelected
-            setElemsSelected((prevSelected) => {
-                const updatedSelected = prevSelected.filter(e => e.id !== cours.id);
-                updatedSelected.forEach((elem, index) => {
-                    elem.place = index;
-                });
-                return [...updatedSelected];
-            });
-        }
-    }
+    };
 
-    function handleMoveElem(id, direction) {
-        setElemsSelected((prevSelected) => {
-            const index = prevSelected.findIndex(elem => elem.id === id);
-            if (index === -1) return prevSelected;
-    
-            const newSelected = [...prevSelected];
-            const swapIndex = direction === 'left' ? index - 1 : index + 1;
-    
-            // Vérifie que l'index de l'échange est dans les limites
-            if (swapIndex >= 0 && swapIndex < newSelected.length) {
-                // Échange les places
-                [newSelected[index], newSelected[swapIndex]] = [newSelected[swapIndex], newSelected[index]];
-    
-                // Met à jour les positions des éléments
-                newSelected.forEach((elem, idx) => (elem.place = idx));
-            }
-            return newSelected;
-        });
-    }    
+    const handleReorderWithinList = (source, destination) => {
+        const list = source.droppableId === "selected" ? [...elemsSelected] : [...elemsNotSelected];
+        const [movedItem] = list.splice(source.index, 1);
+        list.splice(destination.index, 0, movedItem);
+
+        if (source.droppableId === "selected") {
+            setElemsSelected(list.map((elem, index) => ({ ...elem, place: index })));
+        } else {
+            setElemsNotSelected(list);
+        }
+    };
+
+    const handleMoveBetweenLists = (source, destination) => {
+        const sourceList = source.droppableId === "selected" ? [...elemsSelected] : [...elemsNotSelected];
+        const destList = destination.droppableId === "selected" ? [...elemsSelected] : [...elemsNotSelected];
+
+        const [movedItem] = sourceList.splice(source.index, 1);
+        if (destination.droppableId === "selected") {
+            destList.splice(destination.index, 0, { ...movedItem, place: destList.length });
+            setElemsSelected(destList.map((elem, index) => ({ ...elem, place: index })));
+            setElemsNotSelected(sourceList);
+        } else {
+            destList.splice(destination.index, 0, movedItem);
+            setElemsNotSelected(destList);
+            setElemsSelected(sourceList.map((elem, index) => ({ ...elem, place: index })));
+        }
+    };
 
     return (
-        <section id="cours">
-            <h2>Cours de Gestion de Comptabilité et Finance</h2>
-            <div id="carrousel">
-                <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
-                {elemsCarrousel
-                  .slice(currentIndex, currentIndex + visibleItemsCount)
-                  .map((elem, index) => (
-                    <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
-                  ))}
-                {elemsCarrousel
-                  .slice(0, depassement)
-                  .map((elem, index) => (
-                    <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
-                  ))}
-                <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
-            </div>
-            {isAdmin && 
-                <div id="modification_cours">
-                    {modifyElems ?
-                        <>
-                            <button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button>
-                            <button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button>
-                        </>
-                        :
-                        <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
-                    }
-                    {modifyElems &&
-                        <div id="cours_carrousel_selected">
-                            <p>Categories sélectionnées</p>
-                            {elemsSelected.map((elem) => (
-                                <>
-                                {elem.place !== 0 && 
-                                    <button onClick={() => handleMoveElem(elem.id, 'left')}>←</button>}
-                                <button key={elem.id} className="cours" id={"cours_"+elem.id} onClick={handleModifyElem}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
-                                {elem.place !== elemsSelected.length-1 &&
-                                    <button onClick={() => handleMoveElem(elem.id, 'right')}>→</button>}
-                                </>
-                            ))}
-                        </div>
-                    }
-                    {modifyElems &&
-                        <div id="cours_carrousel_not_selected">
-                            <p>Categories non sélectionnées</p>
-                            {elemsNotSelected.map((elem) => (
-                                <button key={elem.id} className="cours" id={"cours_"+elem.id} onClick={handleModifyElem}><ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} /></button>
-                            ))}
-                        </div>
-                    }
+        (elemsCarrousel.length > 0 || isAdmin) && (
+            <section id="cours">
+                <h2>Cours de Gestion de Comptabilité et Finance</h2>
+                <div id="carrousel">
+                    <button id="precedent" onClick={handlePrevious}><img src="/left.png" alt="fleche gauche" /></button>
+                    {elemsCarrousel
+                    .slice(currentIndex, currentIndex + visibleItemsCount)
+                    .map((elem, index) => (
+                        <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    ))}
+                    {elemsCarrousel
+                    .slice(0, depassement)
+                    .map((elem, index) => (
+                        <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
+                    ))}
+                    <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
                 </div>
-            }
-        </section>
+                {isAdmin && 
+                    <div id="modification_cours">
+                        {modifyElems ?
+                            <>
+                                <button id="annuler" onClick={() => handleModify(false)}>Annuler les modifications</button>
+                                <button id="valider" onClick={() => handleModify(true)}>Valider les modifications</button>
+                            </>
+                            :
+                            <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
+                        }
+
+                        {modifyElems && (
+                            <DragDropContext onDragEnd={onDragEnd}>
+                                <Droppable droppableId="selected" direction="horizontal">
+                                    {(provided) => (
+                                        <div ref={provided.innerRef} {...provided.droppableProps}>
+                                            <h3>Éléments sélectionnés</h3>
+                                            <div id="in-carrousel-items" className="scrollable-content">
+                                                {elemsSelected.map((elem, index) => (
+                                                    <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
+                                                        {(provided) => (
+                                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ), [elemsSelected])}
+                                                {provided.placeholder}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Droppable>
+                                <Droppable droppableId="notSelected" direction="horizontal vertical">
+                                    {(provided) => (
+                                        <div ref={provided.innerRef} {...provided.droppableProps}>
+                                            <h3>Éléments non sélectionnés</h3>
+                                            <div id="not-in-carrousel-items" className="scrollable-content">
+                                                {elemsNotSelected.map((elem, index) => (
+                                                    <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
+                                                        {(provided) => (
+                                                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                                            </div>
+                                                        )}
+                                                    </Draggable>
+                                                ), [elemsNotSelected])}
+                                                {provided.placeholder}
+                                            </div>
+                                        </div>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
+                        )}
+                    </div>
+                }
+            </section>
+        )
     );
 }
 

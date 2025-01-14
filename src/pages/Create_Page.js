@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
 import { refresh } from "./RefreshToken";
+import Popup from "./Popup";
 
 const Create_Page = () => {
-    const { id_categorie, id_page } = useParams();
+    let { id_categorie, id_page } = useParams();
     const [titre, setTitre] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
@@ -29,7 +30,13 @@ const Create_Page = () => {
                 setClasses(classes);
 
                 if (id_page) {
-                    const page = await fetch('http://localhost:5000/api/pages/' + id_page);
+                    const page = await fetch('http://localhost:5000/api/pages/' + id_page, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('token'),
+                        },
+                    });
                     if (!page.ok) {
                         const errorText = await page.text();
                         console.error('Réponse de l\'API:', errorText);
@@ -86,6 +93,9 @@ const Create_Page = () => {
         const token = localStorage.getItem('token');
         try {
             let response;
+            if (id_categorie === 'null') {
+                id_categorie = "";
+            }
             if (id_page) {
                 response = await fetch('http://localhost:5000/api/pages/' + id_page, {
                     method: 'PUT',
@@ -124,11 +134,9 @@ const Create_Page = () => {
             }
 
             const newPage = await response.json();
-            setTitre('');
-            setDescription('');
-            setImage('');
-            setImageFile(null);
-            navigate(`/page/${newPage.id}`);
+            
+            const message = id_page ? 'Page modifiée' : 'Page créée';
+            Popup(message, 2000, 'success');
 
             if (id_page) {
                 await modifClasses();
@@ -141,8 +149,10 @@ const Create_Page = () => {
             if (image_name) {
                 if (newPage.image) {
                     const deleteImage = await fetch('http://localhost:5000/api/images/' + newPage.image, {
-                        'Authorization': token,
                         method: 'DELETE',
+                        headers: {
+                            'Authorization': token,
+                        },
                     });
                     if (!deleteImage.ok) {
                         const errorText = await deleteImage.text();
@@ -167,6 +177,11 @@ const Create_Page = () => {
                     throw new Error('Erreur lors de la création de la page');
                 }
             }
+            setTitre('');
+            setDescription('');
+            setImage('');
+            setImageFile(null);
+            navigate(`/page/${newPage.id}`);
 
         } catch (error) {
             console.error('Erreur:', error);
@@ -293,9 +308,14 @@ const Create_Page = () => {
     return (
         <div className="div-page-all-content">
             {image ? (
-                <div id="img-container" style={{ backgroundImage: `url(${image})` }}></div>
+                <div id="img-container">
+                    <img src={image} alt="Aperçu de l'image" />
+                    <img src={"/static/image/" + image} alt="Aperçu de l'image" />
+                </div>
             ) : (
-                <div id="img-container"><p>Aperçu de l'image</p></div>
+                <div id="img-container">
+                    <p>Aperçu de l'image</p>
+                </div>
             )}
             <div className="DivCreateMain">
                 {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}
