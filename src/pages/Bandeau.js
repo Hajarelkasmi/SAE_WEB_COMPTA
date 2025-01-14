@@ -1,26 +1,15 @@
 import '../css/Bandeau.css';
 import ElemBandeau from './ElemBandeau';
 import ElemReseau from './ElemReseau';
-import {useEffect, useState} from 'react';
-import {checkAdmin} from "./CheckAdmin";
+import {useContext, useEffect, useState} from 'react';
+import {InfosContext} from "../InfosContext";
 
 function Bandeau() {
     const [data, setData] = useState([]);
-    const [isAdmin, setIsAdmin] = useState(null);
+    const {isAdmin} = useContext(InfosContext);
     const [auths, setAuths] = useState([]);
 
     useEffect(() => {
-        const fetchAdminStatus = async () => {
-            try {
-                const adminStatus = await checkAdmin();
-                setIsAdmin(adminStatus);
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        };
-
-        fetchAdminStatus();
-
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
@@ -38,18 +27,18 @@ function Bandeau() {
                 }
                 const data = await response.json();
                 setData(data);
-            } catch (error) {
+            }
+            catch (error) {
                 console.error('Erreur:', error);
             }
         };
         fetchData();
     }, []);
-
     useEffect(() => {
         if (localStorage.getItem('token')) {
             setAuths([
                 {img: '/deconnexion.png', link: '/deconnexion'},
-                {img: '/compte.png', link: '/compte'}
+                {img: '/compte.png', link: '/profil'}
             ]);
         } else {
             setAuths([
@@ -63,7 +52,7 @@ function Bandeau() {
         const menuToggle = document.querySelector('.menu-toggle');
         const header = document.querySelector('header');
 
-        if(!menuToggle){
+        if (!menuToggle || !header) {
             return;
         }
 
@@ -91,6 +80,7 @@ function Bandeau() {
     if (isAdmin === null) {
         return <div>Loading...</div>;
     }
+
 
     return (
         <header>

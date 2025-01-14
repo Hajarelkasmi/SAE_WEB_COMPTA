@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { Etudiant, Connexion_Log } = require('./bd'); 
-const { Compare } = require('./cryptage');
+const { Compare, Cryptage } = require('./cryptage');
 
 const secretKey = 'secret';
 const refreshTokensSecret = 'refreshSecret';
@@ -38,6 +38,19 @@ async function authenticate(req, res) {
             date: currentTime,
         });
     }
+}
+
+async function changePassword(req, res) {
+    const etudiant = await Etudiant.findByPk(req.body.id);
+    if (!etudiant) {
+        return res.status(404).json({ error: 'Etudiant non trouvé' });
+    }
+    if (!await Compare(req.body.oldPassword, etudiant.mot_de_passe)) {
+        return res.status(403).json({ error: 'Mot de passe incorrect' });
+    }
+    const newCryptedPassword = await Cryptage(req.body.newPassword);
+    await etudiant.update({ mot_de_passe: newCryptedPassword });
+    res.json({ message: 'Mot de passe modifié' });
 }
 
 function verifyToken(req, res, next) {
@@ -104,4 +117,4 @@ async function checkUserFromToken(req) {
     return id;
 }
 
-module.exports = { authenticate, verifyToken, verifyAdmin, refreshToken, checkUserFromToken };
+module.exports = { authenticate, verifyToken, verifyAdmin, refreshToken, checkUserFromToken, changePassword };

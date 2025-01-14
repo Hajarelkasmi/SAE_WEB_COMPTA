@@ -8,10 +8,9 @@ const Disconnect = () => {
     useEffect(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        navigate('/');
+        Navigate('/');
         Popup('Vous avez été déconnecté', 3000, 'success');
-        // window.location.reload();
-    }, [navigate]);
+    }, [Navigate]);
 
     return null;
 }
