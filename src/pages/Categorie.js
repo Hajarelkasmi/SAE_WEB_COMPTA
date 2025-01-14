@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import '../css/Categorie.css';
 import { Button } from "react-bootstrap";
 import { checkAdmin } from "./CheckAdmin";
+import Main_Page from "./Main_Page";
 
 const Categorie = () => {
     const { id_categorie } = useParams();
@@ -56,6 +57,21 @@ const Categorie = () => {
 
     if (error) {
         return <div style={{ color: 'red' }}>{error}</div>;
+    }
+
+    if (sousCategories.length === 0 && pages.length === 1) {
+        return (
+            <div className="categorie">
+                {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
+                {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
+                <div class="general-div-cat">
+                    <div class="main-div-cat">
+                        <h1 class="title-cat">{categorie?.nom}</h1>
+                        <p>{categorie?.description}</p>
+                    </div>
+                </div>
+                <Main_Page id_page={pages[0].id} />
+            </div>);
     }
 
     return (

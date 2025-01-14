@@ -19,6 +19,7 @@ const Main_Page = ({id_page}) => {
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isPreview, setIsPreview] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -336,7 +337,11 @@ const Main_Page = ({id_page}) => {
     }
 
     const handleEditRubrique = (id) => {
-        setActiveRubrique(id);
+        if (id) {
+            setActiveRubrique(id);
+        } else {
+            setActiveRubrique(null);
+        }
     }
 
     const handleSwitchPosition = (position1, position2) => {
@@ -392,7 +397,7 @@ const Main_Page = ({id_page}) => {
 
     return (
         <div className="Main">
-            {isAdmin && (
+            {isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     <button onClick={() => navigate('/categories/' + data.categorie_id + '/pages/' + id)}>Modifier</button>
                 </div>
@@ -401,6 +406,11 @@ const Main_Page = ({id_page}) => {
                 {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
                 {data && <h1>{data.nom}</h1>}
             </div>
+            { isAdmin && isPreview ? (
+                    <button onClick={() => setIsPreview(false)}>Quitter la prévisualisation</button>
+                ) : isAdmin && (
+                    <button onClick={() => setIsPreview(true)}>Prévisualiser</button> 
+            )}
             <div className="Div_Content">
                 {data && <p>{data.description}</p>}
             </div>
@@ -408,26 +418,26 @@ const Main_Page = ({id_page}) => {
                 {
                     rubriques.map((rubrique) => (
                         rubrique.type === "lien" ? (
-                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview} />
                         ) : rubrique.type === "article" ? (
-                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) : rubrique.type === "video" ? (
-                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) :  rubrique.type === "exercice" ? (
-                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} /> 
+                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) : null
                     ))
                 }
             </div>
-            { isAdmin && (
+            { isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     
                     {isChoosingRubrique ? (
                         <div>
-                            <button onClick={handleAddRubriqueVideo}>Vidéo</button>
-                            <button onClick={handleAddRubriqueArticle}>Article</button>
-                            <button onClick={handleAddRubriqueLien}>Lien</button>
-                            <button onClick={handleAddRubriqueExercice}>Exercice</button>
+                            <button onClick={handleAddRubriqueVideo} disabled={activeRubrique !== null}>Vidéo</button>
+                            <button onClick={handleAddRubriqueArticle} disabled={activeRubrique !== null}>Article</button>
+                            <button onClick={handleAddRubriqueLien} disabled={activeRubrique !== null}>Lien</button>
+                            <button onClick={handleAddRubriqueExercice} disabled={activeRubrique !== null}>Exercice</button>
                         </div>
                     ) : (
                         <div>
