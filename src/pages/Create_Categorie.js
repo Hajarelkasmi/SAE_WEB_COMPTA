@@ -13,18 +13,20 @@ const Create_Categorie = () => {
     const [imageFile, setImageFile] = useState(null);
     const [image, setImage] = useState(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [positionCarrousel, setPositionCarrousel] = useState({ xC: 0, yC: 0 });
     const [estPublic, setEstPublic] = useState(true);
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
     const { id_categorie } = useParams();
     const { id_parent } = useParams();
 
+    // gestion image carrousel
+    const [positionCarrousel, setPositionCarrousel] = useState({ xC: 0, yC: 0 });
     const [size, setSize] = useState({ width: 200, height: 200 });
 
     const handleResize = (event, { size }) => {
         setSize(size);
     };
+    // fin gestion image carrousel
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -51,6 +53,10 @@ const Create_Categorie = () => {
                         const pos = JSON.parse(data.position);
                         setPosition({ x: pos.x, y: pos.y });
                     }
+                    if (data.positionCarrousel) {
+                        const pos = JSON.parse(data.positionCarrousel);
+                        setPositionCarrousel({ xC: pos.x, yC: pos.y });
+                    }
                 } catch (error) {
                     console.error('Erreur:', error);
                 }
@@ -70,7 +76,10 @@ const Create_Categorie = () => {
             formData.append('nom', titre);
             formData.append('description', description);
             formData.append('est_public', estPublic);
-            formData.append('position', JSON.stringify(position));
+            formData.append('image', imageFile);
+            formData.append('placement_image_carrousel', JSON.stringify({ x: positionCarrousel.xC, y: positionCarrousel.yC, width: size.width, height: size.height }));
+            //formData.append('position', JSON.stringify(position));
+            console.log('pos', JSON.stringify({ x: positionCarrousel.xC, y: positionCarrousel.yC, width: size.width, height: size.height }));
 
             const response = await fetch(url, {
                 method: method,
@@ -108,8 +117,8 @@ const Create_Categorie = () => {
     };
 
     const handleDragCarrousel = (e, data) => {
-        console.log(`Position: x=${data.xC}, y=${data.yC}`);
-        setPositionCarrousel({ xC: data.xC, yC: data.yC });
+        console.log(`PositionC: xC=${data.x}, yC=${data.y}`);
+        setPositionCarrousel({ xC: data.x, yC: data.y });
     };
 
     return (
@@ -145,10 +154,13 @@ const Create_Categorie = () => {
                                 src={image}
                                 alt="Aperçu de l'image"
                                 style={{
+                                    top: positionCarrousel.yC,
+                                    left: positionCarrousel.xC,
                                     width: `${size.width}px`,
                                     height: `${size.height}px`,
                                     objectFit: "fill"
                                 }}
+                                draggable="false"
                             />
                         </ResizableBox>
                     </Draggable>

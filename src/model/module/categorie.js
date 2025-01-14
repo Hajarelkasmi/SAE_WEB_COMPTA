@@ -160,7 +160,8 @@ module.exports = (app) => {
                 nom: req.body.nom,
                 description: req.body.description,
                 image: req.body.image,
-                est_public: req.body.est_public
+                est_public: req.body.est_public,
+                placement_image_carrousel: req.body.placement_image_carrousel
             });
             res.json(categorie);
         } catch (error) {
