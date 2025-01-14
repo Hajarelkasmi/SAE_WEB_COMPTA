@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {InfosContext} from "../InfosContext";
 
-const Contianer_MDP = () => {
+const Container_MDP = () => {
     const {idUser} = useContext(InfosContext);
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
@@ -113,4 +113,4 @@ const Contianer_MDP = () => {
     );
 }
 
-export default Contianer_MDP;
+export default Container_MDP;

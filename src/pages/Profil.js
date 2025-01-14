@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import {InfosContext} from "../InfosContext";
-import Contianer_MDP from "./Contianer_MDP";
+import Container_MDP from "./Container_MDP";
 
 const Profil = () => {
     const {idUser} = useContext(InfosContext);
@@ -135,7 +135,7 @@ const Profil = () => {
                     <button onClick={() => setIsEditing(true)}>Modifier</button>
                 </div>
             )}
-            <Contianer_MDP/>
+            <Container_MDP/>
         </div>
     );
 }
