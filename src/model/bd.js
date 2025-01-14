@@ -287,7 +287,11 @@ const Exercice = sequelize.define('Exercice', {
         type: DataTypes.STRING,
         allowNull: false
     },
-    lien_fichier: {
+    lien_fichier_exercice: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    lien_fichier_correction: {
         type: DataTypes.STRING,
         allowNull: false
     },

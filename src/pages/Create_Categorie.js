@@ -31,7 +31,6 @@ const Create_Categorie = () => {
                         throw new Error('Erreur lors de la récupération de la catégorie');
                     }
                     const data = await response.json();
-                    console.log('Catégorie:', data);
                     setTitre(data.nom);
                     setDescription(data.description);
                     setImage(data.image);

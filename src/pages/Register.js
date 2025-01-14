@@ -1,6 +1,7 @@
 import React, { useEffect, useState} from "react";
 import '../css/Register.css'
 import {useNavigate} from 'react-router-dom';
+import Popup from "./Popup";
 
 function Register() {
     const [nom, setNom] = useState('');
@@ -81,7 +82,7 @@ function Register() {
                         });
 
                         if (demandeResponse.ok) {
-                            console.log('Demande d\'abonnement envoyée avec succès !');
+                            Popup('Demande d\'abonnement envoyée avec succès !', 2000, 'success');
                         } else {
                             console.error('Erreur dans l\'envoi d\'une demande d\'abonnement:', await demandeResponse.json());
                             setErrorMessage('Erreur dans l\'envoi d\'une demande d\'abonnement');

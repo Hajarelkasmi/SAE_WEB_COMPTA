@@ -122,7 +122,8 @@ const Main_Page = ({id_page}) => {
                     nom: exercice.Rubrique.nom,
                     description: exercice.Rubrique.description,
                     texte: exercice.texte,
-                    lien_fichier: exercice.lien_fichier,
+                    lien_fichier_exercice: exercice.lien_fichier_exercice,
+                    lien_fichier_correction: exercice.lien_fichier_correction,
                     type: "exercice",
                     rubrique_id: exercice.rubrique_id,
                     page_id : exercice.Rubrique.page_id,
@@ -300,7 +301,8 @@ const Main_Page = ({id_page}) => {
                     nom: '',
                     description: '',
                     texte: '',
-                    lien_fichier: '',
+                    lien_fichier_exercice: '',
+                    lien_fichier_correction: '',
                     page_id: id,
                     est_public: true
                 }),
@@ -319,7 +321,8 @@ const Main_Page = ({id_page}) => {
                 nom: '',
                 description: '',
                 texte: '',
-                lien_fichier: '',
+                lien_fichier_exercice: '',
+                lien_fichier_correction: '',
                 type: "exercice",
                 isModifiable: true,
                 page_id: id,
@@ -337,33 +340,16 @@ const Main_Page = ({id_page}) => {
     }
 
     const handleSwitchPosition = (position1, position2) => {
-        if (position1 < position2) {
-            const rubriques_triees = [...rubriques];
-            let oldRubriques = rubriques_triees[position1];
-            for (let i = position1 + 1; i <= position2; i++) {
-                rubriques_triees[i].position--;
-                rubriques_triees[i].positionModifiee = true;
-                rubriques_triees[i - 1] = rubriques_triees[i];
-                rubriques_triees[i] = oldRubriques;
-                oldRubriques = rubriques_triees[i];
-            }
-            oldRubriques.position = position2;
-            oldRubriques.positionModifiee = true;
-            setRubriques(() => rubriques_triees);
-        } else {
-            const rubriques_triees = [...rubriques];
-            let oldRubriques = rubriques_triees[position1];
-            for (let i = position1 - 1; i >= position2; i--) {
-                rubriques_triees[i].position++;
-                rubriques_triees[i].positionModifiee = true;
-                rubriques_triees[i + 1] = rubriques_triees[i];
-                rubriques_triees[i] = oldRubriques;
-                oldRubriques = rubriques_triees[i];
-            }
-            oldRubriques.position = position2;
-            oldRubriques.positionModifiee = true;
-            setRubriques(() => rubriques_triees);
-        }
+        const rubriques_triees = [...rubriques];
+        const [movedRubrique] = rubriques_triees.splice(position1, 1);
+        rubriques_triees.splice(position2, 0, movedRubrique);
+
+        rubriques_triees.forEach((rubrique, index) => {
+            rubrique.position = index;
+            rubrique.positionModifiee = true;
+        });
+
+        setRubriques(rubriques_triees);
     };
 
     const handleSauvegarderPosition = async (rubriques) => {
