@@ -3,7 +3,10 @@ import { useParams, Link } from 'react-router-dom';
 import '../css/Categorie.css';
 import { Button } from "react-bootstrap";
 import { checkAdmin } from "./CheckAdmin";
-import Main_Page from "./Main_Page";
+import Main_Page_Preview from "./Main_Page_Preview";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const Categorie = () => {
     const { id_categorie } = useParams();
@@ -12,6 +15,39 @@ const Categorie = () => {
     const [sousCategories, setSousCategories] = useState([]);
     const [isAdmin, setisAdmin] = useState(null);
     const [error, setError] = useState(null);
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                    infinite: true,
+                    dots: true
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    initialSlide: 2
+                }
+            },
+            {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
+    };
 
     useEffect(() => {
 
@@ -70,13 +106,14 @@ const Categorie = () => {
                         <p>{categorie?.description}</p>
                     </div>
                 </div>
-                <Main_Page id_page={pages[0].id} />
+                <Main_Page_Preview id_page={pages[0].id} />
             </div>);
     }
 
     return (
         <div className="categorie">
-            {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
+                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/create`}>Créer une nouvelle sous-catégorie</Button>}
+                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
             {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
             <div class="general-div-cat">
                 <div class="main-div-cat">
@@ -84,29 +121,22 @@ const Categorie = () => {
                     <p>{categorie?.description}</p>
                 </div>
                 <div class="second-div-cat">
-                    <h2 class="title-cat">Sous-catégories :</h2>
-                    {sousCategories.length === 0 && <p>Aucune sous-catégorie trouvée</p>}
-                    <ul>
-                        {sousCategories.map(sc => (
-                            <li key={sc.id}>
-                                <Link className={"cat_link"} to={`/categories/${sc.id}`}>{sc.nom}</Link>
-                            </li>
-                        ))}
-                    </ul>
-                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</Button>}
-                </div>
-                <div class="second-div-cat">
                     <h2 class="title-cat">Pages :</h2>
                     {pages.length === 0 && <p>Aucune page trouvée</p>}
-                    <ul>
-                        {pages.map(page => (
-                            <li key={page.id}>
-                                <Link className={"cat_link"} to={`/page/${page.id}`}>{page.nom}</Link>
-                            </li>
-                        ))}
-                    </ul>
-                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
+                        
                 </div>
+            </div>
+            <div className="slider-bar">
+                <Slider {...settings}>
+                    {pages.map(page => (
+                        <div key={page.id}>
+                            <a className='slider-item' href={`/page/${page.id}`} >
+                                <img src={"/static/image/"+page.image} alt={page.titre} />
+                                <p>{page.nom}</p>
+                            </a>
+                        </div>
+                    ))}
+                </Slider>
             </div>
         </div>
     );
