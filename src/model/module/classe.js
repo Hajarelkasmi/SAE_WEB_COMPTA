@@ -26,6 +26,7 @@ module.exports = (app) => {
   });
 
   app.post('/api/classes', verifyToken, verifyAdmin, async (req, res) => {
+    // app.post('/api/classes', async (req, res) => {
     try {
       const classe = await Classe.create({ nom: req.body.nom });
       res.json(classe);

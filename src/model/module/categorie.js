@@ -4,8 +4,7 @@ const { verifyToken, verifyAdmin, checkUserFromToken } = require('../auth');
 const { Sequelize } = require('sequelize');
 
 module.exports = (app) => {
-    app.get('/api/categories', async (req, res) => {
-        // app.get('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
+    app.get('/api/categories', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const categories = await Categorie.findAll();
             res.json(categories);
@@ -161,7 +160,7 @@ module.exports = (app) => {
                 description: req.body.description,
                 image: req.body.image,
                 est_public: req.body.est_public,
-                position: req.body.position
+                position_image: req.body.position_image
             });
             res.json(categorie);
         } catch (error) {
@@ -192,7 +191,7 @@ module.exports = (app) => {
                     description: req.body.description,
                     image: req.body.image,
                     est_public: req.body.est_public,
-                    position: req.body.position
+                    position_image: req.body.position_image
                 });
                 res.json(categorie);
             } else {

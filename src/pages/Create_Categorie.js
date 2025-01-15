@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Draggable from "react-draggable";
+import Cropper from "react-easy-crop";
 import Popup from "./Popup";
 import '../css/Create_Categories.css';
 
@@ -10,19 +10,19 @@ const Create_Categorie = () => {
     const [description, setDescription] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [image, setImage] = useState(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [estPublic, setEstPublic] = useState(true);
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
     const { id_categorie } = useParams();
     const { id_parent } = useParams();
 
-    // const containerRef = useRef(null); // Référence au conteneur
-    // const imageRef = useRef(null); // Référence à l'image
-
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (id_categorie) {
+            // Fetch the existing category details and set the state
             const fetchCategorie = async () => {
                 try {
                     const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`, {
@@ -35,17 +35,11 @@ const Create_Categorie = () => {
                         throw new Error('Erreur lors de la récupération de la catégorie');
                     }
                     const data = await response.json();
-                    console.log('Catégorie:', data); // temp
                     setTitre(data.nom);
                     setDescription(data.description);
                     setImage(data.image);
                     setEstPublic(data.est_public);
                     setCategorieId(data.id);
-
-                    if (data.position) {
-                        const pos = JSON.parse(data.position);
-                        setPosition({ x: pos.x, y: pos.y });
-                    }
                 } catch (error) {
                     console.error('Erreur:', error);
                 }
@@ -60,23 +54,20 @@ const Create_Categorie = () => {
         try {
             const method = categorieId ? 'PUT' : 'POST';
             const url = categorieId ? `http://localhost:5000/api/categories/${categorieId}` : 'http://localhost:5000/api/categories';
-            const images = categorieId ? image : ''; // temp
+            const images = categorieId ? image : '';
 
             const formData = new FormData();
             formData.append('nom', titre);
             formData.append('description', description);
             formData.append('est_public', estPublic);
-            formData.append('position', JSON.stringify(position));
-            if (imageFile) {
-                formData.append('image', imageFile);
-            }
+            formData.append('position_image', JSON.stringify(croppedAreaPixels));
 
             const response = await fetch(url, {
                 method: method,
                 headers: {
-                    Authorization: token,
+                    Authorization: token
                 },
-                body: formData,
+                body: formData
             });
 
             if (!response.ok) {
@@ -84,7 +75,6 @@ const Create_Categorie = () => {
                 throw new Error(`Erreur lors de la ${categorieId ? 'modification' : 'création'} de la catégorie: ${errorText}`);
             }
             const data = await response.json();
-            // temp
 
             const id_category = categorieId ? categorieId : data.id;
 
@@ -119,9 +109,7 @@ const Create_Categorie = () => {
                     throw new Error('Erreur lors de la création de la page');
                 }
             }
-            // temp
             console.log(`Catégorie ${categorieId ? 'modifiée' : 'créée'}:`, data);
-            // temp
             if (id_parent) {
                 const reponse_sous_categorie = await fetch(`http://localhost:5000/api/sous_categories`, {
                     method: 'POST',
@@ -142,10 +130,10 @@ const Create_Categorie = () => {
                 const data_sous_categorie = await reponse_sous_categorie.json();
                 console.log('Sous-catégorie créée:', data_sous_categorie);
             }
-            // temp
             navigate(`/categories/${data.id}`);
             const message = categorieId ? 'Catégorie modifiée' : 'Catégorie créée';
             Popup(message, 2000, 'success');
+            // window.location.reload();
         } catch (error) {
             console.error('Erreur:', error);
         }
@@ -185,79 +173,53 @@ const Create_Categorie = () => {
         return name;
     }
 
-    const handleDrag = (e, data) => {
-        // const containerRect = containerRef.current.getBoundingClientRect();
-        // const imageRect = imageRef.current.getBoundingClientRect();
-
-        // // Dimensions de l'image et du conteneur
-        // const maxX = containerRect.width - imageRect.width;
-        // const maxY = containerRect.height - imageRect.height;
-
-        // // Contraintes : éviter que l'image dépasse les bords
-        // const newX = Math.max(0, Math.min(data.x, maxX));
-        // const newY = Math.max(0, Math.min(data.y, maxY));
-
-        // setPosition({ x: newX, y: newY });
-        console.log(`Position: x=${data.x}, y=${data.y}`);
-        setPosition({ x: data.x, y: data.y });
+    const onCropComplete = (croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
     };
 
     return (
         <div className="create-cat-main-div">
             <div id="img-container" >
-                <Draggable position={position} onDrag={handleDrag}>
-                    <img
-                        src={"/static/image/" + image ? "/static/image/" + image : image}
-                        alt="Aperçu de l'image"
-                        style={{ top: position.y, left: position.x }}
-                    />
-                </Draggable>
-            </div>
-            {/* <div
-                id="img-container"
-                ref={containerRef}
-            >
                 {image && (
-                    <Draggable
-                        defaultPosition={position}
-                        onDrag={handleDrag}
-                    // bounds="parent"
-                    >
-                        <img
-                            ref={imageRef}
-                            src={"/static/image/" + image}
-                            alt="Aperçu de l'image"
-                            style={{
-                                top: position.x,
-                                left: position.y
-                            }}
-                        />
-                    </Draggable>
+                    <Cropper
+                        image={image}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={16 / 9}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                        objectFit="horizontal-cover"
+                        cropSize={{ width: window.innerWidth, height: window.innerHeight * 0.25 }}
+                    />
                 )}
-            </div> */}
-
-            <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
-            <form className="form-create-cat" onSubmit={handleSubmit}>
-                <div className="create-cat-div">
-                    <label className="label-create-cat">Titre :</label>
+            </div>
+            <p>Pour zoomer/dézoomer l'image, utilisez la molette de votre souris.</p>
+            <h1 class="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
+            <form class="form-create-cat" onSubmit={handleSubmit}>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Titre :</label>
                     <input type="text" value={titre} onChange={event => setTitre(event.target.value)} required />
                 </div>
-                <div className="create-cat-div">
-                    <label className="label-create-cat">Description :</label>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Description :</label>
                     <textarea id="ta-create-cat" value={description} onChange={event => setDescription(event.target.value)} required />
                 </div>
-                <div className="create-cat-div">
-                    <label className="label-create-cat">Image actuelle :</label>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Image actuelle :</label>
+                    {image && <img src={"/static/image/" + image} alt="" style={{ maxWidth: '100%', height: 'auto' }} />}
+                    <input type="text" value={imageFile ? imageFile.name : ''} />
                     <input type="file" onChange={handleImageChange} accept="image/*" required={categorieId ? false : true} />
+                    {image && <img src={image} alt="Aperçu de l'image" style={{ display: 'none' }} />}
                 </div>
-                <div className="create-cat-div">
-                    <label className="label-create-cat">Est public :</label>
+                <div class="create-cat-div">
+                    <label class="label-create-cat">Est public :</label>
                     <input type="checkbox" checked={estPublic} onChange={event => setEstPublic(event.target.checked)} />
                 </div>
-                <button className="create_cat_button" type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
+                <button class="create_cat_button" type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
             </form>
         </div>
     );
-};
+}
 
 export default Create_Categorie;

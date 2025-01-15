@@ -95,10 +95,9 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
-    position: {
+    position_image: {
         type: DataTypes.JSON,
-        allowNull: true,
-        defaultValue: { x: 0, y: 0 }
+        allowNull: true
     }
 }, {
     tableName: 'Categorie',
@@ -162,6 +161,10 @@ const Page = sequelize.define('Page', {
     est_public: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+    position_image: {
+        type: DataTypes.JSON,
+        allowNull: true
     }
 }, {
     tableName: 'Page',

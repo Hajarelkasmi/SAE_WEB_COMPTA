@@ -3,12 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
 import { refresh } from "./RefreshToken";
 import Popup from "./Popup";
+import Cropper from "react-easy-crop";
 
 const Create_Page = () => {
     const { id_categorie, id_page } = useParams();
     const [titre, setTitre] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState('');
+    const [crop, setCrop] = useState({ x: 0, y: 0 });
+    const [zoom, setZoom] = useState(1);
+    const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
     const [imageFile, setImageFile] = useState(null);
     const [estPublic, setEstPublic] = useState(true);
     const [classes, setClasses] = useState([]);
@@ -120,6 +124,7 @@ const Create_Page = () => {
                         image: '',
                         est_public: estPublic,
                         categorie_id: id_categorie,
+                        position_image: croppedAreaPixels
                     }),
                 });
             }
@@ -136,7 +141,7 @@ const Create_Page = () => {
             setImage('');
             setImageFile(null);
             navigate(`/page/${newPage.id}`);
-            
+
             const message = id_page ? 'Page modifiée' : 'Page créée';
             Popup(message, 2000, 'success');
 
@@ -291,6 +296,7 @@ const Create_Page = () => {
             method: 'POST',
             body: formData,
         });
+        formData.append('position_image', JSON.stringify(croppedAreaPixels));
 
         if (!response.ok) {
             const errorText = await response.text();
@@ -300,18 +306,27 @@ const Create_Page = () => {
         return name;
     }
 
+    const onCropComplete = (croppedArea, croppedAreaPixels) => {
+        setCroppedAreaPixels(croppedAreaPixels);
+    };
+
     return (
         <div className="div-page-all-content">
-            {image ? (
-                <div id="img-container">
-                    <img src={image} alt="Aperçu de l'image" />
-                    <img src={"/static/image/" + image} alt="Aperçu de l'image" />
-                </div>
-            ) : (
-                <div id="img-container">
-                    <p>Aperçu de l'image</p>
-                </div>
-            )}
+            <div id="img-container" >
+                {image && (
+                    <Cropper
+                        image={image}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={16 / 9}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                        objectFit="horizontal-cover"
+                        cropSize={{ width: window.innerWidth, height: window.innerHeight * 0.25 }}
+                    />
+                )}
+            </div>
             <div className="DivCreateMain">
                 {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}
                 <div className="DivCreate">

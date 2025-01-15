@@ -78,6 +78,7 @@
 }
 
 #img-container {
+    width: 100%;
     position: relative;
     height: 25vh;
     overflow: hidden;
@@ -91,12 +92,21 @@
     font-weight: bold;
 }
 
+p {
+    text-align: center;
+}
+
 #img-container>img {
     position: absolute;
     cursor: move;
     user-select: none;
     touch-action: manipulation;
-    width: 100%;
+    /* width: 100%; */
+}
+
+#slider-image {
+    margin: auto;
+    text-align: center;
 }
 
 .create_cat_button {
