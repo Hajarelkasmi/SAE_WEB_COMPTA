@@ -14,6 +14,7 @@ const Create_Page = () => {
     const [classes, setClasses] = useState([]);
     const [classe_selected, setClasse_selected] = useState([]);
     const [estCree, setEstCree] = useState(false);
+    const [couleur, setCouleur] = useState('#000000');
     const navigate = useNavigate();
 
 
@@ -43,7 +44,11 @@ const Create_Page = () => {
                         throw new Error('Erreur lors de la récupération de la page');
                     }
                     const pageData = await page.json();
-                    setTitre(pageData.nom);
+                    let color = pageData.nom.match(/color:(.*);/);
+                    if (color) {
+                        setCouleur(color[1]);
+                    }
+                    setTitre(pageData.nom.replace(/<[^>]*>/g, ''));
                     setDescription(pageData.description);
                     setImage(pageData.image);
                     setEstPublic(pageData.est_public);
@@ -96,6 +101,7 @@ const Create_Page = () => {
             if (id_categorie === 'null') {
                 id_categorie = "";
             }
+            const title_color = "<span style='color:" + couleur + ";'>" + titre + "</span>";
             if (id_page) {
                 response = await fetch('http://localhost:5000/api/pages/' + id_page, {
                     method: 'PUT',
@@ -104,7 +110,7 @@ const Create_Page = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        nom: titre,
+                        nom: title_color,
                         description: description,
                         est_public: estPublic,
                         categorie_id: id_categorie,
@@ -118,7 +124,7 @@ const Create_Page = () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        nom: titre,
+                        nom: title_color,
                         description: description,
                         image: '',
                         est_public: estPublic,
@@ -324,6 +330,7 @@ const Create_Page = () => {
                         Titre de la page :
                     </label>
                     <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} />
+                    <input type="color" value={couleur} onChange={(e) => setCouleur(e.target.value)} />
                 </div>
                 <div className="DivCreate">
                     <label>
