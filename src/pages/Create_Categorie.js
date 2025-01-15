@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import Draggable from "react-draggable";
 import Popup from "./Popup";
 import '../css/Create_Categories.css';
@@ -17,16 +16,33 @@ const Create_Categorie = () => {
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
     const { id_categorie } = useParams();
-    const { id_parent } = useParams();
 
     // gestion image carrousel
-    const [positionCarrousel, setPositionCarrousel] = useState({ xC: 0, yC: 0 });
-    const [size, setSize] = useState({ width: 200, height: 200 });
+    const [positionC, setPositionC] = useState({ xC: 0, yC: 0 });
+    const [sizeC, setSizeC] = useState({ width: 200, height: 200 });
 
+    useEffect(() => {
+        console.log('positionC:', positionC);
+    }, [positionC]);
+
+    const [decalage, setDecalage] = useState({ x: 0, y: 0 });
+
+    // const handleResize = (event, { size }) => {
+    //     setSize(size);
+    // };
+    
     const handleResize = (event, { size }) => {
-        setSize(size);
+        const deltaX = (size.width - sizeC.width) / 2;
+        const deltaY = (size.height - sizeC.height) / 2;
+        setDecalage({ x: decalage.x + deltaX, y: decalage.y + deltaY });
+
+        setPositionC((prevPositionC) => ({
+            xC: prevPositionC.xC - deltaX,
+            yC: prevPositionC.yC - deltaY,
+        }));
+
+        setSizeC(size);
     };
-    // fin gestion image carrousel
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -55,7 +71,7 @@ const Create_Categorie = () => {
                     }
                     if (data.positionCarrousel) {
                         const pos = JSON.parse(data.positionCarrousel);
-                        setPositionCarrousel({ xC: pos.x, yC: pos.y });
+                        setPositionC({ xC: pos.x, yC: pos.y });
                     }
                 } catch (error) {
                     console.error('Erreur:', error);
@@ -77,8 +93,7 @@ const Create_Categorie = () => {
             formData.append('description', description);
             formData.append('est_public', estPublic);
             formData.append('image', imageFile);
-            formData.append('placement_image_carrousel', JSON.stringify({ x: positionCarrousel.xC, y: positionCarrousel.yC, width: size.width, height: size.height }));
-            // formData.append('position', JSON.stringify(position));
+            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.xC, y: positionC.yC, width: sizeC.width, height: sizeC.height }));
 
             const response = await fetch(url, {
                 method: method,
@@ -112,13 +127,13 @@ const Create_Categorie = () => {
     };
 
     const handleDrag = (e, data) => {
-        console.log(`Position: x=${data.x}, y=${data.y}`);
+        // console.log(`Position: x=${data.x}, y=${data.y}`);
         setPosition({ x: data.x, y: data.y });
     };
 
     const handleDragCarrousel = (e, data) => {
-        console.log(`PositionC: xC=${data.x}, yC=${data.y}`);
-        setPositionCarrousel({ xC: data.x, yC: data.y });
+        // console.log(`PositionC: xC=${data.x}, yC=${data.y}`);
+        setPositionC({ xC: data.x, yC: data.y });
     };
 
     return (
@@ -141,10 +156,10 @@ const Create_Categorie = () => {
             <div id="cont-carrousel">
                 <div id="square-container">
                     <div id="circle-container"></div>
-                    <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle">
+                    <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle"> 
                         <ResizableBox
-                            width={size.width}
-                            height={size.height}
+                            width={sizeC.width}
+                            height={sizeC.height}
                             minConstraints={[100, 100]} // Dimensions minimales
                             maxConstraints={[10000, 10000]} // Dimensions maximales
                             resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
@@ -154,10 +169,10 @@ const Create_Categorie = () => {
                                 src={image}
                                 alt="Aperçu de l'image"
                                 style={{
-                                    top: positionCarrousel.yC,
-                                    left: positionCarrousel.xC,
-                                    width: `${size.width}px`,
-                                    height: `${size.height}px`,
+                                    top: positionC.yC,
+                                    left: positionC.xC,
+                                    width: `${sizeC.width}px`,
+                                    height: `${sizeC.height}px`,
                                     objectFit: "fill",
                                     cursor: "grab",
                                 }}
@@ -171,20 +186,20 @@ const Create_Categorie = () => {
             <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
             <form className="form-create-cat" onSubmit={handleSubmit}>
                 <div className="create-cat-div">
-                    <label className="label-create-cat">Titre :</label>
-                    <input type="text" value={titre} onChange={event => setTitre(event.target.value)} required />
+                    <label className="label-create-cat" htmlFor="titre_choice">Titre :</label>
+                    <input id="titre_choice" type="text" value={titre} onChange={event => setTitre(event.target.value)} required />
                 </div>
                 <div className="create-cat-div">
-                    <label className="label-create-cat">Description :</label>
+                    <label className="label-create-cat" htmlFor="ta-create-cat">Description :</label>
                     <textarea id="ta-create-cat" value={description} onChange={event => setDescription(event.target.value)} required />
                 </div>
                 <div className="create-cat-div">
-                    <label className="label-create-cat">Image actuelle :</label>
-                    <input type="file" onChange={handleImageChange} accept="image/*" required={!categorieId} />
+                    <label className="label-create-cat" htmlFor="imageFile">Image actuelle :</label>
+                    <input id="imageFile" type="file" onChange={handleImageChange} accept="image/*" required={!categorieId} />
                 </div>
                 <div className="create-cat-div">
-                    <label className="label-create-cat">Est public :</label>
-                    <input type="checkbox" checked={estPublic} onChange={event => setEstPublic(event.target.checked)} />
+                    <label className="label-create-cat" htmlFor="estPublic">Est public :</label>
+                    <input id="estPublic" type="checkbox" checked={estPublic} onChange={event => setEstPublic(event.target.checked)} />
                 </div>
                 <button className="create_cat_button" type="submit">{categorieId ? 'Modifier' : 'Créer'}</button>
             </form>

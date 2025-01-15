@@ -42,10 +42,15 @@ function Carrousel() {
             let elems = [];
             for (const element of data) {
                 element.src = "/categories/"+element.id;
-                if (element.image === null) {
+                if (!element.image) {
                     element.img = "/logo_bitmoji.png";
+                } else if (element.image.startsWith("http")) {
+                    element.img = element.image;
                 } else {
                     element.img = "/static/image/"+element.image;
+                }
+                if (element.placement_image_carrousel) {
+                    element.placement_image_carrousel = JSON.parse(element.placement_image_carrousel);
                 }
                 elems.push(element);
             }
@@ -54,7 +59,7 @@ function Carrousel() {
         })
         .catch(error => console.error(error));
     }, []);
-  
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const [depassement, setDepassement] = useState(0);
     const [visibleItemsCount, setVisibleItemsCount] = useState(4);
@@ -182,8 +187,14 @@ function Carrousel() {
             element.src = "/categories/" + element.id;
             if (!element.image) {
                 element.img = "/logo_bitmoji.png";
+            } else if (element.image.startsWith("http")) {
+                element.img = element.image;
+
             } else {
                 element.img = "/static/image/"+element.image;
+            }
+            if (element.placement_image_carrousel) {
+                element.placement_image_carrousel = JSON.parse(element.placement_image_carrousel);
             }
         }
         for (const element of a_supprimer) {
@@ -268,12 +279,12 @@ function Carrousel() {
                     {elemsCarrousel
                     .slice(currentIndex, currentIndex + visibleItemsCount)
                     .map((elem, index) => (
-                        <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} />
+                        <ElemCarrousel key={"e"+index} src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} />
                     ))}
                     {elemsCarrousel
                     .slice(0, depassement)
                     .map((elem, index) => (
-                        <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} />
+                        <ElemCarrousel key={"d"+index} src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} />
                     ))}
                     <button id="suivant" onClick={handleNext}><img src="/right.png" alt="fleche droite" /></button>
                 </div>
@@ -299,7 +310,7 @@ function Carrousel() {
                                                     <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                         {(provided) => (
                                                             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
-                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} />
                                                             </div>
                                                         )}
                                                     </Draggable>
@@ -318,7 +329,7 @@ function Carrousel() {
                                                     <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                         {(provided) => (
                                                             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
-                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} />
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} />
                                                             </div>
                                                         )}
                                                     </Draggable>
