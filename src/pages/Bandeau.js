@@ -8,6 +8,7 @@ function Bandeau() {
     const [data, setData] = useState([]);
     const {isAdmin} = useContext(InfosContext);
     const [auths, setAuths] = useState([]);
+    const currentPath = window.location.pathname;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,17 +82,20 @@ function Bandeau() {
         return <div>Loading...</div>;
     }
 
-
     return (
         <header>
             <button className='menu-toggle'>☰</button>
             <nav>
                 <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo'/></a>
                 <ul id="pages">
-                    {/* <ElemBandeau link="/accueil" nom="Accueil" enfants={[]} /> */}
                     {data.map((elem) => (
-                        <ElemBandeau key={elem.id} link={"/categories/" + elem.id} nom={elem.nom}
-                                     enfants={elem.enfants}/>
+                        <ElemBandeau
+                            key={elem.id}
+                            link={"/categories/" + elem.id}
+                            nom={elem.nom}
+                            enfants={elem.enfants}
+                            className={currentPath.includes(`/categories/${elem.id}`) ? 'active' : ''}
+                        />
                     ))}
                     {isAdmin ? <ElemBandeau link="/admin" nom="Admin" enfants={[ {nom: 'Catégories', link: '/admin/categories'}]} isAdmin={isAdmin} /> : ''}
                 </ul>
