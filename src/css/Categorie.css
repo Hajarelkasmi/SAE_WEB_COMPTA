@@ -74,3 +74,37 @@
     margin-bottom: 0.3em;
     margin-top: 0.3em;
 }
+.cat_button {
+    margin: 10px;
+}
+
+.general-div-cat {
+    padding: 20px;
+}
+
+.cat-info-pages {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.cat-info-pages div {
+    flex-grow: 1;
+}
+
+.cat-info-pages img {
+    width: 400px; /* Limiter la largeur maximale */
+    height: 200px; /* Limiter la hauteur maximale */
+    object-fit: cover; /* Maintenir le ratio d'aspect et couper l'image si nécessaire */
+    border-radius: 8px;
+}
+
+.cat-info-pages a {
+    text-decoration: none;
+    color: white;
+    text-align: left;
+}
+
+.cat-info-sous-categories a {
+    color: white;
+}

@@ -402,7 +402,7 @@ const Main_Page = ({id_page}) => {
             )}
             <div className="Div_Title">
                 {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
-                {data && <h1>{data.nom}</h1>}
+                {data && <h1 dangerouslySetInnerHTML={{__html: data.nom}}></h1>}
             </div>
             { isAdmin && isPreview ? (
                     <button onClick={() => setIsPreview(false)}>Quitter la prévisualisation</button>
