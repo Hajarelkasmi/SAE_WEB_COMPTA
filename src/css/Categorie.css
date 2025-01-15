@@ -82,55 +82,29 @@
     padding: 20px;
 }
 
-.slider-bar {
-    margin-top: 20px;
-    padding: 0 20px;
-}
-
-.slider-item {
+.cat-info-pages {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    box-sizing: border-box;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
 
-.slider-item img {
-    max-width: 100%;
-    height: auto;
+.cat-info-pages div {
+    flex-grow: 1;
+}
+
+.cat-info-pages img {
+    width: 400px; /* Limiter la largeur maximale */
+    height: 200px; /* Limiter la hauteur maximale */
+    object-fit: cover; /* Maintenir le ratio d'aspect et couper l'image si nécessaire */
     border-radius: 8px;
 }
 
-.slider-item p {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 1rem;
-}
-.slider-bar {
-    margin-top: 20px;
-    padding: 0 20px; 
+.cat-info-pages a {
+    text-decoration: none;
+    color: white;
+    text-align: left;
 }
 
-.slider-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: center; 
-}
-
-.slider-item img {
-    width: 200px; 
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.slider-item p {
-    margin-top: 10px;
-    text-align: center;
-    font-size: 1rem;
+.cat-info-sous-categories a {
+    color: white;
 }

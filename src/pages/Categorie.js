@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../css/Categorie.css';
 import { Button } from "react-bootstrap";
 import { checkAdmin } from "./CheckAdmin";
 import Main_Page_Preview from "./Main_Page_Preview";
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 const Categorie = () => {
     const { id_categorie } = useParams();
@@ -15,39 +12,6 @@ const Categorie = () => {
     const [sousCategories, setSousCategories] = useState([]);
     const [isAdmin, setisAdmin] = useState(null);
     const [error, setError] = useState(null);
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 1,
-                    infinite: true,
-                    dots: true
-                }
-            },
-            {
-                breakpoint: 600,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 1,
-                    initialSlide: 2
-                }
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1
-                }
-            }
-        ]
-    };
 
     useEffect(() => {
 
@@ -121,18 +85,22 @@ const Categorie = () => {
                     <p>{categorie?.description}</p>
                 </div>
             </div>
-            <div className="slider-bar">
-                <Slider {...settings}>
+            <div className='cat-info-sous-categories'>
+                {sousCategories.map(sousCategorie => (
+                    <div key={sousCategorie.id}>
+                        <a href={`/sous_categories/${sousCategorie.id}`}>{sousCategorie.nom}</a>
+                    </div>
+                ))}
+            </div>
+            <div className='cat-info-pages'>
                 {pages.map(page => (
                     <div key={page.id}>
-                    <a className="slider-item" href={`/page/${page.id}`}>
-                        <img src={`/static/image/${page.image}`} alt={page.titre} />
-                        <p>{page.nom}</p>
+                    <a href={`/page/${page.id}`}>
+                        <img src={`/static/image/${page.image}`} alt={page.nom} />
+                        <p>{page.nom.replace(/<[^>]*>/g, '')}</p>
                     </a>
                     </div>
                 ))}
-                </Slider>
-
             </div>
         </div>
     );
