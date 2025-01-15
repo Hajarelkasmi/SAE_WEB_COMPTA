@@ -4,18 +4,12 @@ import Compte from "./Compte";
 import '../css/Admin.css';
 import Container_Admin_Stat from "./Container_Admin_Stat";
 import {refresh} from "./RefreshToken";
-import {checkAdmin} from "./CheckAdmin";
+import {InfosContext} from "../InfosContext";
 
 
 const Admin = () => {
-    const [isAdmin, setIsAdmin] = useState(null);
+    const {isAdmin} = React.useContext(InfosContext);
     useEffect(() => {
-        const fetchAdminStatus = async () => {
-            const adminStatus = await checkAdmin();
-            setIsAdmin(adminStatus);
-        };
-
-        fetchAdminStatus();
 
         if (localStorage.getItem('token')) {
             refresh();

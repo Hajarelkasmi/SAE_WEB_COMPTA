@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import '../css/Categorie.css';
 import { Button } from "react-bootstrap";
-import { checkAdmin } from "./CheckAdmin";
+import {InfosContext} from "../InfosContext";
 import Main_Page_Preview from "./Main_Page_Preview";
 
 const Categorie = () => {
@@ -10,16 +10,11 @@ const Categorie = () => {
     const [categorie, setCategorie] = useState(null);
     const [pages, setPages] = useState([]);
     const [sousCategories, setSousCategories] = useState([]);
-    const [isAdmin, setisAdmin] = useState(null);
+    const {isAdmin} = useContext(InfosContext);
     const [error, setError] = useState(null);
 
     useEffect(() => {
 
-        const fetchAdminStatus = async () => {
-            const adminStatus = await checkAdmin();
-            setisAdmin(adminStatus);
-        }
-        fetchAdminStatus();
 
         const fetchData = async () => {
             try {

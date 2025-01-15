@@ -1,26 +1,22 @@
 import "../css/Footer.css";
-import { useEffect, useState } from "react";
-import { checkAdmin } from "./CheckAdmin";
+import {useContext, useEffect} from "react";
+import {InfosContext} from "../InfosContext";
 
 function Footer() {
-    const [isAdmin, setIsAdmin] = useState(null);
-    useEffect(() => {
-        const fetchAdminStatus = async () => {
-            try {
-                const adminStatus = await checkAdmin();
-                setIsAdmin(adminStatus);
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        };
-        fetchAdminStatus();
-    }, []);
+    const {isAdmin} = useContext(InfosContext);
+
     useEffect(() => {
         const footer = document.querySelector('footer');
         if(footer) {
             footer.style.backgroundColor = isAdmin ? '#a63629' : '#1c3f59';
         }
     }, [isAdmin]);
+
+
+    if (isAdmin === null) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <footer>
             <div id="nos_contacts">

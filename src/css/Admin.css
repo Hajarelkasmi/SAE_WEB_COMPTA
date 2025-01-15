@@ -68,6 +68,10 @@
     margin-bottom: 20px; /* Adjust the margin as needed */
 }
 
+.button-container button {
+    color: white;
+}
+
 .chart-row {
     display: flex;
     justify-content: center;
