@@ -28,7 +28,7 @@ function App() {
     return (
         <div className="App">
             <InfosProvider>
-                <InactivityTimer timeout={900000}/>
+                <InactivityTimer/>
                 <Bandeau reseaux={reseaux}/>
                 <div className="spacer">
                     <BrowserRouter>
@@ -57,7 +57,6 @@ function App() {
                 </div>
                 <Footer/>
             </InfosProvider>
-
         </div>
     );
 }

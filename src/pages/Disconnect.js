@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { useEffect } from "react";
 import Popup from "./Popup";
 
@@ -8,9 +8,9 @@ const Disconnect = () => {
     useEffect(() => {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
-        Navigate('/');
+        navigate('/');
         Popup('Vous avez été déconnecté', 3000, 'success');
-    }, [Navigate]);
+    }, [navigate]);
 
     return null;
 }
