@@ -120,23 +120,19 @@ const Categorie = () => {
                     <h1 class="title-cat">{categorie?.nom}</h1>
                     <p>{categorie?.description}</p>
                 </div>
-                <div class="second-div-cat">
-                    <h2 class="title-cat">Pages :</h2>
-                    {pages.length === 0 && <p>Aucune page trouvée</p>}
-                        
-                </div>
             </div>
             <div className="slider-bar">
                 <Slider {...settings}>
-                    {pages.map(page => (
-                        <div key={page.id}>
-                            <a className='slider-item' href={`/page/${page.id}`} >
-                                <img src={"/static/image/"+page.image} alt={page.titre} />
-                                <p>{page.nom}</p>
-                            </a>
-                        </div>
-                    ))}
+                {pages.map(page => (
+                    <div key={page.id}>
+                    <a className="slider-item" href={`/page/${page.id}`}>
+                        <img src={`/static/image/${page.image}`} alt={page.titre} />
+                        <p>{page.nom}</p>
+                    </a>
+                    </div>
+                ))}
                 </Slider>
+
             </div>
         </div>
     );
