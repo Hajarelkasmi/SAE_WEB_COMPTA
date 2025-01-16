@@ -153,7 +153,7 @@ const Main_Page_Preview = ({id_page}) => {
         <div className="Main">
             <div className="Div_Title">
                 {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
-                {data && <h1>{data.nom}</h1>}
+                {data && <h1 dangerouslySetInnerHTML={{__html: data.nom}}></h1>}
             </div>{ rubrique && (
                 rubrique.type === "lien" ? <Container_Lien rubrique={rubrique} /> :
                 rubrique.type === "article" ? <Container_Article rubrique={rubrique} /> :

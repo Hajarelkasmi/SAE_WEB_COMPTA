@@ -55,8 +55,19 @@ module.exports = (app) => {
                 }
             });
             const enfants = [];
+            const condition_where = est_abonne ? {} : { est_public: true };
+
+
             for (const sc of sous_categories) {
-                enfants.push(await Categorie.findByPk(sc.id_enfant));
+                let enfant = await Categorie.findOne({
+                    where: {
+                        id: sc.id_enfant,
+                        ...condition_where
+                    }
+                });
+                if (enfant) {
+                    enfants.push(enfant);
+                }
             }
             resultat.push({ id: p.id, nom: p.nom, enfants: enfants });
         }
