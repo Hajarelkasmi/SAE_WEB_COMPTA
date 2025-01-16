@@ -1,5 +1,7 @@
 import React, {useContext, useState} from 'react';
 import {InfosContext} from "../InfosContext";
+import Popup from "./Popup";
+import {useNavigate} from "react-router-dom";
 
 const Container_MDP = () => {
     const {idUser} = useContext(InfosContext);
@@ -10,6 +12,7 @@ const Container_MDP = () => {
         confirmPassword: ''
     });
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -45,6 +48,14 @@ const Container_MDP = () => {
                 console.error('Réponse de l\'API:', errorText);
                 throw new Error('Erreur lors de la modification du mot de passe');
             }
+            setErrorMessage('');
+            Popup('Mot de passe modifié', 2000, 'success');
+            Popup('Vous allez être déconnecté', 2000, 'error');
+            setTimeout(() => {
+                navigate("/deconnexion");
+                window.location.reload();
+            }, 3000);
+
         } catch (error) {
             console.error('Erreur lors de la modification du mot de passe:', error);
             setErrorMessage('Erreur lors de la modification du mot de passe');

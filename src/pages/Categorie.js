@@ -83,7 +83,7 @@ const Categorie = () => {
             <div className='cat-info-sous-categories'>
                 {sousCategories.map(sousCategorie => (
                     <div key={sousCategorie.id}>
-                        <a href={`/sous_categories/${sousCategorie.id}`}>{sousCategorie.nom}</a>
+                        <a href={`/categories/${sousCategorie.id}`}>{sousCategorie.nom}</a>
                     </div>
                 ))}
             </div>

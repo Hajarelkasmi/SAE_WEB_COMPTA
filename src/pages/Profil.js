@@ -1,6 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {InfosContext} from "../InfosContext";
 import Container_MDP from "./Container_MDP";
+import Popup from "./Popup";
 
 const Profil = () => {
     const {idUser} = useContext(InfosContext);
@@ -87,6 +88,10 @@ const Profil = () => {
         } catch (error) {
             console.error('Erreur:', error);
         }
+        Popup('Informations mises à jour', 1500, 'success');
+        setTimeout(() => {
+            window.location.reload();
+        },1800);
     };
 
     if (!idUser) {
