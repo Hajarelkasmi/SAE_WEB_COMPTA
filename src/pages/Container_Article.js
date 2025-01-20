@@ -257,19 +257,12 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                             placeholder='Description'
                         />
                         <div ref={quillRef} class="quill-editor" />
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            accept='image/*'
-                        />
-                        {imageFile ? <img src={image} alt={titre} /> : <img src={"/static/image/" + image} alt={titre} />}
                     </div>
                 </div>
             ) : (
                 <div>
                     <p>{description}</p>
                     <div dangerouslySetInnerHTML={{ __html: texte }} />
-                    {image ? <img src={"/static/image/" + image} alt={titre} /> : null}
                 </div>
             )}
             {isAdmin ? (
