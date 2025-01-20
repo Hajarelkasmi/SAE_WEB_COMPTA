@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, {useContext, useEffect, useState} from 'react';
+import { useParams } from 'react-router-dom';
 import '../css/Categorie.css';
 import { Button } from "react-bootstrap";
-import { checkAdmin } from "./CheckAdmin";
+import {InfosContext} from "../InfosContext";
+import Main_Page_Preview from "./Main_Page_Preview";
 
 const Categorie = () => {
     const { id_categorie } = useParams();
     const [categorie, setCategorie] = useState(null);
     const [pages, setPages] = useState([]);
     const [sousCategories, setSousCategories] = useState([]);
-    const [isAdmin, setisAdmin] = useState(null);
+    const {isAdmin} = useContext(InfosContext);
     const [error, setError] = useState(null);
 
     useEffect(() => {
 
-        const fetchAdminStatus = async () => {
-            const adminStatus = await checkAdmin();
-            setisAdmin(adminStatus);
-        }
-        fetchAdminStatus();
 
         const fetchData = async () => {
             try {
@@ -46,11 +42,6 @@ const Categorie = () => {
                 }
                 const dataSousCategories = await reponseSousCategories.json();
                 setSousCategories(dataSousCategories);
-
-
-                console.log('Catégorie:', data);
-                console.log('Pages:', dataPages);
-                console.log('Sous-catégories:', dataSousCategories);
             } catch (error) {
                 console.error('Erreur:', error);
             }
@@ -63,39 +54,48 @@ const Categorie = () => {
         return <div style={{ color: 'red' }}>{error}</div>;
     }
 
+    if (sousCategories.length === 0 && pages.length === 1) {
+        return (
+            <div className="categorie">
+                {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
+                {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
+                <div class="general-div-cat">
+                    <div class="main-div-cat">
+                        <h1 class="title-cat">{categorie?.nom}</h1>
+                        <p>{categorie?.description}</p>
+                    </div>
+                </div>
+                <Main_Page_Preview id_page={pages[0].id} />
+            </div>);
+    }
+
     return (
         <div className="categorie">
-            {isAdmin && <Button className={"cat_button"} href="/categories/create">Créer une nouvelle catégorie</Button>}
+                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/create`}>Créer une nouvelle sous-catégorie</Button>}
+                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
             {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
             <div class="general-div-cat">
                 <div class="main-div-cat">
                     <h1 class="title-cat">{categorie?.nom}</h1>
                     <p>{categorie?.description}</p>
                 </div>
-                <div class="second-div-cat">
-                    <h2 class="title-cat">Sous-catégories :</h2>
-                    {sousCategories.length === 0 && <p>Aucune sous-catégorie trouvée</p>}
-                    <ul>
-                        {sousCategories.map(sc => (
-                            <li key={sc.id}>
-                                <Link className={"cat_link"} to={`/categories/${sc.id}`}>{sc.nom}</Link>
-                            </li>
-                        ))}
-                    </ul>
-                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/sous_categories/create`}>Créer une nouvelle sous-catégorie</Button>}
-                </div>
-                <div class="second-div-cat">
-                    <h2 class="title-cat">Pages :</h2>
-                    {pages.length === 0 && <p>Aucune page trouvée</p>}
-                    <ul>
-                        {pages.map(page => (
-                            <li key={page.id}>
-                                <Link className={"cat_link"} to={`/page/${page.id}`}>{page.nom}</Link>
-                            </li>
-                        ))}
-                    </ul>
-                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
-                </div>
+            </div>
+            <div className='cat-info-sous-categories'>
+                {sousCategories.map(sousCategorie => (
+                    <div key={sousCategorie.id}>
+                        <a href={`/categories/${sousCategorie.id}`}>{sousCategorie.nom}</a>
+                    </div>
+                ))}
+            </div>
+            <div className='cat-info-pages'>
+                {pages.map(page => (
+                    <div key={page.id}>
+                    <a href={`/page/${page.id}`}>
+                        <img src={`/static/image/${page.image}`} alt={page.nom} />
+                        <p>{page.nom.replace(/<[^>]*>/g, '')}</p>
+                    </a>
+                    </div>
+                ))}
             </div>
         </div>
     );

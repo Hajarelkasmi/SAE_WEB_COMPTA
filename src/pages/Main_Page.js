@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Container_Lien from './Container_Lien';
 import Container_Article from './Container_Article';
@@ -6,10 +6,11 @@ import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
 import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
-import { checkAdmin } from './CheckAdmin';
+import {InfosContext} from "../InfosContext";
 
-const Main_Page = () => {
-    const { id } = useParams();
+const Main_Page = ({id_page}) => {  
+    let { id } = useParams();
+    id = id|| id_page;
     const [isChoosingRubrique, setIsChoosingRubrique] = useState(false);
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -17,7 +18,8 @@ const Main_Page = () => {
     const [rubriques, setRubriques] = useState([]);
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
+    const {isAdmin} = useContext(InfosContext);
+    const [isPreview, setIsPreview] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -121,7 +123,8 @@ const Main_Page = () => {
                     nom: exercice.Rubrique.nom,
                     description: exercice.Rubrique.description,
                     texte: exercice.texte,
-                    lien_fichier: exercice.lien_fichier,
+                    lien_fichier_exercice: exercice.lien_fichier_exercice,
+                    lien_fichier_correction: exercice.lien_fichier_correction,
                     type: "exercice",
                     rubrique_id: exercice.rubrique_id,
                     page_id : exercice.Rubrique.page_id,
@@ -133,8 +136,6 @@ const Main_Page = () => {
                 setRubriques(nouvelles_rubriques);
                 const rubriques_triees = nouvelles_rubriques.sort((a, b) => a.position - b.position);
                 setRubriques(rubriques_triees);
-                const admin = await checkAdmin();
-                setIsAdmin(admin);
             } catch (error) {
                 setError(error);
             } finally {
@@ -299,7 +300,8 @@ const Main_Page = () => {
                     nom: '',
                     description: '',
                     texte: '',
-                    lien_fichier: '',
+                    lien_fichier_exercice: '',
+                    lien_fichier_correction: '',
                     page_id: id,
                     est_public: true
                 }),
@@ -318,7 +320,8 @@ const Main_Page = () => {
                 nom: '',
                 description: '',
                 texte: '',
-                lien_fichier: '',
+                lien_fichier_exercice: '',
+                lien_fichier_correction: '',
                 type: "exercice",
                 isModifiable: true,
                 page_id: id,
@@ -332,37 +335,24 @@ const Main_Page = () => {
     }
 
     const handleEditRubrique = (id) => {
-        setActiveRubrique(id);
+        if (id) {
+            setActiveRubrique(id);
+        } else {
+            setActiveRubrique(null);
+        }
     }
 
     const handleSwitchPosition = (position1, position2) => {
-        if (position1 < position2) {
-            const rubriques_triees = [...rubriques];
-            let oldRubriques = rubriques_triees[position1];
-            for (let i = position1 + 1; i <= position2; i++) {
-                rubriques_triees[i].position--;
-                rubriques_triees[i].positionModifiee = true;
-                rubriques_triees[i - 1] = rubriques_triees[i];
-                rubriques_triees[i] = oldRubriques;
-                oldRubriques = rubriques_triees[i];
-            }
-            oldRubriques.position = position2;
-            oldRubriques.positionModifiee = true;
-            setRubriques(() => rubriques_triees);
-        } else {
-            const rubriques_triees = [...rubriques];
-            let oldRubriques = rubriques_triees[position1];
-            for (let i = position1 - 1; i >= position2; i--) {
-                rubriques_triees[i].position++;
-                rubriques_triees[i].positionModifiee = true;
-                rubriques_triees[i + 1] = rubriques_triees[i];
-                rubriques_triees[i] = oldRubriques;
-                oldRubriques = rubriques_triees[i];
-            }
-            oldRubriques.position = position2;
-            oldRubriques.positionModifiee = true;
-            setRubriques(() => rubriques_triees);
-        }
+        const rubriques_triees = [...rubriques];
+        const [movedRubrique] = rubriques_triees.splice(position1, 1);
+        rubriques_triees.splice(position2, 0, movedRubrique);
+
+        rubriques_triees.forEach((rubrique, index) => {
+            rubrique.position = index;
+            rubrique.positionModifiee = true;
+        });
+
+        setRubriques(rubriques_triees);
     };
 
     const handleSauvegarderPosition = async (rubriques) => {
@@ -405,15 +395,20 @@ const Main_Page = () => {
 
     return (
         <div className="Main">
-            {isAdmin && (
+            {isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     <button onClick={() => navigate('/categories/' + data.categorie_id + '/pages/' + id)}>Modifier</button>
                 </div>
             )}
             <div className="Div_Title">
                 {data && <img src={`/static/image/${data.image}`} alt="Logo" />}
-                {data && <h1>{data.nom}</h1>}
+                {data && <h1 dangerouslySetInnerHTML={{__html: data.nom}}></h1>}
             </div>
+            { isAdmin && isPreview ? (
+                    <button onClick={() => setIsPreview(false)}>Quitter la prévisualisation</button>
+                ) : isAdmin && (
+                    <button onClick={() => setIsPreview(true)}>Prévisualiser</button> 
+            )}
             <div className="Div_Content">
                 {data && <p>{data.description}</p>}
             </div>
@@ -421,26 +416,26 @@ const Main_Page = () => {
                 {
                     rubriques.map((rubrique) => (
                         rubrique.type === "lien" ? (
-                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Lien key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview} />
                         ) : rubrique.type === "article" ? (
-                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Article key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) : rubrique.type === "video" ? (
-                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} />
+                            <Container_Video key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) :  rubrique.type === "exercice" ? (
-                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin} /> 
+                            <Container_Exercice key={rubrique.id} rubrique={rubrique} activeRubrique={activeRubrique} handleEditRubrique={handleEditRubrique} handleSwitchPosition={handleSwitchPosition} isAdmin={isAdmin && !isPreview}/>
                         ) : null
                     ))
                 }
             </div>
-            { isAdmin && (
+            { isAdmin && !isPreview && (
                 <div className="Div_Admin">
                     
                     {isChoosingRubrique ? (
                         <div>
-                            <button onClick={handleAddRubriqueVideo}>Vidéo</button>
-                            <button onClick={handleAddRubriqueArticle}>Article</button>
-                            <button onClick={handleAddRubriqueLien}>Lien</button>
-                            <button onClick={handleAddRubriqueExercice}>Exercice</button>
+                            <button onClick={handleAddRubriqueVideo} disabled={activeRubrique !== null}>Vidéo</button>
+                            <button onClick={handleAddRubriqueArticle} disabled={activeRubrique !== null}>Article</button>
+                            <button onClick={handleAddRubriqueLien} disabled={activeRubrique !== null}>Lien</button>
+                            <button onClick={handleAddRubriqueExercice} disabled={activeRubrique !== null}>Exercice</button>
                         </div>
                     ) : (
                         <div>

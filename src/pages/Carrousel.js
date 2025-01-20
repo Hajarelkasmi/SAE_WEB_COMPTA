@@ -1,34 +1,12 @@
 import "../css/Carrousel.css";
 import ElemCarrousel from "./ElemCarrousel";
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import {InfosContext} from "../InfosContext";
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 function Carrousel() {
     // Vérifier si l'utilisateur est admin
-    const [isAdmin, setIsAdmin] = useState(null);
-    useEffect(() => {
-        const checkAdmin = async () => {
-            const token = localStorage.getItem('token');
-            if (token === null) {
-                setIsAdmin(false);
-                return;
-            }
-            try {
-                const response = await fetch('http://localhost:5000/api/isAdmin', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `${token}`
-                    }
-                });
-                if (!response.ok) {setIsAdmin(false);}
-                const data = await response.json();
-                setIsAdmin(data.isAdmin);
-            } catch (error) {
-                setIsAdmin(false);
-            }
-        };
-        checkAdmin();
-    }, []);
+    const {isAdmin} = useContext(InfosContext);
 
     // Liste des éléments du carrousel
     const [elemsCarrousel, setElemsCarrousel] = useState([]);
@@ -174,12 +152,22 @@ function Carrousel() {
                         'Authorization': localStorage.getItem('token'),
                     }
         }).then(response => response.json()).catch(error => console.error(error));
+        let a_supprimer = [];
         for (const element of elems) {
+            if (element.est_public === false) {
+                a_supprimer.push(element);
+            }
             element.src = "/categories/" + element.id;
-            if (element.image === null) {
+            if (!element.image) {
                 element.img = "/logo_bitmoji.png";
             } else {
                 element.img = "/static/image/"+element.image;
+            }
+        }
+        for (const element of a_supprimer) {
+            let elemIndex = elems.findIndex(e => e.id === element.id);
+            if (elemIndex !== -1) {
+                elems.splice(elemIndex, 1);
             }
         }
         for (const element of elemsCarrousel) {

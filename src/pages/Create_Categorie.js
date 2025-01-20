@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import Popup from "./Popup";
 import '../css/Create_Categories.css';
 
@@ -14,6 +13,7 @@ const Create_Categorie = () => {
     const navigate = useNavigate();
     const { id_categorie } = useParams();
     const { id_parent } = useParams();
+    const [parentName, setParentName] = useState(null);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -31,7 +31,6 @@ const Create_Categorie = () => {
                         throw new Error('Erreur lors de la récupération de la catégorie');
                     }
                     const data = await response.json();
-                    console.log('Catégorie:', data);
                     setTitre(data.nom);
                     setDescription(data.description);
                     setImage(data.image);
@@ -43,7 +42,29 @@ const Create_Categorie = () => {
             };
             fetchCategorie();
         }
-    }, [id_categorie]);
+
+        if (id_parent) {
+            // Fetch the parent category name
+            const fetchParentName = async () => {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/categories/${id_parent}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: token
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error('Erreur lors de la récupération de la catégorie parente');
+                    }
+                    const data = await response.json();
+                    setParentName(data.nom);
+                } catch (error) {
+                    console.error('Erreur:', error);
+                }
+            };
+            fetchParentName();
+        }
+    }, [id_categorie, id_parent]);
 
     const handleSubmit = async (event) => {
         const token = localStorage.getItem('token');
@@ -182,7 +203,7 @@ const Create_Categorie = () => {
                 </div>
             )}
 
-            <h1 class="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
+            <h1 class="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une {id_parent ? 'sous catégorie de ' : 'catégorie'} {parentName}</h1>
             <form class="form-create-cat" onSubmit={handleSubmit}>
                 <div class="create-cat-div">
                     <label class="label-create-cat">Titre :</label>

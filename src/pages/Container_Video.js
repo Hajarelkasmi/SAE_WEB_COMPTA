@@ -98,10 +98,10 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
         const position = event.dataTransfer.getData('position');
         const position1 = parseInt(position);
         const position2 = parseInt(rubrique.position);
-        if (position1 === position2) {
+        if (position1 === position2 || isNaN(position1) || isNaN(position2)) {
             return;
         }
-        handleSwitchPosition(position1,position2);
+        handleSwitchPosition(position1, position2);
     };
 
     if (isAdmin === null) {

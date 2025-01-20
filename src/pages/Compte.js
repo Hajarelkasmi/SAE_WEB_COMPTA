@@ -62,15 +62,21 @@ function Compte() {
 
     async function updateCompte(id) {
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5000/api/etudiants/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Authorization': `${token}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        }).catch(r => console.error("Erreur", r));
-
+        try {
+            const response = await fetch(`http://localhost:5000/api/etudiants/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+            if (!response.ok) {
+                throw new Error('Erreur lors de la mise à jour du compte');
+            }
+        } catch (error) {
+            console.error('Erreur:', error);
+        }
         fetchComptes().catch(r => console.error("Erreur", r));
         setIsEditing(false);
     }
