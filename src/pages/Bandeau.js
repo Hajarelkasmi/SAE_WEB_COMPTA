@@ -8,6 +8,7 @@ function Bandeau() {
     const [data, setData] = useState([]);
     const {isAdmin} = useContext(InfosContext);
     const [auths, setAuths] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
     const currentPath = window.location.pathname;
 
     useEffect(() => {
@@ -81,12 +82,26 @@ function Bandeau() {
     if (isAdmin === null) {
         return <div>Loading...</div>;
     }
+    
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        window.location.href = `/search?query=${searchTerm}`;
+    };
 
     return (
         <header>
             <button className='menu-toggle'>☰</button>
             <nav>
                 <a href='/' id="logohome"><img src="/logo_bitmoji.png" alt="logo" className='logo'/></a>
+                <form onSubmit={handleSearchSubmit}>
+                    <input
+                        type="text"
+                        id="search"
+                        placeholder="Rechercher"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                </form>
                 <ul id="pages">
                     {data.map((elem) => (
                         <ElemBandeau
