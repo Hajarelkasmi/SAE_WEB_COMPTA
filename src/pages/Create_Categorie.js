@@ -145,6 +145,7 @@ const Create_Categorie = () => {
                 </Draggable>
 
             </div>
+            <p id="prev_img_carrousel_titre">Prévisualisation de l'image dans le carrousel</p>
             <div id="cont-carrousel">
                 <div id="square-container">
                     <div id="circle-container"></div>

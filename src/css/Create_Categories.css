@@ -103,6 +103,11 @@
     margin: 1vh 0;
 }
 
+#prev_img_carrousel_titre {
+    display: flex;
+    justify-content: center;
+}
+
 #square-container {
     position: relative;
     height: 25vh;
