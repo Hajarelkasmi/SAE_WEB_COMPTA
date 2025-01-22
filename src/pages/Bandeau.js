@@ -97,7 +97,8 @@ function Bandeau() {
                             className={currentPath.includes(`/categories/${elem.id}`) ? 'active' : ''}
                         />
                     ))}
-                    {isAdmin ? <ElemBandeau link="/admin" nom="Admin" enfants={[ {nom: 'Catégories', link: '/admin/categories'}]} isAdmin={isAdmin} /> : ''}
+                    {/*{isAdmin ? <ElemBandeau link="/admin" nom="Admin" enfants={[ {nom: 'Catégories', link: '/admin/categories'}]} isAdmin={isAdmin} /> : ''}*/}
+                    {isAdmin ? <ElemBandeau link="/admin" nom="Admin" isAdmin={isAdmin} /> : ''}
                 </ul>
                 <ul id="auths">
                     {auths.map((elem) => (
