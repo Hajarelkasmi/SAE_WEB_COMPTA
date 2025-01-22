@@ -26,25 +26,6 @@ const Create_Categorie = () => {
         console.log('positionC:', positionC);
     }, [positionC]);
 
-    const [decalage, setDecalage] = useState({ x: 0, y: 0 });
-
-    // const handleResize = (event, { size }) => {
-    //     setSize(size);
-    // };
-    
-    // const handleResize = (event, { size }) => {
-    //     const deltaX = (size.width - sizeC.width) / 2;
-    //     const deltaY = (size.height - sizeC.height) / 2;
-    //     setDecalage({ x: decalage.x + deltaX, y: decalage.y + deltaY });
-
-    //     setPositionC((prevPositionC) => ({
-    //         xC: prevPositionC.xC - deltaX,
-    //         yC: prevPositionC.yC - deltaY,
-    //     }));
-
-    //     setSizeC(size);
-    // };
-
     const handleResize = (event, { size }) => {
         const deltaX = (sizeC.width - size.width) / 2;
         const deltaY = (sizeC.height - size.height) / 2;
@@ -140,12 +121,10 @@ const Create_Categorie = () => {
     };
 
     const handleDrag = (e, data) => {
-        // console.log(`Position: x=${data.x}, y=${data.y}`);
         setPosition({ x: data.x, y: data.y });
     };
 
     const handleDragCarrousel = (e, data) => {
-        // console.log(`PositionC: xC=${data.x}, yC=${data.y}`);
         setPositionC({ xC: data.x, yC: data.y });
     };
 
