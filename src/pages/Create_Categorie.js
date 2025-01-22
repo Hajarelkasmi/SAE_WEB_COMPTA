@@ -20,6 +20,7 @@ const Create_Categorie = () => {
     // gestion image carrousel
     const [positionC, setPositionC] = useState({ xC: 0, yC: 0 });
     const [sizeC, setSizeC] = useState({ width: 200, height: 200 });
+    const [resizeOffset, setResizeOffset] = useState({ deltaX: 0, deltaY: 0 });
 
     useEffect(() => {
         console.log('positionC:', positionC);
@@ -31,14 +32,26 @@ const Create_Categorie = () => {
     //     setSize(size);
     // };
     
-    const handleResize = (event, { size }) => {
-        const deltaX = (size.width - sizeC.width) / 2;
-        const deltaY = (size.height - sizeC.height) / 2;
-        setDecalage({ x: decalage.x + deltaX, y: decalage.y + deltaY });
+    // const handleResize = (event, { size }) => {
+    //     const deltaX = (size.width - sizeC.width) / 2;
+    //     const deltaY = (size.height - sizeC.height) / 2;
+    //     setDecalage({ x: decalage.x + deltaX, y: decalage.y + deltaY });
 
-        setPositionC((prevPositionC) => ({
-            xC: prevPositionC.xC - deltaX,
-            yC: prevPositionC.yC - deltaY,
+    //     setPositionC((prevPositionC) => ({
+    //         xC: prevPositionC.xC - deltaX,
+    //         yC: prevPositionC.yC - deltaY,
+    //     }));
+
+    //     setSizeC(size);
+    // };
+
+    const handleResize = (event, { size }) => {
+        const deltaX = (sizeC.width - size.width) / 2;
+        const deltaY = (sizeC.height - size.height) / 2;
+
+        setResizeOffset((prevOffset) => ({
+            deltaX: prevOffset.deltaX + deltaX,
+            deltaY: prevOffset.deltaY + deltaY,
         }));
 
         setSizeC(size);
@@ -93,7 +106,7 @@ const Create_Categorie = () => {
             formData.append('description', description);
             formData.append('est_public', estPublic);
             formData.append('image', imageFile);
-            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.xC, y: positionC.yC, width: sizeC.width, height: sizeC.height }));
+            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.xC + resizeOffset.deltaX, y: positionC.yC + resizeOffset.deltaY, width: sizeC.width, height: sizeC.height }));
 
             const response = await fetch(url, {
                 method: method,
