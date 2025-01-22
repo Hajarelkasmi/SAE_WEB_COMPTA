@@ -1,0 +1,38 @@
+.recherche {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recherche h1 {
+    margin: 10px;
+    text-align: center;
+}
+
+.recherche input {
+    margin: 10px;
+    padding: 2px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 40%;
+}
+
+.recherche a {
+    align-self: flex-start; 
+    margin: 20px;
+    display: flex; 
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center; 
+    color: white;
+    text-decoration: none;
+}
+
+.recherche img {
+    max-width: 100%; 
+    height: auto; 
+    display: block;
+    flex-grow: 1;
+}
