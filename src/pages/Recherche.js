@@ -22,10 +22,12 @@ const Recherche = () => {
                 }
                 const data = await response.json();
                 setData(data);
+                for (let i = 0; i < data.pages.length; i++) {
+                    data.pages[i].nom = data.pages[i].nom.replace(/<[^>]*>/g, '');;
+                }
                 handleFilterCategories(data.categories);
-                handleFilterPages(data.pages);
                 handleFilterRubriques(data.rubriques);
-                console.log(data.rubriques);
+                handleFilterPages(data.pages);
             } catch (error) {
                 console.error('Erreur:', error);
             }
@@ -78,7 +80,7 @@ const Recherche = () => {
             {pages.map(page => (
                 <a key={page.id} href={`/page/${page.id}`}>
                     <img src={`/static/image/${page.image}`} alt={page.nom} />
-                    {page.nom.replace(/<[^>]*>/g, '')}
+                    {page.nom}
                 </a>
             ))}
             {rubriques.map(rubrique => (
