@@ -44,6 +44,7 @@ function Carrousel() {
                 element.src = "/categories/"+element.id;
                 if (!element.image) {
                     element.img = "/logo_bitmoji.png";
+                    element.placement_image_carrousel = null;
                 } else if (element.image.startsWith("http")) {
                     element.img = element.image;
                 } else {
@@ -187,6 +188,7 @@ function Carrousel() {
             element.src = "/categories/" + element.id;
             if (!element.image) {
                 element.img = "/logo_bitmoji.png";
+                element.placement_image_carrousel = null;
             } else if (element.image.startsWith("http")) {
                 element.img = element.image;
 
@@ -298,7 +300,6 @@ function Carrousel() {
                             :
                             <button id="modifier" onClick={handleModify}>Modifier le carrousel</button>
                         }
-
                         {modifyElems && (
                             <DragDropContext onDragEnd={onDragEnd}>
                                 <Droppable droppableId="selected" direction="horizontal">
@@ -310,7 +311,7 @@ function Carrousel() {
                                                     <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                         {(provided) => (
                                                             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
-                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} />
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} dans_carrousel_item={true} />
                                                             </div>
                                                         )}
                                                     </Draggable>
@@ -329,7 +330,7 @@ function Carrousel() {
                                                     <Draggable key={elem.id} draggableId={elem.id.toString()} index={index}>
                                                         {(provided) => (
                                                             <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} className="carrousel-item">
-                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} />
+                                                                <ElemCarrousel src={elem.src} img={elem.img} nom={elem.nom} placement_image={elem.placement_image_carrousel} dans_carrousel_item={true} />
                                                             </div>
                                                         )}
                                                     </Draggable>

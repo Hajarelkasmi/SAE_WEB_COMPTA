@@ -110,8 +110,8 @@
 
 #square-container {
     position: relative;
-    height: 25vh;
-    width: 25vh;
+    height: 250px;
+    width: 250px;
     overflow: hidden;
     border: 2px dashed black;
     background-color: lightgray;
@@ -122,23 +122,18 @@
 
     /* Gestion du texte */
     color: rgba(0, 0, 0, 0.5);
-    font-size: 2vh;
+    font-size: 15px;
     font-weight: bold;
 }
 
 #circle-container {
     position: absolute;
-    height: 20vh;
-    width: 20vh;
+    height: 200px;
+    width: 200px;
     border: 2px dashed black;
     background-color: transparent;
     z-index: 3;
     pointer-events: none;
-
-    /* Gestion du texte */
-    color: rgba(0, 0, 0, 0.5);
-    font-size: 2vh;
-    font-weight: bold;
     border-radius: 50%;
 }
 

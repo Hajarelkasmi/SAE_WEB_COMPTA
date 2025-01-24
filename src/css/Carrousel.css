@@ -62,23 +62,19 @@
 
 .carrousel-item {
     .composant_carrousel {
-        height: 18vh;
-        width: 14vh;
+        height: 180px;
+        width: 150px;
         margin: 0px 1vh;
     }
 
-    .composant_carrousel p {
-        height: 5vh;
-    }
-
     .composant_carrousel a {
-        font-size: 1vh;
+        font-size: 9px;
     }
 
     .composant_carrousel .cont_img_carrousel {
-        height: 10vh;
-        width: 10vh;
-        margin: 2vh 0px;
+        height: 120px;
+        width: 120px;
+        margin: 3% 3%;
     }
 }
 

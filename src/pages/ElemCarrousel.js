@@ -1,7 +1,7 @@
 import "../css/ElemCarrousel.css";
 import { useRef } from "react";
 
-function ElemCarrousel({ src, img, nom, placement_image }) {
+function ElemCarrousel({ src, img, nom, placement_image, dans_carrousel_item }) {
     const imgRef = useRef(null); // Crée une référence pour l'image
     function updateImage() {
         if (imgRef.current) {
@@ -12,6 +12,14 @@ function ElemCarrousel({ src, img, nom, placement_image }) {
         console.log("Placement image non défini");
     } else {
         console.log(`Placement image défini 6: x=${placement_image.x}, y=${placement_image.y}, width=${placement_image.width}, height=${placement_image.height}`);
+    }
+    if (dans_carrousel_item && placement_image) {
+        placement_image = {
+            x: placement_image.x/1.6,
+            y: placement_image.y/1.6,
+            width: placement_image.width/1.6,
+            height: placement_image.height/1.6
+        };
     }
     return (
         <div className="composant_carrousel">
