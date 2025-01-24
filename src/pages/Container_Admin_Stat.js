@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Bar, Pie} from 'react-chartjs-2';
+import React, { useState, useEffect } from 'react';
+import { Bar, Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 
 const Container_Admin_Stat = () => {
@@ -17,7 +17,7 @@ const Container_Admin_Stat = () => {
         const fetchData = async () => {
             try {
                 const response = await fetch('http://localhost:5000/api/log/connexion',
-                    {headers: {'Authorization': localStorage.getItem('token')}});
+                    { headers: { 'Authorization': localStorage.getItem('token') } });
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -65,9 +65,9 @@ const Container_Admin_Stat = () => {
 
         data.forEach(log => {
             const date = new Date(log.date);
-            const day = new Intl.DateTimeFormat('fr-FR', {day: '2-digit', month: 'long', year: 'numeric'}).format(date);
+            const day = new Intl.DateTimeFormat('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' }).format(date);
             const week = `${date.getFullYear()}-S${Math.ceil(date.getDate() / 7)}`;
-            const month = new Intl.DateTimeFormat('fr-FR', {month: 'long', year: 'numeric'}).format(date);
+            const month = new Intl.DateTimeFormat('fr-FR', { month: 'long', year: 'numeric' }).format(date);
             const year = date.getFullYear();
 
             if (!groupedData.daily[day]) {
@@ -132,15 +132,27 @@ const Container_Admin_Stat = () => {
             <div className="chart-row">
                 <div className="first-chart-container">
                     <label>Nombre de connexions :</label>
-                    <Bar data={chartData(globalData[active_data], 'Nombre de connexions')}/>
+                    <Bar
+                        data={chartData(globalData[active_data], 'Nombre de connexions')}
+                        options={{
+                            // responsive: true,
+                            maintainAspectRatio: true,
+                            plugins: {
+                                legend: {
+                                    display: false,
+                                    // position: "top",
+                                },
+                            }
+                        }}
+                    />
                 </div>
                 <div className="chart-container">
                     <label>Nombre de connexion totale par classe :</label>
-                    <Pie data={chartData(classesData, 'Nombre de connexions par classe')}/>
+                    <Pie data={chartData(classesData, 'Nombre de connexions par classe')} />
                 </div>
                 <div className="chart-container">
                     <label>Nombre d'étudiants par classe :</label>
-                    <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')}/>
+                    <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')} />
                 </div>
             </div>
         </div>
