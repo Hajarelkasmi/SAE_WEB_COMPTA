@@ -227,7 +227,7 @@ module.exports = (app) => {
             const categorie = await Categorie.findByPk(req.params.id);
             if (categorie) {
                 await categorie.destroy();
-                res.json(categorie);
+                res.json({ message: 'Category deleted' });
             } else {
                 res.status(404).json({ error: 'Category not found' });
             }
