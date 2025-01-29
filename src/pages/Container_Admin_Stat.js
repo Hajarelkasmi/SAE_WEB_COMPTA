@@ -132,27 +132,33 @@ const Container_Admin_Stat = () => {
             <div className="chart-row">
                 <div className="first-chart-container">
                     <label>Nombre de connexions :</label>
-                    <Bar
-                        data={chartData(globalData[active_data], 'Nombre de connexions')}
-                        options={{
-                            // responsive: true,
-                            maintainAspectRatio: true,
-                            plugins: {
-                                legend: {
-                                    display: false,
-                                    // position: "top",
-                                },
-                            }
-                        }}
-                    />
+                    <div id="barchart">
+                        <Bar
+                            data={chartData(globalData[active_data], 'Nombre de connexions')}
+                            options={{
+                                // responsive: true,
+                                maintainAspectRatio: true,
+                                plugins: {
+                                    legend: {
+                                        display: false,
+                                        // position: "top",
+                                    },
+                                }
+                            }}
+                        />
+                    </div>
                 </div>
                 <div className="chart-container">
                     <label>Nombre de connexion totale par classe :</label>
-                    <Pie data={chartData(classesData, 'Nombre de connexions par classe')} />
+                    <div className='piechart'>
+                        <Pie data={chartData(classesData, 'Nombre de connexions par classe')} />
+                    </div>
                 </div>
                 <div className="chart-container">
                     <label>Nombre d'étudiants par classe :</label>
-                    <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')} />
+                    <div className='piechart'>
+                        <Pie data={chartData(EtudiantParClasse, 'Nombre d\'étudiants par classe')} />
+                    </div>
                 </div>
             </div>
         </div>
