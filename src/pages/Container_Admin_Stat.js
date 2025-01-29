@@ -123,27 +123,42 @@ const Container_Admin_Stat = () => {
     return (
         <div className="stats">
             <h2>Statistiques de Connexion</h2>
-            <div className="button-container">
-                <button onClick={() => setActive_data('daily')}>Jour</button>
-                <button onClick={() => setActive_data('weekly')}>Semaine</button>
-                <button onClick={() => setActive_data('monthly')}>Mois</button>
-                <button onClick={() => setActive_data('yearly')}>Année</button>
-            </div>
             <div className="chart-row">
                 <div className="first-chart-container">
                     <label>Nombre de connexions :</label>
+                    <ul className="button-container">
+                        <li><button onClick={() => setActive_data('daily')}>Jour</button></li>
+                        <li><button onClick={() => setActive_data('weekly')}>Semaine</button></li>
+                        <li><button onClick={() => setActive_data('monthly')}>Mois</button></li>
+                        <li><button onClick={() => setActive_data('yearly')}>Année</button></li>
+                    </ul>
                     <div id="barchart">
                         <Bar
                             data={chartData(globalData[active_data], 'Nombre de connexions')}
                             options={{
-                                // responsive: true,
+                                responsive: true,
                                 maintainAspectRatio: true,
                                 plugins: {
                                     legend: {
                                         display: false,
-                                        // position: "top",
                                     },
-                                }
+                                },
+                                scales: {
+                                    x: {
+                                        ticks: {
+                                            font: {
+                                                size: 10,
+                                            },
+                                        },
+                                    },
+                                    y: {
+                                        ticks: {
+                                            font: {
+                                                size: 10,
+                                            },
+                                        },
+                                    },
+                                },
                             }}
                         />
                     </div>

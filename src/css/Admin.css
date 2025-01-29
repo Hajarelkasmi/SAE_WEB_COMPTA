@@ -68,14 +68,37 @@ td {
 
 .button-container {
     display: flex;
-    justify-content: left;
+    /* justify-content: left; */
     /* Center the buttons horizontally */
     margin-bottom: 20px;
     /* Adjust the margin as needed */
+    list-style-type: none;
+    padding-left: 0px;
 }
 
-.button-container button {
+.button-container li {
+    margin: auto;
+    flex-grow: 1;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+
+.button-container li button {
     color: white;
+    border: white thin solid;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.button-container li button:hover {
+    border-color: lightpink;
+    color: lightpink;
+}
+
+.button-container li button:active {
+    border-color: aquamarine;
+    color: aquamarine;
 }
 
 .chart-row {
@@ -84,6 +107,7 @@ td {
     justify-content: center;
     width: fit-content;
     margin: auto;
+    gap: 50px 0px;
 }
 
 .first-chart-container {
@@ -97,12 +121,12 @@ td {
 #barchart {
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 100%;
+    height: 90%;
 }
 
 .first-chart-container canvas {
-    min-width: 150%;
-    min-height: 90%;
+    min-width: 120%;
+    min-height: 100%;
     margin: auto;
 }
 
