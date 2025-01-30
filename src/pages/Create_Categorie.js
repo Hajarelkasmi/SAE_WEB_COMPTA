@@ -148,34 +148,36 @@ const Create_Categorie = () => {
 
             </div>
             {image ? (
-            <><p id="prev_img_carrousel_titre">Prévisualisation de l'image dans le carrousel</p><div id="cont-carrousel">
-                    <div id="square-container">
-                        <div id="circle-container"></div>
-                        <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle" defaultPosition={{ x: positionC.xC-resizeOffset.deltaX, y: positionC.yC-resizeOffset.deltaY }}>
-                            <ResizableBox
-                                width={sizeC.width}
-                                height={sizeC.height}
-                                minConstraints={[100, 100]} // Dimensions minimales
-                                maxConstraints={[10000, 10000]} // Dimensions maximales
-                                resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
-                                onResize={handleResize}
-                            >
-                                <img
-                                    src={image}
-                                    alt="Aperçu de l'image"
-                                    style={{
-                                        top: positionC.yC,
-                                        left: positionC.xC,
-                                        width: `${sizeC.width}px`,
-                                        height: `${sizeC.height}px`,
-                                        objectFit: "fill",
-                                        cursor: "grab",
-                                    }}
-                                    draggable="false" />
-                            </ResizableBox>
-                        </Draggable>
+            <>
+                <p id="prev_img_carrousel_titre">Prévisualisation de l'image dans le carrousel</p><div id="cont-carrousel">
+                        <div id="square-container">
+                            <div id="circle-container"></div>
+                            <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle" defaultPosition={{ x: positionC.xC-resizeOffset.deltaX, y: positionC.yC-resizeOffset.deltaY }}>
+                                <ResizableBox
+                                    width={sizeC.width}
+                                    height={sizeC.height}
+                                    minConstraints={[100, 100]} // Dimensions minimales
+                                    maxConstraints={[10000, 10000]} // Dimensions maximales
+                                    resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
+                                    onResize={handleResize}
+                                >
+                                    <img
+                                        src={image}
+                                        alt="Aperçu de l'image"
+                                        style={{
+                                            top: positionC.yC,
+                                            left: positionC.xC,
+                                            width: `${sizeC.width}px`,
+                                            height: `${sizeC.height}px`,
+                                            objectFit: "fill",
+                                            cursor: "grab",
+                                        }}
+                                        draggable="false" />
+                                </ResizableBox>
+                            </Draggable>
+                        </div>
                     </div>
-                </div></>
+                </>
                     ) : (
                 <p>Ajoutez une image pour voir la prévisualisation</p>
             )}
