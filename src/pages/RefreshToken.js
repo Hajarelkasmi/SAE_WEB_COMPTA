@@ -1,9 +1,5 @@
-import {useContext, useEffect, useState} from 'react';
-import {InfosContext} from "../InfosContext";
-
 const refresh = async () => {
-    const {IP_api} = useContext(InfosContext);
-    const response = await fetch(IP_api + '/api/token', {
+    const response = await fetch('https://laprofdecompta.fr/api/api/token', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

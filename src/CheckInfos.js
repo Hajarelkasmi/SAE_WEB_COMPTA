@@ -5,7 +5,7 @@ const checkInfos = async () => {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/infos', {
+        const response = await fetch('https://laprofdecompta.fr/api/api/infos', {
             method: 'GET',
             headers: {
                 'Authorization': `${token}`
