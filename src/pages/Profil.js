@@ -4,7 +4,7 @@ import Container_MDP from "./Container_MDP";
 import Popup from "./Popup";
 
 const Profil = () => {
-    const {idUser} = useContext(InfosContext);
+    const {idUser, IP_api} = useContext(InfosContext);
     const [userData, setUserData] = useState({});
     const [nom, setNom] = useState('');
     const [prenom, setPrenom] = useState('');
@@ -19,7 +19,7 @@ const Profil = () => {
         }
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/etudiants/${idUser}`, {
+                const response = await fetch(`IP_api + /api/etudiants/${idUser}`, {
                     headers: {'Authorization': localStorage.getItem('token')}
                 });
                 if (!response.ok) {
@@ -40,7 +40,7 @@ const Profil = () => {
 
         const fetchClasses = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/classes');
+                const response = await fetch(IP_api + '/api/classes');
                 if (response.ok) {
                     const data = await response.json();
                     setClasses(data);
@@ -71,7 +71,7 @@ const Profil = () => {
                 mail,
                 classe_id: classeId
             };
-            const response = await fetch(`http://localhost:5000/api/etudiants/${idUser}`, {
+            const response = await fetch(`IP_api + /api/etudiants/${idUser}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': localStorage.getItem('token'),

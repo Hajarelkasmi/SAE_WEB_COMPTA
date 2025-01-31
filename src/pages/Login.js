@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import '../css/Login.css';
 import {useNavigate} from 'react-router-dom';
 import Popup from './Popup';
+import {InfosContext} from "../InfosContext";
 
 const Login = () => {
 
@@ -9,13 +10,14 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const Navigate = useNavigate();
+    const {IP_api} = useContext(InfosContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
 
         try {
-            const response = await fetch('http://localhost:5000/api/authenticate', {
+            const response = await fetch(IP_api + '/api/authenticate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -45,7 +47,7 @@ const Login = () => {
             Navigate('/');
             Popup('Connexion réussie', 2000, 'success');
             window.location.reload();
-            const response_demande_abonnement = await fetch('http://localhost:5000/api/demande_abonnements', {
+            const response_demande_abonnement = await fetch(IP_api + '/api/demande_abonnements', {
                 method: 'GET',
                 headers: {
                     'Authorization': data.token

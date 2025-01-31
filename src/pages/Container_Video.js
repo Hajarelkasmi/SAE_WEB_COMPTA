@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import "../css/Container_Video.css";
 import Popup from './Popup';
-
+import {InfosContext} from "../InfosContext";
 
 const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
     const [lien, setLien] = useState(rubrique.lien);
+    const {IP_api} = useContext(InfosContext);
 
     // Extraire l'ID de la vidéo YouTube à partir de l'URL
     const getYouTubeVideoId = (url) => {
@@ -27,7 +28,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5000/api/videos/${rubrique.id}`, {
+            const response = await fetch(`IP_api + /api/videos/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -62,7 +63,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cette vidéo ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:5000/api/videos/${rubrique.id}`, {
+                const response = await fetch(`IP_api + /api/videos/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${token}`,
                     },

@@ -1,16 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
 import '../css/Gestion_Categorie.css';
+import {InfosContext} from "../InfosContext";
 
 const Gestion_Categorie = () => {
     const [categories, setCategories] = useState([]);
+    const {IP_api} = useContext(InfosContext);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:5000/api/bandeau', {
+                const response = await fetch(IP_api + '/api/bandeau', {
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: token

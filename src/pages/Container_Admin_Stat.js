@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {Bar, Pie} from 'react-chartjs-2';
 import 'chart.js/auto';
+import {InfosContext} from "../InfosContext";
 
 const Container_Admin_Stat = () => {
     const [globalData, setGlobalData] = useState({
@@ -12,11 +13,12 @@ const Container_Admin_Stat = () => {
     const [classesData, setClassesData] = useState({});
     const [EtudiantParClasse, setEtudiantParClasse] = useState({});
     const [active_data, setActive_data] = useState('daily');
+    const {IP_api} = useContext(InfosContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/log/connexion',
+                const response = await fetch(IP_api + '/api/log/connexion',
                     {headers: {'Authorization': localStorage.getItem('token')}});
                 if (!response.ok) {
                     const errorText = await response.text();
@@ -25,7 +27,7 @@ const Container_Admin_Stat = () => {
                 }
                 const data = await response.json();
 
-                const response2 = await fetch('http://localhost:5000/api/etudiants');
+                const response2 = await fetch(IP_api + '/api/etudiants');
                 if (!response2.ok) {
                     const errorText = await response2.text();
                     console.error('Réponse de l\'API:', errorText);

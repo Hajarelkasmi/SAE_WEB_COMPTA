@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext} from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
 import { refresh } from "./RefreshToken";
 import Popup from "./Popup";
+import {InfosContext} from "../InfosContext";
 
 const Create_Page = () => {
     let { id_categorie, id_page } = useParams();
@@ -16,12 +17,13 @@ const Create_Page = () => {
     const [estCree, setEstCree] = useState(false);
     const [couleur, setCouleur] = useState('#000000');
     const navigate = useNavigate();
+    const {IP_api} = useContext(InfosContext);
 
 
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/classes');
+                const response = await fetch(IP_api + '/api/classes');
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -31,7 +33,7 @@ const Create_Page = () => {
                 setClasses(classes);
 
                 if (id_page) {
-                    const page = await fetch('http://localhost:5000/api/pages/' + id_page, {
+                    const page = await fetch(IP_api + '/api/pages/' + id_page, {
                         method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ const Create_Page = () => {
                     setEstPublic(pageData.est_public);
                     setEstCree(true);
 
-                    const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page);
+                    const responseClassePage = await fetch(IP_api + '/api/classe_pages?page_id=' + id_page);
                     if (!responseClassePage.ok) {
                         const errorText = await responseClassePage.text();
                         console.error('Réponse de l\'API:', errorText);
@@ -66,7 +68,7 @@ const Create_Page = () => {
                     return;
                 }
 
-                const responseClasseCategories = await fetch('http://localhost:5000/api/classe_categories?categorie_id=' + id_categorie);
+                const responseClasseCategories = await fetch(IP_api + '/api/classe_categories?categorie_id=' + id_categorie);
                 if (!responseClasseCategories.ok) {
                     const errorText = await responseClasseCategories.text();
                     console.error('Réponse de l\'API:', errorText);
@@ -103,7 +105,7 @@ const Create_Page = () => {
             }
             const title_color = "<span style='color:" + couleur + ";'>" + titre + "</span>";
             if (id_page) {
-                response = await fetch('http://localhost:5000/api/pages/' + id_page, {
+                response = await fetch(IP_api + '/api/pages/' + id_page, {
                     method: 'PUT',
                     headers: {
                         'Authorization': token,
@@ -117,7 +119,7 @@ const Create_Page = () => {
                     }),
                 });
             } else {
-                response = await fetch('http://localhost:5000/api/pages', {
+                response = await fetch(IP_api + '/api/pages', {
                     method: 'POST',
                     headers: {
                         'Authorization': token,
@@ -154,7 +156,7 @@ const Create_Page = () => {
 
             if (image_name) {
                 if (newPage.image) {
-                    const deleteImage = await fetch('http://localhost:5000/api/images/' + newPage.image, {
+                    const deleteImage = await fetch(IP_api + '/api/images/' + newPage.image, {
                         method: 'DELETE',
                         headers: {
                             'Authorization': token,
@@ -166,7 +168,7 @@ const Create_Page = () => {
                         throw new Error('Erreur lors de la suppression de l\'image');
                     }
                 }
-                const responseImage = await fetch('http://localhost:5000/api/pages/' + newPage.id || id_page, {
+                const responseImage = await fetch(IP_api + '/api/pages/' + newPage.id || id_page, {
                     method: 'PUT',
                     headers: {
                         'Authorization': token,
@@ -206,7 +208,7 @@ const Create_Page = () => {
         const token = localStorage.getItem('token');
         if (classe_selected.length > 0) {
             classe_selected.forEach(async (classe) => {
-                const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
+                const responseClassePage = await fetch(IP_api + '/api/classe_pages', {
                     method: 'POST',
                     headers: {
                         'Authorization': token,
@@ -230,7 +232,7 @@ const Create_Page = () => {
 
     const modifClasses = async () => {
         const token = localStorage.getItem('token');
-        const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page, {
+        const responseClassePage = await fetch(IP_api + '/api/classe_pages?page_id=' + id_page, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -247,7 +249,7 @@ const Create_Page = () => {
         const alreadyExist = {};
         for (const classePage of classePages) {
             if (!(classe_selected.find((classe) => classe.id === classePage.classe_id))) {
-                const responseDelete = await fetch('http://localhost:5000/api/classe_pages/' + classePage.classe_id + '/' + id_page, {
+                const responseDelete = await fetch(IP_api + '/api/classe_pages/' + classePage.classe_id + '/' + id_page, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': token,
@@ -266,7 +268,7 @@ const Create_Page = () => {
 
         classe_selected.forEach(async (classe) => {
             if (!alreadyExist[classe.id]) {
-                const responseClassePage = await fetch('http://localhost:5000/api/classe_pages', {
+                const responseClassePage = await fetch(IP_api + '/api/classe_pages', {
                     method: 'POST',
                     headers: {
                         'Authorization': token,
@@ -295,7 +297,7 @@ const Create_Page = () => {
         const formData = new FormData();
         formData.append('image', imageFile);
         formData.append('name', name);
-        const response = await fetch('http://localhost:5000/api/images', {
+        const response = await fetch(IP_api + '/api/images', {
             headers: {
                 'Authorization': token,
             },

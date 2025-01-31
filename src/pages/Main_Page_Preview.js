@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../css/Main_Page.css';
 import {refresh} from "./RefreshToken";
 import Container_Lien from './Container_Lien';
 import Container_Article from './Container_Article';
 import Container_Video from './Container_Video';
 import Container_Exercice from './Container_Exercice';
+import {InfosContext} from "../InfosContext";
 
 const Main_Page_Preview = ({id_page}) => {  
     const id =  id_page;
@@ -12,11 +13,12 @@ const Main_Page_Preview = ({id_page}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [rubrique, setRubrique] = useState([]);
+    const {IP_api} = useContext(InfosContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/pages/${id}`, {
+                const response = await fetch(`IP_api + /api/pages/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -29,7 +31,7 @@ const Main_Page_Preview = ({id_page}) => {
                 const result = await response.json();
                 setData(result);
 
-                const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`, {
+                const liens_response = await fetch(`IP_api + /api/liens?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -52,7 +54,7 @@ const Main_Page_Preview = ({id_page}) => {
                     est_public: lien.Rubrique.est_public
                 }));
 
-                const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`, {
+                const articles_response = await fetch(`IP_api + /api/articles?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -76,7 +78,7 @@ const Main_Page_Preview = ({id_page}) => {
                     est_public: article.Rubrique.est_public
                 }));
                 
-                const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`, {
+                const videos_response = await fetch(`IP_api + /api/videos?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -99,7 +101,7 @@ const Main_Page_Preview = ({id_page}) => {
                     est_public: video.Rubrique.est_public
                 }));
 
-                const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`, {
+                const exercices_response = await fetch(`IP_api + /api/exercices?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

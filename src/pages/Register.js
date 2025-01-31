@@ -1,7 +1,8 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState, useContext} from "react";
 import '../css/Register.css'
 import {useNavigate} from 'react-router-dom';
 import Popup from "./Popup";
+import {InfosContext} from "../InfosContext";
 
 function Register() {
     const [nom, setNom] = useState('');
@@ -14,12 +15,13 @@ function Register() {
     const [successMessage, setSuccessMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState(false);
     const [classes, setClasses] = useState([]);
+    const {IP_api} = useContext(InfosContext);
     const Navigate = useNavigate();
 
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/classes');
+                const response = await fetch(IP_api + '/api/classes');
                 if (response.ok) {
                     const data = await response.json();
                     setClasses(data);
@@ -53,7 +55,7 @@ function Register() {
         };
 
         try {
-            const response = await fetch('http://localhost:5000/api/register', {
+            const response = await fetch(IP_api + '/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -72,7 +74,7 @@ function Register() {
                 }
                 if (demandeAbonnement) {
                     try {
-                        const demandeResponse = await fetch('http://localhost:5000/api/demande_abonnements', {
+                        const demandeResponse = await fetch(IP_api + '/api/demande_abonnements', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',

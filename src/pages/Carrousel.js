@@ -6,13 +6,13 @@ import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 function Carrousel() {
     // Vérifier si l'utilisateur est admin
-    const {isAdmin} = useContext(InfosContext);
+    const {isAdmin, IP_api} = useContext(InfosContext);
 
     // Liste des éléments du carrousel
     const [elemsCarrousel, setElemsCarrousel] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/carrousel', {
+        fetch(IP_api + '/api/carrousel', {
             method: 'GET',
         })
         .then(response => response.json())
@@ -115,7 +115,7 @@ function Carrousel() {
     }
 
     async function deleteExistingCourses() {
-        await fetch('http://localhost:5000/api/carrousel', {
+        await fetch(IP_api + '/api/carrousel', {
             method: 'DELETE',
             headers: {
                 'Authorization': localStorage.getItem('token'),
@@ -126,7 +126,7 @@ function Carrousel() {
     async function addSelectedCourses() {
         let newElems = elemsSelected;
         for (let i = 0; i < newElems.length; i++) {
-            let response = await fetch('http://localhost:5000/api/carrousel', {
+            let response = await fetch(IP_api + '/api/carrousel', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ function Carrousel() {
 
     async function fetchAllCourses() {
         let elems = [];
-        elems = await fetch('http://localhost:5000/api/categories', {
+        elems = await fetch(IP_api + '/api/categories', {
             method: 'GET',
                     headers: {
                         'Authorization': localStorage.getItem('token'),

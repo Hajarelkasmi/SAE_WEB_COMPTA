@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext} from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Popup from "./Popup";
 import '../css/Create_Categories.css';
+import {InfosContext} from "../InfosContext";
 
 const Create_Categorie = () => {
     const [titre, setTitre] = useState('');
@@ -14,6 +15,7 @@ const Create_Categorie = () => {
     const { id_categorie } = useParams();
     const { id_parent } = useParams();
     const [parentName, setParentName] = useState(null);
+    const {IP_api} = useContext(InfosContext);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -21,7 +23,7 @@ const Create_Categorie = () => {
             // Fetch the existing category details and set the state
             const fetchCategorie = async () => {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/categories/${id_categorie}`, {
+                    const response = await fetch(`IP_api + /api/categories/${id_categorie}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: token
@@ -47,7 +49,7 @@ const Create_Categorie = () => {
             // Fetch the parent category name
             const fetchParentName = async () => {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/categories/${id_parent}`, {
+                    const response = await fetch(`IP_api + /api/categories/${id_parent}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: token
@@ -71,7 +73,7 @@ const Create_Categorie = () => {
         event.preventDefault();
         try {
             const method = categorieId ? 'PUT' : 'POST';
-            const url = categorieId ? `http://localhost:5000/api/categories/${categorieId}` : 'http://localhost:5000/api/categories';
+            const url = categorieId ? `IP_api + /api/categories/${categorieId}` : IP_api + '/api/categories';
             const images = categorieId ? image : '';
 
             const formData = new FormData();
@@ -99,7 +101,7 @@ const Create_Categorie = () => {
 
             if (image_name) {
                 if (data.image) {
-                    const deleteImage = await fetch('http://localhost:5000/api/images/' + data.image, {
+                    const deleteImage = await fetch(IP_api + '/api/images/' + data.image, {
                         'Authorization': token,
                         method: 'DELETE',
                     });
@@ -109,7 +111,7 @@ const Create_Categorie = () => {
                         throw new Error('Erreur lors de la suppression de l\'image');
                     }
                 }
-                const responseImage = await fetch('http://localhost:5000/api/categories/' + id_category, {
+                const responseImage = await fetch(IP_api + '/api/categories/' + id_category, {
                     method: 'PUT',
                     headers: {
                         'Authorization': token,
@@ -128,7 +130,7 @@ const Create_Categorie = () => {
             }
             console.log(`Catégorie ${categorieId ? 'modifiée' : 'créée'}:`, data);
             if (id_parent) {
-                const reponse_sous_categorie = await fetch(`http://localhost:5000/api/sous_categories`, {
+                const reponse_sous_categorie = await fetch(`IP_api + /api/sous_categories`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -174,7 +176,7 @@ const Create_Categorie = () => {
         const formData = new FormData();
         formData.append('image', imageFile);
         formData.append('name', name);
-        const response = await fetch('http://localhost:5000/api/images', {
+        const response = await fetch(IP_api + '/api/images', {
             headers: {
                 'Authorization': token,
             },

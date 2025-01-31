@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import "../css/Container_Exercice.css";
 import Popup from './Popup';
+import {InfosContext} from "../InfosContext";
 
 const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -10,6 +11,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
     const [fileExercice, setFileExercice] = useState(null);
     const [lienCorrection, setLienCorrection] = useState(rubrique.lien_fichier_correction);
     const [fileCorrection, setFileCorrection] = useState(null);
+    const {IP_api} = useContext(InfosContext);
 
     const handleModify = () => {
         setIsModifiable(true);
@@ -22,7 +24,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
             const nameExercice = await fileExerciceSave(rubrique.id);
             const nameCorrection = await fileCorrectionSave(rubrique.id);
             
-            const response = await fetch(`http://localhost:5000/api/exercices/${rubrique.id}`, {
+            const response = await fetch(`IP_api + /api/exercices/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -57,7 +59,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cet exercice ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:5000/api/exercices/${rubrique.id}`, {
+                const response = await fetch(`IP_api + /api/exercices/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${localStorage.getItem('token')}`,
                     },
@@ -102,7 +104,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         const formData = new FormData();
         formData.append('file', fileExercice);
         formData.append('name', name);
-        const response = await fetch('http://localhost:5000/api/files', {
+        const response = await fetch(IP_api + '/api/files', {
             headers: {
                 'Authorization': token,
             },
@@ -127,7 +129,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         const formData = new FormData();
         formData.append('file', fileCorrection);
         formData.append('name', name);
-        const response = await fetch('http://localhost:5000/api/files', {
+        const response = await fetch(IP_api + '/api/files', {
             headers: {
                 'Authorization': token,
             },

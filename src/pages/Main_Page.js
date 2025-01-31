@@ -18,13 +18,13 @@ const Main_Page = ({id_page}) => {
     const [rubriques, setRubriques] = useState([]);
     const [activeRubrique, setActiveRubrique] = useState(parseInt(localStorage.getItem('edit_rubrique')) || null);
     const navigate = useNavigate();
-    const {isAdmin} = useContext(InfosContext);
+    const {isAdmin, IP_api} = useContext(InfosContext);
     const [isPreview, setIsPreview] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/pages/${id}`, {
+                const response = await fetch(`IP_api + /api/pages/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const Main_Page = ({id_page}) => {
                 const result = await response.json();
                 setData(result);
 
-                const liens_response = await fetch(`http://localhost:5000/api/liens?page_id=${id}`, {
+                const liens_response = await fetch(`IP_api + /api/liens?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const Main_Page = ({id_page}) => {
                     est_public: lien.Rubrique.est_public
                 }));
 
-                const articles_response = await fetch(`http://localhost:5000/api/articles?page_id=${id}`, {
+                const articles_response = await fetch(`IP_api + /api/articles?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const Main_Page = ({id_page}) => {
                     est_public: article.Rubrique.est_public
                 }));
                 
-                const videos_response = await fetch(`http://localhost:5000/api/videos?page_id=${id}`, {
+                const videos_response = await fetch(`IP_api + /api/videos?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -107,7 +107,7 @@ const Main_Page = ({id_page}) => {
                     est_public: video.Rubrique.est_public
                 }));
 
-                const exercices_response = await fetch(`http://localhost:5000/api/exercices?page_id=${id}`, {
+                const exercices_response = await fetch(`IP_api + /api/exercices?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ const Main_Page = ({id_page}) => {
     const handleAddRubriqueLien = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5000/api/liens', {
+            const response = await fetch(IP_api + '/api/liens', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -197,7 +197,7 @@ const Main_Page = ({id_page}) => {
     const handleAddRubriqueArticle = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5000/api/articles', {
+            const response = await fetch(IP_api + '/api/articles', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -247,7 +247,7 @@ const Main_Page = ({id_page}) => {
     const handleAddRubriqueVideo = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5000/api/videos', {
+            const response = await fetch(IP_api + '/api/videos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -290,7 +290,7 @@ const Main_Page = ({id_page}) => {
     const handleAddRubriqueExercice = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch('http://localhost:5000/api/exercices', {
+            const response = await fetch(IP_api + '/api/exercices', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -361,7 +361,7 @@ const Main_Page = ({id_page}) => {
             for (let i = 0; i < rubriques.length; i++) {
                 const rubrique = rubriques[i];
                 if (rubrique.positionModifiee) {
-                    const response = await fetch(`http://localhost:5000/api/${rubrique.type}s/${rubrique.id}`, {
+                    const response = await fetch(`IP_api + /api/${rubrique.type}s/${rubrique.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',

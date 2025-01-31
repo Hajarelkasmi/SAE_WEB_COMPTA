@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext} from 'react';
 import { useQuill } from 'react-quilljs';
 import 'react-quill/dist/quill.snow.css';
 import "../css/Container.Article.css";
 import Popup from './Popup';
+import {InfosContext} from "../InfosContext";
 
 const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
@@ -12,6 +13,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
     const [image, setImage] = useState(rubrique.image);
     const [imageFile, setImageFile] = useState(null);
     const { quill, quillRef } = useQuill();
+    const {IP_api} = useContext(InfosContext);
 
     const handleModify = () => {
         setIsModifiable(!isModifiable);
@@ -29,7 +31,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
         insertToEditor("/static/image/" + file.name);
         await handleSave();
         localStorage.setItem('edit_rubrique', rubrique.rubrique_id);
-        await fetch('http://localhost:5000/api/images_rubrique', {
+        await fetch(IP_api + '/api/images_rubrique', {
             method: 'POST',
             headers: {
                 'Authorization': `${localStorage.getItem('token')}`,
@@ -64,7 +66,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5000/api/articles/${rubrique.id}`, {
+            const response = await fetch(`IP_api + /api/articles/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -83,7 +85,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
             const image_name = await imageSave(rubrique.rubrique_id);
             if (image_name) {
                 if (response.image) {
-                    const deleteImage = await fetch('http://localhost:5000/api/images/' + response.image, {
+                    const deleteImage = await fetch(IP_api + '/api/images/' + response.image, {
                         headers: {
                             'Authorization': `${token}`,
                         },
@@ -95,7 +97,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                         throw new Error('Erreur lors de la suppression de l\'image');
                     }
                 }
-                const responseImage = await fetch(`http://localhost:5000/api/articles/${rubrique.id}`, {
+                const responseImage = await fetch(`IP_api + /api/articles/${rubrique.id}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `${token}`,
@@ -134,7 +136,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cet article ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:5000/api/articles/${rubrique.id}`, {
+                const response = await fetch(`IP_api + /api/articles/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${localStorage.getItem('token')}`,
                     },
@@ -170,7 +172,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
         const formData = new FormData();
         formData.append('image', imageFile);
         formData.append('name', name);
-        const response = await fetch('http://localhost:5000/api/images', {
+        const response = await fetch(IP_api + '/api/images', {
             method: 'POST',
             headers: {
                 'Authorization': `${localStorage.getItem('token')}`,

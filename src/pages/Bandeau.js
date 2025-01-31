@@ -6,7 +6,7 @@ import {InfosContext} from "../InfosContext";
 
 function Bandeau() {
     const [data, setData] = useState([]);
-    const {isAdmin} = useContext(InfosContext);
+    const {isAdmin, IP_api} = useContext(InfosContext);
     const [auths, setAuths] = useState([]);
     const currentPath = window.location.pathname;
 
@@ -14,7 +14,7 @@ function Bandeau() {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await fetch('http://localhost:5000/api/bandeau',
+                const response = await fetch( IP_api + '/api/bandeau',
                     {
                         headers: {
                             'Content-Type': 'application/json',

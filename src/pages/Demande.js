@@ -1,13 +1,15 @@
-import {useState, useEffect} from "react";
+import {useContext, useEffect, useState} from 'react';
+import {InfosContext} from "../InfosContext";
 import sendEmail from "./sendEmail";
 
 function Demande() {
     const [demandes, setDemandes] = useState([]);
+    const {IP_api} = useContext(InfosContext);
 
     async function fetchDemandes() {
         const token = localStorage.getItem('token');
         try {
-            let response = await fetch('http://localhost:5000/api/demande_abonnements', {
+            let response = await fetch(IP_api + '/api/demande_abonnements', {
                     headers: {
                         'Authorization': `${token}`
                     }
@@ -25,7 +27,7 @@ function Demande() {
 
     async function accepterDemande(id, email) {
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5000/api/etudiants/${id}`, {
+        await fetch(`IP_api + /api/etudiants/${id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `${token}`,
@@ -37,7 +39,7 @@ function Demande() {
 
         }).catch(r => console.error("Erreur", r));
 
-        await fetch(`http://localhost:5000/api/demande_abonnements/${id}`, {
+        await fetch(`IP_api + /api/demande_abonnements/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}`,
@@ -57,7 +59,7 @@ function Demande() {
         }
 
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5000/api/demande_abonnements/${id}`, {
+        await fetch(`IP_api + /api/demande_abonnements/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}`,

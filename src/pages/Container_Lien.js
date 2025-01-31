@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import "../css/Container_Lien.css";
 import Popup from './Popup';
-
+import {InfosContext} from "../InfosContext";
 
 const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSwitchPosition, isAdmin }) => {
     const [isModifiable, setIsModifiable] = useState(activeRubrique === rubrique.rubrique_id);
     const [titre, setTitre] = useState(rubrique.nom);
     const [description, setDescription] = useState(rubrique.description);
     const [lien, setLien] = useState(rubrique.lien);
+    const {IP_api} = useContext(InfosContext);
 
     const handleModify = () => {
         setIsModifiable(true);
@@ -17,7 +18,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5000/api/liens/${rubrique.id}`, {
+            const response = await fetch(`IP_api + /api/liens/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -51,7 +52,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer ce lien ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`http://localhost:5000/api/liens/${rubrique.id}`, {
+                const response = await fetch(`IP_api + /api/liens/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${localStorage.getItem('token')}`,
                     },

@@ -1,4 +1,5 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from 'react';
+import {InfosContext} from "../InfosContext";
 import Popup from "./Popup";
 
 function Compte() {
@@ -7,10 +8,11 @@ function Compte() {
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({});
     const [filtres, setFiltres] = useState({classes: null, est_abonne: null});
+    const {IP_api} = useContext(InfosContext);
 
     async function fetchComptes() {
         try {
-            let response = await fetch('http://localhost:5000/api/etudiants');
+            let response = await fetch(IP_api + '/api/etudiants');
             let data = await response.json();
             setComptes(data);
         } catch (error) {
@@ -20,7 +22,7 @@ function Compte() {
 
     async function fetchClasses() {
         try {
-            let response = await fetch('http://localhost:5000/api/classes');
+            let response = await fetch(IP_api + '/api/classes');
             let data = await response.json();
             setClasses(data);
         } catch (error) {
@@ -44,7 +46,7 @@ function Compte() {
         }
 
         const token = localStorage.getItem('token');
-        await fetch(`http://localhost:5000/api/etudiants/${id}`, {
+        await fetch(`IP_api + /api/etudiants/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}`,
@@ -63,7 +65,7 @@ function Compte() {
     async function updateCompte(id) {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`http://localhost:5000/api/etudiants/${id}`, {
+            const response = await fetch(`IP_api + /api/etudiants/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -90,7 +92,7 @@ function Compte() {
     }
 
     const filtrerComptes = async () => {
-        let url = 'http://localhost:5000/api/etudiants';
+        let url = IP_api + '/api/etudiants';
         if (filtres.classes) {
             url += `?classe_id=${filtres.classes}`;
         }

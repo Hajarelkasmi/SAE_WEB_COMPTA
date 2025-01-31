@@ -4,7 +4,7 @@ import Popup from "./Popup";
 import {useNavigate} from "react-router-dom";
 
 const Container_MDP = () => {
-    const {idUser} = useContext(InfosContext);
+    const {idUser, IP_api} = useContext(InfosContext);
     const [showForm, setShowForm] = useState(false);
     const [formData, setFormData] = useState({
         currentPassword: '',
@@ -32,7 +32,7 @@ const Container_MDP = () => {
         }
 
         try{
-            const response = await fetch('http://localhost:5000/api/changePassword', {
+            const response = await fetch(IP_api + '/api/changePassword', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
