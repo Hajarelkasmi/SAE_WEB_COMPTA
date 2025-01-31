@@ -16,8 +16,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2em;
+    font-size: 3.5em;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     text-align: center;
     margin: 0;
@@ -60,6 +59,23 @@
 }
 
 .Div_Rubriques button:hover {
+    background-color: #777777;
+}
+
+.Div_Exercice a {
+    width: auto;
+    height: 30px;
+    background-color: #555555;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: auto 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.Div_Exercice a:hover {
     background-color: #777777;
 }
 

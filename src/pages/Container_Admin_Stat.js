@@ -113,8 +113,8 @@ const Container_Admin_Stat = () => {
             {
                 label: label,
                 data: Object.values(data).reverse(),
-                backgroundColor: ['rgba(75, 192, 192, 0.8)', 'rgba(192,192,75,0.8)', 'rgba(192,75,192,0.8)', 'rgba(192,75,75,0.8)', 'rgba(75,75,192,0.8)', 'rgba(75,192,75,0.8)'],
-                borderColor: ['rgba(75, 192, 192, 1)', 'rgba(192,192,75,1)', 'rgba(192,75,192,1)', 'rgba(192,75,75,1)', 'rgba(75,75,192,1)', 'rgba(75,192,75,1)'],
+                backgroundColor: ['rgb(6,102,140,1)', 'rgb(66,122,161,1)', 'rgb(235,242,250,1)', 'rgb(103,148,54,1)', 'rgba(164,189,1,1)'],
+                borderColor: ['rgb(6,102,140,0.8)', 'rgb(66,122,161,0.8)', 'rgb(235,242,250,0.8)', 'rgb(103,148,54,0.8)', 'rgba(164,189,1,0.8)'],
                 borderWidth: 1,
             },
         ],

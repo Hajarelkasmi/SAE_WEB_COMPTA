@@ -103,6 +103,11 @@ nav ul>li:hover>.sous {
     display: none;
 }
 
+.active {
+    background-color: rgba(255, 255, 255, 0.15); /* Changez cette couleur selon vos besoins */
+    font-weight: bold;
+}
+
 /* https://www.pierre-giraud.com/html-css-apprendre-coder-cours/creation-menu-deroulant/ pour faire des menus déroulant */
 
 

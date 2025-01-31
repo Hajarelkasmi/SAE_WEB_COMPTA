@@ -18,6 +18,8 @@ const Create_Categorie = () => {
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
     const { id_categorie } = useParams();
+    const { id_parent } = useParams();
+    const [parentName, setParentName] = useState(null);
 
     // gestion image carrousel
     const [positionC, setPositionC] = useState({ x: 0, y: 0 });
@@ -87,7 +89,29 @@ const Create_Categorie = () => {
             };
             fetchCategorie();
         }
-    }, [id_categorie]);
+
+        if (id_parent) {
+            // Fetch the parent category name
+            const fetchParentName = async () => {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/categories/${id_parent}`, {
+                        headers: {
+                            'Content-Type': 'application/json',
+                            Authorization: token
+                        }
+                    });
+                    if (!response.ok) {
+                        throw new Error('Erreur lors de la récupération de la catégorie parente');
+                    }
+                    const data = await response.json();
+                    setParentName(data.nom);
+                } catch (error) {
+                    console.error('Erreur:', error);
+                }
+            };
+            fetchParentName();
+        }
+    }, [id_categorie, id_parent]);
 
     const handleSubmit = async (event) => {
         const token = localStorage.getItem('token');
@@ -209,7 +233,7 @@ const Create_Categorie = () => {
             </div>  
             )}
 
-            <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>
+            <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une {id_parent ? 'sous catégorie de ' : 'catégorie'} {parentName}</h1>
             <form className="form-create-cat" onSubmit={handleSubmit}>
                 <div className="create-cat-div">
                     <label className="label-create-cat" htmlFor="titre_choice">Titre :</label>

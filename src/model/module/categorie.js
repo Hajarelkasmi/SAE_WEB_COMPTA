@@ -55,8 +55,19 @@ module.exports = (app) => {
                 }
             });
             const enfants = [];
+            const condition_where = est_abonne ? {} : { est_public: true };
+
+
             for (const sc of sous_categories) {
-                enfants.push(await Categorie.findByPk(sc.id_enfant));
+                let enfant = await Categorie.findOne({
+                    where: {
+                        id: sc.id_enfant,
+                        ...condition_where
+                    }
+                });
+                if (enfant) {
+                    enfants.push(enfant);
+                }
             }
             resultat.push({ id: p.id, nom: p.nom, enfants: enfants });
         }
@@ -137,8 +148,16 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/sous_categories/:id', verifyToken, verifyAdmin, async (req, res) => {
+    app.get('/api/sous_categories/:id', async (req, res) => {
         try {
+            const id_user = await checkUserFromToken(req);
+            let est_abonne;
+            if (id_user) {
+                const etudiant = await Etudiant.findByPk(id_user);
+                if (etudiant.est_abonne || etudiant.est_admin) {
+                    est_abonne = true;
+                }
+            }
             const sous_categories = await SousCategorie.findAll({
                 where: {
                     id_parent: req.params.id
@@ -146,7 +165,10 @@ module.exports = (app) => {
             });
             const enfants = [];
             for (const sc of sous_categories) {
-                enfants.push(await Categorie.findByPk(sc.id_enfant));
+                const enfant = await Categorie.findByPk(sc.id_enfant);
+                if (enfant && (est_abonne || enfant.est_public)) {
+                    enfants.push(enfant);
+                }
             }
             res.json(enfants);
         } catch (error) {

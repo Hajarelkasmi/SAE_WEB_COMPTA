@@ -107,7 +107,6 @@ module.exports = (app) => {
                 await page.update({
                     nom: req.body.nom,
                     description: req.body.description,
-                    categorie_id: req.body.categorie_id,
                     image: req.body.image,
                     est_public: req.body.est_public
                 });

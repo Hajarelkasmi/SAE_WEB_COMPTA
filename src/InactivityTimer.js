@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
-const InactivityTimer = ({ timeout = 300000 }) => { // Default timeout is 5 minutes (300000 ms)
-
+const InactivityTimer = ({ timeout = 600000 }) => { // Default timeout is 10 minutes (600000 ms)
     const logout = () => {
         window.location.href = '/deconnexion';
     };
