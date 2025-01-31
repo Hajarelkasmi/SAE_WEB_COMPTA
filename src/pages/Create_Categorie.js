@@ -151,6 +151,34 @@ const Create_Categorie = () => {
         }
     };
 
+
+
+    const imageSave = async (id) => {
+        console.log(imageFile, id)
+        const token = localStorage.getItem('token');
+        if (!imageFile) {
+            return;
+        }
+        const name = 'image_categorie_' + id + '.' + imageFile.name.split('.').pop();
+        const formData = new FormData();
+        formData.append('image', imageFile);
+        formData.append('name', name);
+        const response = await fetch('http://localhost:5000/api/images', {
+            headers: {
+                'Authorization': token,
+            },
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Réponse de l\'API:', errorText);
+            throw new Error('Erreur lors de la sauvegarde de l\'image');
+        }
+        return name;
+    }
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         if (file) {
