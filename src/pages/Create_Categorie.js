@@ -6,6 +6,26 @@ import '../css/Create_Categories.css';
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 
+
+
+
+
+
+
+
+// les images ne s'enregistrent pas en bd si un fichier est nommé de la même manière dans /public/image/ -> à corriger
+
+
+
+
+
+
+
+
+
+
+
+
 const Create_Categorie = () => {
     const [titre, setTitre] = useState('');
     const [description, setDescription] = useState('');
@@ -146,6 +166,7 @@ const Create_Categorie = () => {
             const id_category = categorieId ? categorieId : data.id;
 
             const image_name = await imageSave(id_category);
+            console.log(image_name);
 
             if (image_name) {
                 if (data.image) {
@@ -169,6 +190,7 @@ const Create_Categorie = () => {
                         image: image_name,
                     }),
                 });
+                console.log(responseImage);
 
                 if (!responseImage.ok) {
                     const errorText = await responseImage.text();

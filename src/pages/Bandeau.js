@@ -101,8 +101,8 @@ function Bandeau() {
                     {isAdmin ? <ElemBandeau link="/admin" nom="Admin" isAdmin={isAdmin} /> : ''}
                 </ul>
                 <ul id="auths">
-                    {auths.map((elem) => (
-                        <ElemReseau key={elem.id} img={elem.img} link={elem.link}/>
+                    {auths.map((elem, index) => (
+                        <ElemReseau key={elem.id || index} img={elem.img} link={elem.link}/>
                     ))}
                 </ul>
             </nav>
