@@ -143,6 +143,40 @@ const Create_Categorie = () => {
             }
             const data = await response.json();
 
+            const id_category = categorieId ? categorieId : data.id;
+
+            const image_name = await imageSave(id_category);
+
+            if (image_name) {
+                if (data.image) {
+                    const deleteImage = await fetch('http://localhost:5000/api/images/' + data.image, {
+                        'Authorization': token,
+                        method: 'DELETE',
+                    });
+                    if (!deleteImage.ok) {
+                        const errorText = await deleteImage.text();
+                        console.error('Réponse de l\'API:', errorText);
+                        throw new Error('Erreur lors de la suppression de l\'image');
+                    }
+                }
+                const responseImage = await fetch('http://localhost:5000/api/categories/' + id_category, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': token,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        image: image_name,
+                    }),
+                });
+
+                if (!responseImage.ok) {
+                    const errorText = await responseImage.text();
+                    console.error('Réponse de l\'API:', errorText);
+                    throw new Error('Erreur lors de la création de la page');
+                }
+            }
+
             navigate(`/categories/${data.id}`);
             const message = categorieId ? 'Catégorie modifiée' : 'Catégorie créée';
             Popup(message, 2000, 'success');
