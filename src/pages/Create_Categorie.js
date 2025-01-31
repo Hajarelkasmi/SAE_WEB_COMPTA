@@ -11,31 +11,41 @@ const Create_Categorie = () => {
     const [description, setDescription] = useState('');
     const [imageFile, setImageFile] = useState(null);
     const [image, setImage] = useState(null);
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [positionP, setPositionP] = useState({ x: 0, y: 0 });
+    const [sizeP, setSizeP] = useState({ width: 200, height: 200 });
+    const [resizeOffsetP, setResizeOffsetP] = useState({ deltaX: 0, deltaY: 0 });
     const [estPublic, setEstPublic] = useState(true);
     const [categorieId, setCategorieId] = useState(null);
     const navigate = useNavigate();
     const { id_categorie } = useParams();
 
     // gestion image carrousel
-    const [positionC, setPositionC] = useState({ xC: 0, yC: 0 });
+    const [positionC, setPositionC] = useState({ x: 0, y: 0 });
     const [sizeC, setSizeC] = useState({ width: 200, height: 200 });
-    const [resizeOffset, setResizeOffset] = useState({ deltaX: 0, deltaY: 0 });
+    const [resizeOffsetC, setResizeOffsetC] = useState({ deltaX: 0, deltaY: 0 });
 
-    useEffect(() => {
-        console.log('positionC:', positionC);
-    }, [positionC]);
-
-    const handleResize = (event, { size }) => {
+    const handleResizeC = (event, { size }) => {
         const deltaX = (sizeC.width - size.width) / 2;
         const deltaY = (sizeC.height - size.height) / 2;
 
-        setResizeOffset((prevOffset) => ({
+        setResizeOffsetC((prevOffset) => ({
             deltaX: prevOffset.deltaX + deltaX,
             deltaY: prevOffset.deltaY + deltaY,
         }));
 
         setSizeC(size);
+    };
+
+    const handleResizeP = (event, { size }) => {
+        const deltaX = (sizeP.width - size.width) / 2;
+        const deltaY = (sizeP.height - size.height) / 2;
+
+        setResizeOffsetP((prevOffset) => ({
+            deltaX: prevOffset.deltaX + deltaX,
+            deltaY: prevOffset.deltaY + deltaY,
+        }));
+
+        setSizeP(size);
     };
 
     useEffect(() => {
@@ -59,15 +69,17 @@ const Create_Categorie = () => {
                     setEstPublic(data.est_public);
                     setCategorieId(data.id);
 
-                    if (data.position) {
-                        const pos = JSON.parse(data.position);
-                        setPosition({ x: pos.x, y: pos.y });
+                    if (data.placement_image_page) {
+                        const pos = JSON.parse(data.placement_image_page);
+                        setPositionP({ x: pos.x, y: pos.y });
+                        setSizeP({ width: pos.width, height: pos.height });
+                        setResizeOffsetP({ deltaX: pos.decX, deltaY: pos.decY });
                     }
                     if (data.placement_image_carrousel) {
-                        const pos = JSON.parse(data.placement_image_carrousel);
-                        setPositionC({ xC: pos.x, yC: pos.y });
-                        setSizeC({ width: pos.width, height: pos.height });
-                        setResizeOffset({ deltaX: pos.decX, deltaY: pos.decY });
+                        const posC = JSON.parse(data.placement_image_carrousel);
+                        setPositionC({ x: posC.x, y: posC.y });
+                        setSizeC({ width: posC.width, height: posC.height });
+                        setResizeOffsetC({ deltaX: posC.decX, deltaY: posC.decY });
                     }
                 } catch (error) {
                     console.error('Erreur:', error);
@@ -89,7 +101,8 @@ const Create_Categorie = () => {
             formData.append('description', description);
             formData.append('est_public', estPublic);
             formData.append('image', imageFile);
-            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.xC + resizeOffset.deltaX, y: positionC.yC + resizeOffset.deltaY, width: sizeC.width, height: sizeC.height, decX: resizeOffset.deltaX, decY: resizeOffset.deltaY }));
+            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.x + resizeOffsetC.deltaX, y: positionC.y + resizeOffsetC.deltaY, width: sizeC.width, height: sizeC.height, decX: resizeOffsetC.deltaX, decY: resizeOffsetC.deltaY }));
+            formData.append('placement_image_page', JSON.stringify({ x: positionP.x + resizeOffsetP.deltaX, y: positionP.y + resizeOffsetP.deltaY, width: sizeP.width, height: sizeP.height, decX: resizeOffsetP.deltaX, decY: resizeOffsetP.deltaY }));
 
             const response = await fetch(url, {
                 method: method,
@@ -122,64 +135,78 @@ const Create_Categorie = () => {
         }
     };
 
-    const handleDrag = (e, data) => {
-        setPosition({ x: data.x, y: data.y });
+    const handleDragP = (e, data) => {
+        setPositionP({ x: data.x, y: data.y });
     };
 
     const handleDragCarrousel = (e, data) => {
-        setPositionC({ xC: data.x, yC: data.y });
+        setPositionC({ x: data.x, y: data.y });
     };
 
     return (
         <div className="create-cat-main-div">
-            <div id="img-container">
-                <Draggable
-                    onDrag={handleDrag}
-                >
-                    <img
-                        src={image}
-                        alt="Aperçu de l'image"
-                        style={{
-                            top: position.y,
-                            left: position.x
-                        }}
-                    />
-                </Draggable>
-
-            </div>
             {image ? (
             <>
-                <p id="prev_img_carrousel_titre">Prévisualisation de l'image dans le carrousel</p><div id="cont-carrousel">
-                        <div id="square-container">
-                            <div id="circle-container"></div>
-                            <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle" defaultPosition={{ x: positionC.xC-resizeOffset.deltaX, y: positionC.yC-resizeOffset.deltaY }}>
-                                <ResizableBox
-                                    width={sizeC.width}
-                                    height={sizeC.height}
-                                    minConstraints={[100, 100]} // Dimensions minimales
-                                    maxConstraints={[10000, 10000]} // Dimensions maximales
-                                    resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
-                                    onResize={handleResize}
-                                >
-                                    <img
-                                        src={image}
-                                        alt="Aperçu de l'image"
-                                        style={{
-                                            top: positionC.yC,
-                                            left: positionC.xC,
-                                            width: `${sizeC.width}px`,
-                                            height: `${sizeC.height}px`,
-                                            objectFit: "fill",
-                                            cursor: "grab",
-                                        }}
-                                        draggable="false" />
-                                </ResizableBox>
-                            </Draggable>
-                        </div>
+                <p id="prev_img_titre">Prévisualisation de l'image sur la page</p>
+                <div id="img-container">
+                    <Draggable onDrag={handleDragP} cancel=".react-resizable-handle" defaultPosition={{ x: positionP.x-resizeOffsetP.deltaX, y: positionP.y-resizeOffsetP.deltaY }}>
+                        <ResizableBox
+                            width={sizeP.width}
+                            height={sizeP.height}
+                            minConstraints={[100, 100]} // Dimensions minimales
+                            maxConstraints={[10000, 10000]} // Dimensions maximales
+                            resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
+                            onResize={handleResizeP}
+                        >
+                            <img
+                            src={image}
+                            alt="Aperçu de l'image"
+                            style={{
+                                top: positionP.y,
+                                left: positionP.x,
+                                width: `${sizeP.width}px`,
+                                height: `${sizeP.height}px`,
+                                objectFit: "fill",
+                                cursor: "grab"
+                                }}
+                                draggable="false"/>
+                        </ResizableBox>
+                    </Draggable>
+                </div>
+                <p id="prev_img_carrousel_titre">Prévisualisation de l'image dans le carrousel</p>
+                <div id="cont-carrousel">
+                    <div id="square-container">
+                        <div id="circle-container"></div>
+                        <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle" defaultPosition={{ x: positionC.x-resizeOffsetC.deltaX, y: positionC.y-resizeOffsetC.deltaY }}>
+                            <ResizableBox
+                                width={sizeC.width}
+                                height={sizeC.height}
+                                minConstraints={[100, 100]} // Dimensions minimales
+                                maxConstraints={[10000, 10000]} // Dimensions maximales
+                                resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
+                                onResize={handleResizeC}
+                            >
+                                <img
+                                    src={image}
+                                    alt="Aperçu de l'image"
+                                    style={{
+                                        top: positionC.y,
+                                        left: positionC.x,
+                                        width: `${sizeC.width}px`,
+                                        height: `${sizeC.height}px`,
+                                        objectFit: "fill",
+                                        cursor: "grab",
+                                    }}
+                                    draggable="false" />
+                            </ResizableBox>
+                        </Draggable>
                     </div>
-                </>
+                </div>
+            </>
                     ) : (
+            <div id="placeholder_image_preview">
                 <p>Ajoutez une image pour voir la prévisualisation</p>
+            </div>  
             )}
 
             <h1 className="title-create-cat">{categorieId ? 'Modifier' : 'Créer'} une catégorie</h1>

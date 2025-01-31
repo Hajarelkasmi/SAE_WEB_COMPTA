@@ -92,6 +92,10 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
+    placement_image_page: {
+        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0}
+        allowNull: true
+    },
     placement_image_carrousel: {
         type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0}
         allowNull: true
