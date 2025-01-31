@@ -24,7 +24,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
             const nameExercice = await fileExerciceSave(rubrique.id);
             const nameCorrection = await fileCorrectionSave(rubrique.id);
             
-            const response = await fetch(`IP_api + /api/exercices/${rubrique.id}`, {
+            const response = await fetch(IP_api + `/api/exercices/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -59,7 +59,7 @@ const Container_Exercice = ({ rubrique, activeRubrique, handleEditRubrique, hand
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cet exercice ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`IP_api + /api/exercices/${rubrique.id}`, {
+                const response = await fetch(IP_api + `/api/exercices/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${localStorage.getItem('token')}`,
                     },

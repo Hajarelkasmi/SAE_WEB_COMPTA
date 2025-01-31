@@ -23,7 +23,7 @@ const Create_Categorie = () => {
             // Fetch the existing category details and set the state
             const fetchCategorie = async () => {
                 try {
-                    const response = await fetch(`IP_api + /api/categories/${id_categorie}`, {
+                    const response = await fetch(IP_api + `/api/categories/${id_categorie}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: token
@@ -49,7 +49,7 @@ const Create_Categorie = () => {
             // Fetch the parent category name
             const fetchParentName = async () => {
                 try {
-                    const response = await fetch(`IP_api + /api/categories/${id_parent}`, {
+                    const response = await fetch(IP_api + `/api/categories/${id_parent}`, {
                         headers: {
                             'Content-Type': 'application/json',
                             Authorization: token
@@ -73,7 +73,7 @@ const Create_Categorie = () => {
         event.preventDefault();
         try {
             const method = categorieId ? 'PUT' : 'POST';
-            const url = categorieId ? `IP_api + /api/categories/${categorieId}` : IP_api + '/api/categories';
+            const url = categorieId ? IP_api + `/api/categories/${categorieId}` : IP_api + '/api/categories';
             const images = categorieId ? image : '';
 
             const formData = new FormData();
@@ -130,7 +130,7 @@ const Create_Categorie = () => {
             }
             console.log(`Catégorie ${categorieId ? 'modifiée' : 'créée'}:`, data);
             if (id_parent) {
-                const reponse_sous_categorie = await fetch(`IP_api + /api/sous_categories`, {
+                const reponse_sous_categorie = await fetch(IP_api + `/api/sous_categories`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

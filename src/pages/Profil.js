@@ -19,7 +19,7 @@ const Profil = () => {
         }
         const fetchUserData = async () => {
             try {
-                const response = await fetch(`IP_api + /api/etudiants/${idUser}`, {
+                const response = await fetch(IP_api + `/api/etudiants/${idUser}`, {
                     headers: {'Authorization': localStorage.getItem('token')}
                 });
                 if (!response.ok) {
@@ -71,7 +71,7 @@ const Profil = () => {
                 mail,
                 classe_id: classeId
             };
-            const response = await fetch(`IP_api + /api/etudiants/${idUser}`, {
+            const response = await fetch(IP_api + `/api/etudiants/${idUser}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': localStorage.getItem('token'),

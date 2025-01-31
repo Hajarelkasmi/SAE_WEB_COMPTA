@@ -18,7 +18,7 @@ const Main_Page_Preview = ({id_page}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`IP_api + /api/pages/${id}`, {
+                const response = await fetch(IP_api + `/api/pages/${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const Main_Page_Preview = ({id_page}) => {
                 const result = await response.json();
                 setData(result);
 
-                const liens_response = await fetch(`IP_api + /api/liens?page_id=${id}`, {
+                const liens_response = await fetch(IP_api + `/api/liens?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ const Main_Page_Preview = ({id_page}) => {
                     est_public: lien.Rubrique.est_public
                 }));
 
-                const articles_response = await fetch(`IP_api + /api/articles?page_id=${id}`, {
+                const articles_response = await fetch(IP_api + `/api/articles?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -78,7 +78,7 @@ const Main_Page_Preview = ({id_page}) => {
                     est_public: article.Rubrique.est_public
                 }));
                 
-                const videos_response = await fetch(`IP_api + /api/videos?page_id=${id}`, {
+                const videos_response = await fetch(IP_api + `/api/videos?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -101,7 +101,7 @@ const Main_Page_Preview = ({id_page}) => {
                     est_public: video.Rubrique.est_public
                 }));
 
-                const exercices_response = await fetch(`IP_api + /api/exercices?page_id=${id}`, {
+                const exercices_response = await fetch(IP_api + `/api/exercices?page_id=${id}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

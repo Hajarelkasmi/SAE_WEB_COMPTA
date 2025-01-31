@@ -66,7 +66,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`IP_api + /api/articles/${rubrique.id}`, {
+            const response = await fetch(IP_api + `/api/articles/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -97,7 +97,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                         throw new Error('Erreur lors de la suppression de l\'image');
                     }
                 }
-                const responseImage = await fetch(`IP_api + /api/articles/${rubrique.id}`, {
+                const responseImage = await fetch(IP_api + `/api/articles/${rubrique.id}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `${token}`,
@@ -136,7 +136,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cet article ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`IP_api + /api/articles/${rubrique.id}`, {
+                const response = await fetch(IP_api + `/api/articles/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${localStorage.getItem('token')}`,
                     },

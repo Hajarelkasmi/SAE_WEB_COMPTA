@@ -46,7 +46,7 @@ function Compte() {
         }
 
         const token = localStorage.getItem('token');
-        await fetch(`IP_api + /api/etudiants/${id}`, {
+        await fetch(IP_api + `/api/etudiants/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}`,
@@ -65,7 +65,7 @@ function Compte() {
     async function updateCompte(id) {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`IP_api + /api/etudiants/${id}`, {
+            const response = await fetch(IP_api + `/api/etudiants/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,

@@ -18,7 +18,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`IP_api + /api/liens/${rubrique.id}`, {
+            const response = await fetch(IP_api + `/api/liens/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -52,7 +52,7 @@ const Container_Lien = ({ rubrique, activeRubrique, handleEditRubrique, handleSw
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer ce lien ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`IP_api + /api/liens/${rubrique.id}`, {
+                const response = await fetch(IP_api + `/api/liens/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${localStorage.getItem('token')}`,
                     },

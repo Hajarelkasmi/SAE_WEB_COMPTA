@@ -27,7 +27,7 @@ function Demande() {
 
     async function accepterDemande(id, email) {
         const token = localStorage.getItem('token');
-        await fetch(`IP_api + /api/etudiants/${id}`, {
+        await fetch(IP_api + `/api/etudiants/${id}`, {
             method: 'PUT',
             headers: {
                 'Authorization': `${token}`,
@@ -39,7 +39,7 @@ function Demande() {
 
         }).catch(r => console.error("Erreur", r));
 
-        await fetch(`IP_api + /api/demande_abonnements/${id}`, {
+        await fetch(IP_api + `/api/demande_abonnements/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}`,
@@ -59,7 +59,7 @@ function Demande() {
         }
 
         const token = localStorage.getItem('token');
-        await fetch(`IP_api + /api/demande_abonnements/${id}`, {
+        await fetch(IP_api + `/api/demande_abonnements/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `${token}`,

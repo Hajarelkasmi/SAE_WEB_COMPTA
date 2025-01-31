@@ -28,7 +28,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
     const handleSave = async () => {
         const token = localStorage.getItem('token');
         try {
-            const response = await fetch(`IP_api + /api/videos/${rubrique.id}`, {
+            const response = await fetch(IP_api + `/api/videos/${rubrique.id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `${token}`,
@@ -63,7 +63,7 @@ const Container_Video = ({ rubrique, activeRubrique, handleEditRubrique, handleS
         const confirmDelete = window.confirm("Voulez-vous vraiment supprimer cette vidéo ?");
         if (confirmDelete) {
             try {
-                const response = await fetch(`IP_api + /api/videos/${rubrique.id}`, {
+                const response = await fetch(IP_api + `/api/videos/${rubrique.id}`, {
                     headers: {
                         'Authorization': `${token}`,
                     },
