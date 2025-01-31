@@ -6,6 +6,7 @@ export const InfosContext = createContext(undefined);
 export const InfosProvider = ({children}) => {
     const [isAdmin, setIsAdmin] = useState(null);
     const [idUser, setIdUser] = useState(null);
+    const IP_api = "https://laprofdecompta.fr/api";
 
     useEffect(() => {
         const fetchData = async () => {
@@ -17,7 +18,7 @@ export const InfosProvider = ({children}) => {
     }, []);
 
     return (
-        <InfosContext.Provider value={{isAdmin, idUser}}>
+        <InfosContext.Provider value={{isAdmin, idUser, IP_api}}>
             {children}
         </InfosContext.Provider>
     );
