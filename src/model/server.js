@@ -16,6 +16,7 @@ const configureAuthentificationRoutes = require('./module/authentification');
 const configureImageRoutes = require('./module/images');
 const configureFileRoutes = require('./module/files');
 const configureLogRoutes = require('./module/log');
+const configureRecherche = require('./module/recherche');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -40,6 +41,7 @@ configureAuthentificationRoutes(app);
 configureImageRoutes(app);
 configureFileRoutes(app);
 configureLogRoutes(app);
+configureRecherche(app);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

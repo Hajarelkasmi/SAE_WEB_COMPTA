@@ -456,6 +456,9 @@ Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
 Categorie.hasMany(SousCategorie, {foreignKey: 'id_parent', onDelete: 'CASCADE'});
 SousCategorie.belongsTo(Categorie, {foreignKey: 'id_parent'});
 
+Categorie.hasMany(SousCategorie, {foreignKey: 'id_enfant', onDelete: 'CASCADE'});
+SousCategorie.belongsTo(Categorie, {foreignKey: 'id_enfant'});
+
 Categorie.hasOne(Carrousel, { foreignKey: 'id_categorie', onDelete: 'CASCADE' });
 Carrousel.belongsTo(Categorie, { foreignKey: 'id_categorie' });
 
