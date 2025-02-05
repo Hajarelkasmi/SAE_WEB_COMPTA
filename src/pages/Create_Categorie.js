@@ -11,7 +11,7 @@ import "react-resizable/css/styles.css";
 
 
 // les images ne s'enregistrent pas en bd si un fichier est nommé de la même manière dans /public/image/ -> à corriger
-// le décalage est pris en compte à chaque fois qu'on modifie la catégorie mais pas l'image décalant de plus en plus -> 
+// le décalage est pris en compte à chaque fois qu'on modifie la catégorie mais pas l'image décalant de plus en plus -> inverser le fonctionnement du décalage
 
 
 
