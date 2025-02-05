@@ -41,6 +41,16 @@ async function authenticate(req, res) {
 }
 
 async function changePassword(req, res) {
+    jwt.verify(req.headers['authorization'], secretKey, async (err, decoded) => {
+        if (err) {
+            return res.status(500).json({ error: 'Problème de token' });
+        }
+        req.userId = decoded.id;
+    });
+
+    if (parseInt(req.body.id) !== req.userId) {
+        return res.status(403).json({ error: 'Accès refusé' });
+    }
     const etudiant = await Etudiant.findByPk(req.body.id);
     if (!etudiant) {
         return res.status(404).json({ error: 'Etudiant non trouvé' });

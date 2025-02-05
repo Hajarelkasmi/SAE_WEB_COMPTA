@@ -3,7 +3,7 @@ const { verifyToken, verifyAdmin, authenticate } = require('../auth');
 const { Cryptage } = require('../cryptage');
 
 module.exports = (app) => {
-    app.get('/api/etudiants', async (req, res) => {
+    app.get('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const classe_ids = req.query.classe_id ? req.query.classe_id.split(',') : null;
             const est_abonne = req.query.est_abonne;
@@ -28,7 +28,10 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/etudiants/:id', async (req, res) => {
+    app.get('/api/etudiants/:id', verifyToken, async (req, res) => {
+        if (parseInt(req.params.id) !== req.userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
         try {
             const etudiant = await Etudiant.findByPk(req.params.id, {
                 include: {
@@ -121,6 +124,25 @@ module.exports = (app) => {
                 });
                 const { mot_de_passe, ...etudiantSansMotDePasse } = etudiant.toJSON();
                 res.json(etudiantSansMotDePasse);
+            } else {
+                res.status(404).json({ error: 'Etudiant not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while updating etudiant' });
+        }
+    });
+
+    app.put('/api/desabonnement/:id', verifyToken, async (req, res) => {
+        if (parseInt(req.params.id) !== req.userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        try {
+            const etudiant = await Etudiant.findByPk(req.params.id);
+            if (etudiant) {
+                await etudiant.update({
+                    est_abonne: 0
+                });
+                res.json(etudiant);
             } else {
                 res.status(404).json({ error: 'Etudiant not found' });
             }

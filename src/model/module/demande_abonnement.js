@@ -21,10 +21,26 @@ module.exports = (app) => {
         }
     });
 
+    app.get('/api/demande_abonnements/:id', verifyToken, async (req, res) => {
+        if (parseInt(req.params.id) !== req.userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        try {
+            const demande_abonnement = await Demande_Abonnement.findByPk(req.params.id);
+            if (demande_abonnement) {
+                res.json(true);
+            } else {
+                res.json(false);
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while fetching demande_abonnement' });
+        }
+    });
+
     app.post('/api/demande_abonnements', verifyToken, async (req, res) => {
         try {
             const demande_abonnement = await Demande_Abonnement.create({
-                etudiant_id: req.body.etudiant_id
+                etudiant_id: req.userId
             });
             res.json(demande_abonnement);
         } catch (error) {
