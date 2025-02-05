@@ -10,17 +10,7 @@ import "react-resizable/css/styles.css";
 
 
 
-
-
-
 // les images ne s'enregistrent pas en bd si un fichier est nommé de la même manière dans /public/image/ -> à corriger
-
-
-
-
-
-
-
 
 
 
@@ -87,7 +77,7 @@ const Create_Categorie = () => {
                     const data = await response.json();
                     setTitre(data.nom);
                     setDescription(data.description);
-                    setImage(data.image);
+                    setImage("/static/image/" + data.image);
                     setEstPublic(data.est_public);
                     setCategorieId(data.id);
 
@@ -250,6 +240,17 @@ const Create_Categorie = () => {
     const handleDragCarrousel = (e, data) => {
         setPositionC({ x: data.x, y: data.y });
     };
+
+    useEffect(() => {
+        // définir imageFile quand image est défini
+        if (image) {
+            fetch(image).then(res => res.blob()).then(blob => {
+                let extension = image.split('.').pop();
+                const file = new File([blob], `image.${extension}`, { type: 'image/' + extension });
+                setImageFile(file);
+            });
+        }
+    }, [image]);
 
     return (
         <div className="create-cat-main-div">
