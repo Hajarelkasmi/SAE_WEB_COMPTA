@@ -11,7 +11,6 @@ import "react-resizable/css/styles.css";
 
 
 // les images ne s'enregistrent pas en bd si un fichier est nommé de la même manière dans /public/image/ -> à corriger
-// le décalage est pris en compte à chaque fois qu'on modifie la catégorie mais pas l'image décalant de plus en plus -> inverser le fonctionnement du décalage
 
 
 
@@ -85,10 +84,10 @@ const Create_Categorie = () => {
                     setCategorieId(data.id);
 
                     if (data.placement_image_page) {
-                        const pos = JSON.parse(data.placement_image_page);
-                        setPositionP({ x: pos.x, y: pos.y });
-                        setSizeP({ width: pos.width, height: pos.height });
-                        setResizeOffsetP({ deltaX: pos.decX, deltaY: pos.decY });
+                        const posP = JSON.parse(data.placement_image_page);
+                        setPositionP({ x: posP.x, y: posP.y });
+                        setSizeP({ width: posP.width, height: posP.height });
+                        setResizeOffsetP({ deltaX: posP.decX, deltaY: posP.decY });
                     }
                     if (data.placement_image_carrousel) {
                         const posC = JSON.parse(data.placement_image_carrousel);
@@ -138,8 +137,8 @@ const Create_Categorie = () => {
             formData.append('description', description);
             formData.append('est_public', estPublic);
             formData.append('image', imageFile);
-            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.x + resizeOffsetC.deltaX, y: positionC.y + resizeOffsetC.deltaY, width: sizeC.width, height: sizeC.height, decX: resizeOffsetC.deltaX, decY: resizeOffsetC.deltaY }));
-            formData.append('placement_image_page', JSON.stringify({ x: positionP.x + resizeOffsetP.deltaX, y: positionP.y + resizeOffsetP.deltaY, width: sizeP.width, height: sizeP.height, decX: resizeOffsetP.deltaX, decY: resizeOffsetP.deltaY }));
+            formData.append('placement_image_carrousel', JSON.stringify({ x: positionC.x, y: positionC.y, width: sizeC.width, height: sizeC.height, decX: resizeOffsetC.deltaX, decY: resizeOffsetC.deltaY }));
+            formData.append('placement_image_page', JSON.stringify({ x: positionP.x, y: positionP.y, width: sizeP.width, height: sizeP.height, decX: resizeOffsetP.deltaX, decY: resizeOffsetP.deltaY }));
 
             const response = await fetch(url, {
                 method: method,
@@ -261,7 +260,7 @@ const Create_Categorie = () => {
             <>
                 <p id="prev_img_titre">Prévisualisation de l'image sur la page</p>
                 <div id="img-container">
-                    <Draggable onDrag={handleDragP} cancel=".react-resizable-handle" defaultPosition={{ x: positionP.x-resizeOffsetP.deltaX, y: positionP.y-resizeOffsetP.deltaY }}>
+                    <Draggable onDrag={handleDragP} cancel=".react-resizable-handle" defaultPosition={{ x: positionP.x, y: positionP.y }}>
                         <ResizableBox
                             width={sizeP.width}
                             height={sizeP.height}
@@ -289,7 +288,7 @@ const Create_Categorie = () => {
                 <div id="cont-carrousel">
                     <div id="square-container">
                         <div id="circle-container"></div>
-                        <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle" defaultPosition={{ x: positionC.x-resizeOffsetC.deltaX, y: positionC.y-resizeOffsetC.deltaY }}>
+                        <Draggable onDrag={handleDragCarrousel} cancel=".react-resizable-handle" defaultPosition={{ x: positionC.x, y: positionC.y }}>
                             <ResizableBox
                                 width={sizeC.width}
                                 height={sizeC.height}

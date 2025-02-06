@@ -8,6 +8,14 @@ function ElemCarrousel({ src, img, nom, placement_image, dans_carrousel_item }) 
             imgRef.current.src = "/logo_bitmoji.png"; // Change la source de l'image
         }
     }
+    if (placement_image) {
+        placement_image = {
+            x: placement_image.x + placement_image.decX,
+            y: placement_image.y + placement_image.decY,
+            width: placement_image.width,
+            height: placement_image.height
+        };
+    }
     if (dans_carrousel_item && placement_image) {
         placement_image = {
             x: placement_image.x/1.6,
