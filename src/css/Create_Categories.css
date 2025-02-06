@@ -79,7 +79,7 @@
 
 #img-container {
     position: relative;
-    height: 25vh;
+    height: 250px;
     overflow: hidden;
     border: 2px dashed black;
     background-color: lightgray;
