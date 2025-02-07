@@ -118,3 +118,23 @@
     width: 662px;
     height: 131px;
 }
+
+#img-container-page {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    border: 2px dashed black;
+    background-color: lightgray;
+
+    /* Gestion du texte */
+    color: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    font-size: 4vh;
+    font-weight: bold;
+}
+
+#img-container-page>img {
+    position: absolute;
+    cursor: move;
+    user-select: none;
+}

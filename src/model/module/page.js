@@ -92,7 +92,8 @@ module.exports = (app) => {
                 description: req.body.description,
                 categorie_id: req.body.categorie_id,
                 image: req.body.image,
-                est_public: req.body.est_public
+                est_public: req.body.est_public,
+                placement_image: req.body.placement_image,
             });
             res.json(page);
         } catch (error) {
@@ -108,7 +109,8 @@ module.exports = (app) => {
                     nom: req.body.nom,
                     description: req.body.description,
                     image: req.body.image,
-                    est_public: req.body.est_public
+                    est_public: req.body.est_public,
+                    placement_image: req.body.placement_image,
                 });
                 res.json(page);
             } else {

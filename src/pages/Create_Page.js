@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../css/Create_Page.css';
 import { refresh } from "./RefreshToken";
 import Popup from "./Popup";
+import Draggable from 'react-draggable';
+import { ResizableBox } from 'react-resizable';
 
 const Create_Page = () => {
     let { id_categorie, id_page } = useParams();
@@ -16,6 +18,36 @@ const Create_Page = () => {
     const [estCree, setEstCree] = useState(false);
     const [couleur, setCouleur] = useState('#000000');
     const navigate = useNavigate();
+
+    const [placement_image, setPlacement_image] = useState({ x: 0, y: 0, width: 200, height: 200, decX: 0, decY: 0 });
+
+    const handleResize = (event, {size}) => {
+        const deltaX = (placement_image.width - size.width) / 2;
+        const deltaY = (placement_image.height - size.height) / 2;
+
+        console.log(size.width, size.height);
+        console.log(deltaX, deltaY);
+
+        setPlacement_image((prevOffset) => ({
+            ...prevOffset,
+            width: size.width,
+            height: size.height,
+            decX: prevOffset.decX + deltaX,
+            decY: prevOffset.decY + deltaY,
+        }));
+    };
+
+    useEffect(() => {
+        console.log(placement_image);
+    }, [placement_image]);
+
+    const handleDrag = (event, data) => {
+        setPlacement_image((prevOffset) => ({
+            x: data.x,
+            y: data.y,
+            ...prevOffset,
+        }));
+    };
 
 
     useEffect(() => {
@@ -53,6 +85,7 @@ const Create_Page = () => {
                     setImage(pageData.image);
                     setEstPublic(pageData.est_public);
                     setEstCree(true);
+                    setPlacement_image(JSON.parse(pageData.placement_image));
 
                     const responseClassePage = await fetch('http://localhost:5000/api/classe_pages?page_id=' + id_page);
                     if (!responseClassePage.ok) {
@@ -114,6 +147,7 @@ const Create_Page = () => {
                         description: description,
                         est_public: estPublic,
                         categorie_id: id_categorie,
+                        placement_image: JSON.stringify(placement_image),
                     }),
                 });
             } else {
@@ -129,6 +163,7 @@ const Create_Page = () => {
                         image: '',
                         est_public: estPublic,
                         categorie_id: id_categorie,
+                        placement_image: JSON.stringify(placement_image),
                     }),
                 });
             }
@@ -187,6 +222,7 @@ const Create_Page = () => {
             setDescription('');
             setImage('');
             setImageFile(null);
+            setPlacement_image({ x: 0, y: 0, width: 200, height: 200, decX: 0, decY: 0 });
             navigate(`/page/${newPage.id}`);
 
         } catch (error) {
@@ -314,14 +350,38 @@ const Create_Page = () => {
     return (
         <div className="div-page-all-content">
             {image ? (
-                <div id="img-container">
-                    <img src={image} alt="Aperçu de l'image" />
-                    <img src={"/static/image/" + image} alt="Aperçu de l'image" />
-                </div>
-            ) : (
-                <div id="img-container">
-                    <p>Aperçu de l'image</p>
-                </div>
+                <>
+                    <p id="prev_img_titre-page">Prévisualisation de l'image sur la page</p>
+                    <div id="img-container-page">
+                        <Draggable onDrag={handleDrag} cancel=".react-resizable-handle" defaultPosition={{ x: placement_image.x, y: placement_image.y }}>
+                            <ResizableBox
+                                width={placement_image.width}
+                                height={placement_image.height}
+                                minConstraints={[100, 100]} // Dimensions minimales
+                                maxConstraints={[10000, 10000]} // Dimensions maximales
+                                resizeHandles={["se", "sw", "ne", "nw"]} // Poignées de redimensionnement
+                                onResize={handleResize}
+                            >
+                                <img
+                                src={image}
+                                alt="Aperçu de l'image"
+                                style={{
+                                    top: placement_image.y,
+                                    left: placement_image.x,
+                                    width: `${placement_image.width}px`,
+                                    height: `${placement_image.height}px`,
+                                    objectFit: "fill",
+                                    cursor: "grab"
+                                    }}
+                                    draggable="false"/>
+                            </ResizableBox>
+                        </Draggable>
+                    </div>
+                </>
+                    ) : (
+                <div id="placeholder_image_preview">
+                    <p>Ajoutez une image pour voir la prévisualisation</p>
+                </div>  
             )}
             <div className="DivCreateMain">
                 {estCree && <h1 className="titre-create">Modifier la page</h1> || <h1 className="titre-create">Créer une page</h1>}

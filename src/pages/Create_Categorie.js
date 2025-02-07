@@ -37,7 +37,6 @@ const Create_Categorie = () => {
     const [resizeOffsetC, setResizeOffsetC] = useState({ deltaX: 0, deltaY: 0 });
 
     const handleResizeC = (event, { size }) => {
-        console.log(sizeC, size);
         const deltaX = (sizeC.width - size.width) / 2;
         const deltaY = (sizeC.height - size.height) / 2;
 
@@ -50,7 +49,6 @@ const Create_Categorie = () => {
     };
 
     const handleResizeP = (event, { size }) => {
-        console.log(sizeP, size);
         const deltaX = (sizeP.width - size.width) / 2;
         const deltaY = (sizeP.height - size.height) / 2;
 

@@ -93,11 +93,11 @@ const Categorie = sequelize.define('Categorie', {
         allowNull: false
     },
     placement_image_page: {
-        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0}
+        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0, decX: 0, decY: 0}
         allowNull: true
     },
     placement_image_carrousel: {
-        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0}
+        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0, decX: 0, decY: 0}
         allowNull: true
     }
 }, {
@@ -161,6 +161,11 @@ const Page = sequelize.define('Page', {
     est_public: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+
+    placement_image: {
+        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0, decX: 0, decY: 0}
+        allowNull: true
     }
 }, {
     tableName: 'Page',

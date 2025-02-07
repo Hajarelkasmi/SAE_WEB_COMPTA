@@ -53,7 +53,9 @@ const Categorie = () => {
     
     useEffect(() => {
         if (categorie) {
-            setPlacement_image_page(JSON.parse(categorie.placement_image_page));
+            if (categorie.placement_image_page) {
+                setPlacement_image_page(JSON.parse(categorie.placement_image_page));
+            }
         }
     }, [categorie]);
 
