@@ -1,6 +1,7 @@
 const { Etudiant, Classe } = require('../bd');
 const { verifyToken, verifyAdmin, authenticate } = require('../auth');
 const { Cryptage } = require('../cryptage');
+const { PasswordToken } = require('../mail/mail');
 
 module.exports = (app) => {
     app.get('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
@@ -164,4 +165,22 @@ module.exports = (app) => {
             res.status(500).json({ error: 'An error occurred while deleting etudiant' });
         }
     });
+
+    app.post('/api/reset_password', verifyToken, async (req, res) => {
+        try {
+            if (PasswordToken.includes(req.body.token)) {
+                const crypted_password = await Cryptage(req.body.mot_de_passe);
+                const etudiant = await Etudiant.findByPk(req.userId);
+                await etudiant.update({
+                    mot_de_passe: crypted_password
+                });
+
+                PasswordToken.splice(PasswordToken.indexOf(req.body.token), 1);
+
+                res.json(etudiant);
+            } 
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while resetting password' });
+        }
+    } );
 }
