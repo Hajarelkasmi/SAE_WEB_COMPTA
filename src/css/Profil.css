@@ -1,0 +1,70 @@
+/* Conteneur global */
+.div-profil {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centre horizontalement */
+    justify-content: center; /* Centre verticalement */
+    min-height: 100vh; /* Utilise toute la hauteur de la fenêtre */
+    text-align: center; /* Centre le texte */
+    background-color: #f9f9f9; /* Couleur de fond claire */
+    color: #333; /* Texte gris foncé */
+    padding: 20px; /* Ajoute de l'espace autour */
+}
+
+/* Titre principal */
+.h1-profil {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #007bff; /* Couleur bleue */
+}
+
+/* Conteneur des informations */
+.profil-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; /* Espacement entre les éléments */
+    background: white; /* Fond blanc */
+    border: 1px solid #ddd; /* Bordure grise légère */
+    border-radius: 8px; /* Coins arrondis */
+    padding: 20px; /* Ajoute de l'espace à l'intérieur */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Légère ombre */
+}
+
+/* Textes des labels */
+.label-profil {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #555;
+}
+
+/* Boutons */
+.profil-container button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: 2px solid #007bff; /* Bordure bleue */
+    border-radius: 5px;
+    background: transparent;
+    color: #007bff; /* Texte bleu */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.profil-container button:hover {
+    background-color: #007bff; /* Fond bleu */
+    color: white; /* Texte blanc */
+}
+
+/* Champs de saisie et sélection */
+.profil-container input,
+.profil-container select {
+    padding: 8px 10px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%; /* Prend toute la largeur */
+    max-width: 300px; /* Largeur maximale */
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}

@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import {InfosContext} from "../InfosContext";
 import Container_MDP from "./Container_MDP";
 import Popup from "./Popup";
+import "../css/Profil.css";
 import Container_Gestion_Abonnement from "./Container_Gestion_Abonnement";
 
 const Profil = () => {
@@ -107,23 +108,23 @@ const Profil = () => {
     }
 
     return (
-        <div>
-            <h1>Profil</h1>
+        <div className="div-profil">
+            <h1 className="h1-profil">Profil</h1>
             {isEditing ? (
-                <div>
-                    <label>
+                <div className="div-prof">
+                    <label className="label-profil">
                         Nom:
                         <input type="text" name="nom" value={nom} onChange={handleChange} />
                     </label>
-                    <label>
+                    <label className="label-profil">
                         Prénom:
                         <input type="text" name="prenom" value={prenom} onChange={handleChange} />
                     </label>
-                    <label>
+                    <label className="label-profil">
                         Mail:
                         <input type="text" name="mail" value={mail} onChange={handleChange} />
                     </label>
-                    <label>
+                    <label className="label-profil">
                         Classe:
                         <select name="classe_id" value={classeId} onChange={handleChange}>
                             {classes.map(classe => (
@@ -135,7 +136,7 @@ const Profil = () => {
                     <button onClick={() => setIsEditing(false)}>Annuler</button>
                 </div>
             ) : (
-                <div>
+                <div className="profil-container">
                     <p>Nom: {userData.nom}</p>
                     <p>Prénom: {userData.prenom}</p>
                     <p>Mail: {userData.mail}</p>
