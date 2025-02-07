@@ -114,3 +114,7 @@
     height: 250px;
     overflow: hidden;
 }
+
+.categorie .image_categorie img {
+    position: relative;
+}

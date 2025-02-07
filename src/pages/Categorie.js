@@ -81,8 +81,8 @@ const Categorie = () => {
             <div className="image_categorie">
                 <img src={`/static/image/${categorie?.image}`} alt={categorie?.nom}
                 style={{
-                        top: placement_image_page.y + placement_image_page.decY,
-                        left: placement_image_page.x + placement_image_page.decX,
+                        top: placement_image_page.y,
+                        left: placement_image_page.x,
                         width: `${placement_image_page.width}px`,
                         height: `${placement_image_page.height}px`,
                         objectFit: "fill",
