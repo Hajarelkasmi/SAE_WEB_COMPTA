@@ -12,6 +12,7 @@ const Categorie = () => {
     const [sousCategories, setSousCategories] = useState([]);
     const {isAdmin} = useContext(InfosContext);
     const [error, setError] = useState(null);
+    const [placement_image_page, setPlacement_image_page] = useState({x: 0, y: 0, width: 200, height: 200, decX: 0, decY: 0});
 
     useEffect(() => {
 
@@ -49,6 +50,12 @@ const Categorie = () => {
         fetchData();
     }
         , [id_categorie]);
+    
+    useEffect(() => {
+        if (categorie) {
+            setPlacement_image_page(JSON.parse(categorie.placement_image_page));
+        }
+    }, [categorie]);
 
     if (error) {
         return <div style={{ color: 'red' }}>{error}</div>;
@@ -71,8 +78,19 @@ const Categorie = () => {
 
     return (
         <div className="categorie">
-                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/create`}>Créer une nouvelle sous-catégorie</Button>}
-                    {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
+            <div className="image_categorie">
+                <img src={`/static/image/${categorie?.image}`} alt={categorie?.nom}
+                style={{
+                        top: placement_image_page.y + placement_image_page.decY,
+                        left: placement_image_page.x + placement_image_page.decX,
+                        width: `${placement_image_page.width}px`,
+                        height: `${placement_image_page.height}px`,
+                        objectFit: "fill",
+                    }}
+                />
+            </div>
+            {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/create`}>Créer une nouvelle sous-catégorie</Button>}
+            {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/pages/`}>Créer une nouvelle page</Button>}
             {isAdmin && <Button className={"cat_button"} href={`/categories/${id_categorie}/edit`}>Modifier la catégorie</Button>}
             <div className="general-div-cat">
                 <div className="main-div-cat">
