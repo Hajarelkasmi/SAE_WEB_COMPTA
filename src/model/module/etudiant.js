@@ -1,9 +1,10 @@
 const { Etudiant, Classe } = require('../bd');
 const { verifyToken, verifyAdmin, authenticate } = require('../auth');
 const { Cryptage } = require('../cryptage');
+const { PasswordToken } = require('../mail/mail');
 
 module.exports = (app) => {
-    app.get('/api/etudiants', async (req, res) => {
+    app.get('/api/etudiants', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const classe_ids = req.query.classe_id ? req.query.classe_id.split(',') : null;
             const est_abonne = req.query.est_abonne;
@@ -28,7 +29,10 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/etudiants/:id', async (req, res) => {
+    app.get('/api/etudiants/:id', verifyToken, async (req, res) => {
+        if (parseInt(req.params.id) !== req.userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
         try {
             const etudiant = await Etudiant.findByPk(req.params.id, {
                 include: {
@@ -129,6 +133,25 @@ module.exports = (app) => {
         }
     });
 
+    app.put('/api/desabonnement/:id', verifyToken, async (req, res) => {
+        if (parseInt(req.params.id) !== req.userId) {
+            return res.status(403).json({ error: 'Forbidden' });
+        }
+        try {
+            const etudiant = await Etudiant.findByPk(req.params.id);
+            if (etudiant) {
+                await etudiant.update({
+                    est_abonne: 0
+                });
+                res.json(etudiant);
+            } else {
+                res.status(404).json({ error: 'Etudiant not found' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while updating etudiant' });
+        }
+    });
+
     app.delete('/api/etudiants/:id', verifyToken, verifyAdmin, async (req, res) => {
         try {
             const etudiant = await Etudiant.findByPk(req.params.id);
@@ -142,4 +165,22 @@ module.exports = (app) => {
             res.status(500).json({ error: 'An error occurred while deleting etudiant' });
         }
     });
+
+    app.post('/api/reset_password', verifyToken, async (req, res) => {
+        try {
+            if (PasswordToken.includes(req.body.token)) {
+                const crypted_password = await Cryptage(req.body.mot_de_passe);
+                const etudiant = await Etudiant.findByPk(req.userId);
+                await etudiant.update({
+                    mot_de_passe: crypted_password
+                });
+
+                PasswordToken.splice(PasswordToken.indexOf(req.body.token), 1);
+
+                res.json(etudiant);
+            } 
+        } catch (error) {
+            res.status(500).json({ error: 'An error occurred while resetting password' });
+        }
+    } );
 }

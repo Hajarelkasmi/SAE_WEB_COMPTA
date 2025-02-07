@@ -80,21 +80,26 @@ const Categorie = sequelize.define('Categorie', {
         type: DataTypes.STRING,
         allowNull: false
     },
-
     image: {
         type: DataTypes.STRING,
         allowNull: true
     },
-
     alt_image: {
         type: DataTypes.STRING,
         allowNull: true
     },
-
     est_public: {
         type: DataTypes.BOOLEAN,
         allowNull: false
     },
+    placement_image_page: {
+        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0}
+        allowNull: true
+    },
+    placement_image_carrousel: {
+        type: DataTypes.STRING, // JSON sous la forme {x: 0, y: 0, width: 0, height: 0}
+        allowNull: true
+    }
 }, {
     tableName: 'Categorie',
     timestamps: false
@@ -455,6 +460,9 @@ Etudiant.belongsTo(Classe, {foreignKey: 'classe_id'});
 
 Categorie.hasMany(SousCategorie, {foreignKey: 'id_parent', onDelete: 'CASCADE'});
 SousCategorie.belongsTo(Categorie, {foreignKey: 'id_parent'});
+
+Categorie.hasMany(SousCategorie, {foreignKey: 'id_enfant', onDelete: 'CASCADE'});
+SousCategorie.belongsTo(Categorie, {foreignKey: 'id_enfant'});
 
 Categorie.hasOne(Carrousel, { foreignKey: 'id_categorie', onDelete: 'CASCADE' });
 Carrousel.belongsTo(Categorie, { foreignKey: 'id_categorie' });

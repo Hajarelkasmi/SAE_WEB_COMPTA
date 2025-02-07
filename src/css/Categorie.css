@@ -108,3 +108,13 @@
 .cat-info-sous-categories a {
     color: white;
 }
+
+.categorie .image_categorie {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+}
+
+.categorie .image_categorie img {
+    position: relative;
+}

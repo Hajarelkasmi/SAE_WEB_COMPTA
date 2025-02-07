@@ -16,6 +16,7 @@ import Create_Categorie from "./pages/Create_Categorie";
 import Gestion_Categorie from "./pages/Gestion_Categorie";
 import { InfosProvider } from "./InfosContext";
 import Profil from "./pages/Profil";
+import Recherche from "./pages/Recherche";
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
 
@@ -40,6 +41,7 @@ function App() {
                             <Route exact path='/inscription' element={<Register/>}></Route>
                             <Route exact path='/connexion' element={<Login/>}></Route>
                             <Route exact path='/deconnexion' element={<Disconnect/>}></Route>
+                            <Route exact path='/reset_password/:token_reset' element={<Reset_Password/>}></Route>
                             {/* Routes pour les pages */}
                             <Route exact path='/admin' element={<Admin/>}></Route>
                             <Route exact path='/admin/categories' element={<Gestion_Categorie/>}></Route>
@@ -51,6 +53,7 @@ function App() {
                             <Route exact path='/categories/:id_categorie/pages/:id_page' element={<Create_Page/>}></Route>
                             <Route exact path='/categories/:id_categorie/pages' element={<Create_Page/>}></Route>
                             <Route exact path='/profil' element={<Profil/>}></Route>
+                            <Route path="/search" element={<Recherche/>}/>
                         </Routes>
                         <ToastContainer />
                     </BrowserRouter>

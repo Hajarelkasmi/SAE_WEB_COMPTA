@@ -42,6 +42,12 @@ function Register() {
             return;
         }
 
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(mot_de_passe)) {
+            setErrorMessage('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+            return;
+        }
+
         const formData = {
             nom: nom.toUpperCase(),
             prenom: prenom,
@@ -111,8 +117,12 @@ function Register() {
     };
 
     const verifyPassword = () => {
-        if (mot_de_passe !== confirmPassword) {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    
+         if (mot_de_passe !== confirmPassword) {
             setErrorMessage('Les mots de passe ne correspondent pas.');
+        } else if (!passwordRegex.test(mot_de_passe)) {
+            setErrorMessage('Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
         } else {
             setErrorMessage('');
         }

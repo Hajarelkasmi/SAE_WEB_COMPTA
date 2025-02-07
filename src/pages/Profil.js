@@ -3,6 +3,7 @@ import {InfosContext} from "../InfosContext";
 import Container_MDP from "./Container_MDP";
 import Popup from "./Popup";
 import "../css/Profil.css";
+import Container_Gestion_Abonnement from "./Container_Gestion_Abonnement";
 
 const Profil = () => {
     const {idUser} = useContext(InfosContext);
@@ -11,6 +12,7 @@ const Profil = () => {
     const [prenom, setPrenom] = useState('');
     const [mail, setMail] = useState('');
     const [classeId, setClasseId] = useState('');
+    const [isAbonne, setIsAbonne] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [classes, setClasses] = useState([]);
 
@@ -33,6 +35,7 @@ const Profil = () => {
                 setNom(data.nom);
                 setPrenom(data.prenom);
                 setMail(data.mail);
+                setIsAbonne(data.est_abonne);
                 setClasseId(data.classe_id);
             } catch (error) {
                 console.error('Erreur:', error);
@@ -142,6 +145,7 @@ const Profil = () => {
                 </div>
             )}
             <Container_MDP/>
+            <Container_Gestion_Abonnement abonne={isAbonne}/>
         </div>
     );
 }

@@ -10,9 +10,19 @@ function Compte() {
 
     async function fetchComptes() {
         try {
-            let response = await fetch('http://localhost:5000/api/etudiants');
-            let data = await response.json();
-            setComptes(data);
+            fetch('http://localhost:5000/api/etudiants', {
+                method : 'GET',
+                headers: {
+                    'Authorization': `${localStorage.getItem('token')}`
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setComptes(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching comptes:', error);
+                });
         } catch (error) {
             console.error('Error fetching comptes:', error);
         }
@@ -98,7 +108,11 @@ function Compte() {
             url += `${filtres.classes ? '&' : '?'}est_abonne=1`;
         }
         console.log(url);
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'Authorization': `${localStorage.getItem('token')}`
+            }
+        });
         const data = await response.json();
         setComptes(data);
     };

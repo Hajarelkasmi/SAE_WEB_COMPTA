@@ -256,7 +256,7 @@ const Container_Article = ({ rubrique, activeRubrique, handleEditRubrique, handl
                             onChange={(event) => setDescription(event.target.value)}
                             placeholder='Description'
                         />
-                        <div ref={quillRef} class="quill-editor" />
+                        <div ref={quillRef} className="quill-editor" />
                     </div>
                 </div>
             ) : (
