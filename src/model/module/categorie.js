@@ -90,7 +90,8 @@ module.exports = (app) => {
                         description: categorie.description,
                         est_public: categorie.est_public,
                         image: categorie.image,
-                        alt_image: categorie.alt_image
+                        alt_image: categorie.alt_image,
+                        placement_image_carrousel: categorie.placement_image_carrousel
                     });
                 } else {
                     await c.destroy();
@@ -181,7 +182,9 @@ module.exports = (app) => {
                 nom: req.body.nom,
                 description: req.body.description,
                 image: req.body.image,
-                est_public: req.body.est_public
+                est_public: req.body.est_public,
+                placement_image_carrousel: req.body.placement_image_carrousel,
+                placement_image_page: req.body.placement_image_page
             });
             res.json(categorie);
         } catch (error) {
@@ -211,7 +214,9 @@ module.exports = (app) => {
                     nom: req.body.nom,
                     description: req.body.description,
                     image: req.body.image,
-                    est_public: req.body.est_public
+                    est_public: req.body.est_public,
+                    placement_image_carrousel: req.body.placement_image_carrousel,
+                    placement_image_page: req.body.placement_image_page
                 });
                 res.json(categorie);
             } else {
